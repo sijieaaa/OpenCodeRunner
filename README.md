@@ -1,4 +1,8 @@
-![OpenCodeRunner Logo](assets/opencoderunner.png)
+<div align="center">
+  <img src="https://github.com/OpenCodeRunner/OpenCodeRunner/blob/main/assets/opencoderunner_v3_marginborder.png" alt="OpenCodeRunner Logo" width="200"/>
+</div>
+
+
 # OpenCodeRunner
 An open-source code runner that can run `Python` `Javascript` `C++` etc.
 
