@@ -1,3 +1,4 @@
+![OpenCodeRunner Logo](assets/opencoderunner.png)
 # OpenCodeRunner
 An open-source code runner that can run `Python` `Javascript` `C++` etc.
 
