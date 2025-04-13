@@ -7,6 +7,11 @@ import os
 from contextlib import redirect_stdout
 import io
 import dotenv
+import sys
+
+from .file import write_file_from_file_info
+
+# 
 
 dotenv.load_dotenv()
 TMP_ROOT = os.getenv("TMP_ROOT")
@@ -36,15 +41,17 @@ def find_python_interpreter(python_version, torch_version):
     return python_path
 
 
-def import_function_from_file(filepath, func_name):
-    module_name = os.path.splitext(os.path.basename(filepath))[0]
+
+def import_function_from_file(file_path, func_name):
+    module_name = os.path.splitext(os.path.basename(file_path))[0]
     
-    spec = importlib.util.spec_from_file_location(module_name, filepath)
+    spec = importlib.util.spec_from_file_location(module_name, file_path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
 
     func = getattr(module, func_name)
     return func
+
 
 
 def run_python_codestr(codestr):
@@ -55,7 +62,7 @@ def run_python_codestr(codestr):
     return process
 
 
-
+# Single file running
 def run_python_funcstr(funcstr: str, 
                        func_name: str = None,
                        func_args: dict = None,
@@ -88,7 +95,67 @@ def run_python_funcstr(funcstr: str,
 
 
 
+def run_python_run_info(run_info: dict):
+    # Write all files in the run_info to temporary files
+    file_infos = run_info["file_infos"]
+    for file_info in file_infos:
+        write_file_from_file_info(file_info)
 
+    # Run the entry function
+    entry_func_name = run_info["entry_func_name"]
+    entry_func_args = run_info["entry_func_args"]
+    entry_func_kwargs = run_info["entry_func_kwargs"]
+    
+    # Import the function from the temporary file
+    filepath = os.path.join(run_info["root_dir"], run_info["entry_file_relpath"])
+    file_abspath = os.path.abspath(filepath)
+    root_absdir = os.path.abspath(run_info["root_dir"])
+
+    if entry_func_name is not None:
+        # Change cwd + add `root_absdir` to sys.path. Otherwise, the import will fail
+        cwd_bak = os.getcwd()
+        os.chdir(run_info["root_dir"])
+        sys.path.append(root_absdir)
+        func = import_function_from_file(file_abspath, entry_func_name)
+        sys.path.remove(root_absdir)
+        os.chdir(cwd_bak)
+
+        # Call the function
+        process_result = ProcessResult()
+        try:
+            buffer = io.StringIO()
+            with redirect_stdout(buffer):
+                func_return = func(*entry_func_args, **entry_func_kwargs)
+            stdout = buffer.getvalue()
+            process_result.func_return = func_return
+            process_result.stdout = stdout
+        except Exception as e:
+            process_result.returncode = process.returncode
+            process_result.stdout = process.stdout
+            process_result.stderr = process.stderr
+
+    # If `entry_func_name` is None, run the file directly
+    else:
+        cwd_bak = os.getcwd()
+        os.chdir(run_info["root_dir"])
+        try:
+            process = subprocess.run(
+                ["python", run_info["entry_file_relpath"]],
+                capture_output=True,
+            )
+            process_result = ProcessResult()
+            process_result.returncode = process.returncode
+            process_result.stdout = process.stdout
+            process_result.stderr = process.stderr
+            process_result.func_return = None
+        except Exception as e:
+            process_result = ProcessResult()
+            process_result.returncode = process.returncode
+            process_result.stdout = process.stdout
+            process_result.stderr = process.stderr
+
+
+    return process_result
 
 
 
