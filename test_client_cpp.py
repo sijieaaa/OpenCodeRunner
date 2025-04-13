@@ -122,7 +122,3 @@ if __name__ == "__main__":
     )
 
 
-    # cpp example
-    run_info = {
-        
-    }
