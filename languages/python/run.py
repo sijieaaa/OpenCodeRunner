@@ -34,7 +34,7 @@ class ProcessResult:
             "===========================\n"
         )
 
-
+@DeprecationWarning
 def find_python_interpreter(python_version, torch_version):
     conda_env_name = f"python{python_version}-torch{torch_version}"
     python_path = f"/home/runner/miniconda3/envs/{conda_env_name}" 
@@ -42,18 +42,8 @@ def find_python_interpreter(python_version, torch_version):
 
 
 
-def import_function_from_file(file_path, func_name):
-    module_name = os.path.splitext(os.path.basename(file_path))[0]
-    
-    spec = importlib.util.spec_from_file_location(module_name, file_path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
 
-    func = getattr(module, func_name)
-    return func
-
-
-
+@DeprecationWarning
 def run_python_codestr(codestr):
     process = subprocess.run(
         ["python", "-c", codestr],
@@ -62,7 +52,8 @@ def run_python_codestr(codestr):
     return process
 
 
-# Single file running
+
+@DeprecationWarning
 def run_python_funcstr(funcstr: str, 
                        func_name: str = None,
                        func_args: dict = None,
@@ -93,6 +84,17 @@ def run_python_funcstr(funcstr: str,
 
     return process_result
 
+
+
+def import_function_from_file(file_path, func_name):
+    module_name = os.path.splitext(os.path.basename(file_path))[0]
+    
+    spec = importlib.util.spec_from_file_location(module_name, file_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    func = getattr(module, func_name)
+    return func
 
 
 
@@ -158,25 +160,3 @@ def run_python_run_info(run_info: dict):
 
     return process_result
 
-
-
-if __name__ == "__main__":
-    # --
-    python_codestr = """
-print("Hello, World!")
-"""
-    process_result = run_python_codestr(python_codestr)
-    print(process_result)
-
-    
-    # --
-    python_funcstr = """
-def add(a, b):
-    print("Adding:", a, b)
-    return a + b
-    # return "1"
-"""
-    process_result = run_python_funcstr(python_funcstr, 
-                                 func_name="add",
-                                 func_args={"a": 1, "b": 2})
-    print(process_result)
