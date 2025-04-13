@@ -13,6 +13,8 @@ def run_cpp_run_info(run_info: dict) -> ProcessResult:
     for file_info in file_infos:
         write_file_from_file_info(file_info)
 
-    # TODO
+    # TODO: Add support for c++
+    # NOTE: Need to support `compiler` config
+    #       Be careful about single quote `''` and double quote `""` in C/C++
 
     return 

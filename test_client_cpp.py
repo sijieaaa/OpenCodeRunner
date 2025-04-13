@@ -64,6 +64,8 @@ class OpenCodeRunner:
             process_result = run_python_run_info(run_info=run_info)
         elif language in ["cpp", "c++"]:
             # TODO: Add support for c++
+            # NOTE: Need to support `compiler` config
+            #       Be careful about single quote `''` and double quote `""` in C/C++
             process_result = run_cpp_run_info(run_info=run_info)
             pass
         else:
@@ -100,8 +102,8 @@ int main() {
         "language": "c++",
         "compiler": "g++",
         "root_folder_name": "zproj1",
-        "entry_file_relpath": None,
-        "entry_func_name": None, # [str, None/Literal["__main__"]]
+        "entry_file_relpath": None, # str
+        "entry_func_name": None, # str
         # "entry_func_args": [arg1, arg2], # list
         # "entry_func_kwargs": {"key1": value1, "key2": value2}, # dict
         "entry_func_args": [], # list
