@@ -15,7 +15,8 @@ class ProcessResult:
 
         # Function return value
         # Currently only for Python
-        self.func_return = None
+        self.entry_func_name = ""
+        self.entry_func_return = None
 
     def __repr__(self):
         return (
@@ -26,6 +27,7 @@ class ProcessResult:
             f"returncode: {self.returncode}\n"
             f"stdout: {self.stdout}\n"
             f"stderr: {self.stderr}\n"
-            f"func_return: {self.func_return}\n"
+            f"entry_func_name: {self.entry_func_name}\n"
+            f"entry_func_return: {self.entry_func_return}\n"
             "===========================\n"
         )

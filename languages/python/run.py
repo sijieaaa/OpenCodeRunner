@@ -101,28 +101,34 @@ def run_python_run_info(run_info: dict):
     file_abspath = os.path.abspath(filepath)
     root_absdir = os.path.abspath(run_info["root_dir"])
 
+    # Call the function
+    process_result = ProcessResult()
     if entry_func_name is not None:
         # Change cwd + add `root_absdir` to sys.path. Otherwise, the import will fail
         cwd_bak = os.getcwd()
         os.chdir(run_info["root_dir"])
         sys.path.append(root_absdir)
-        func = import_function_from_file(file_abspath, entry_func_name)
+        try:
+            func = import_function_from_file(file_abspath, entry_func_name)
+        except Exception as e:
+            process_result.returncode = 1
+            process_result.stdout = ""
+            process_result.stderr = str(e)
+            return process_result
         sys.path.remove(root_absdir)
         os.chdir(cwd_bak)
 
-        # Call the function
-        process_result = ProcessResult()
         try:
             buffer = io.StringIO()
             with redirect_stdout(buffer):
-                func_return = func(*entry_func_args, **entry_func_kwargs)
+                entry_func_return = func(*entry_func_args, **entry_func_kwargs)
             stdout = buffer.getvalue()
-            process_result.func_return = func_return
+            process_result.entry_func_return = entry_func_return
             process_result.stdout = stdout
         except Exception as e:
-            process_result.returncode = process.returncode
-            process_result.stdout = process.stdout
-            process_result.stderr = process.stderr
+            process_result.returncode = 1
+            process_result.stdout = ""
+            process_result.stderr = str(e)
 
     # If `entry_func_name` is None, run the file directly
     else:
@@ -133,13 +139,10 @@ def run_python_run_info(run_info: dict):
                 ["python", run_info["entry_file_relpath"]],
                 capture_output=True,
             )
-            process_result = ProcessResult()
             process_result.returncode = process.returncode
             process_result.stdout = process.stdout
             process_result.stderr = process.stderr
-            process_result.func_return = None
         except Exception as e:
-            process_result = ProcessResult()
             process_result.returncode = process.returncode
             process_result.stdout = process.stdout
             process_result.stderr = process.stderr

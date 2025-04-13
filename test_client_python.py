@@ -83,7 +83,6 @@ if __name__ == "__main__":
 
     # python example
     opencr = OpenCodeRunner()
-
     run_info = {
         "file_infos": [
             {
@@ -91,7 +90,7 @@ if __name__ == "__main__":
                 "file_content": """
 def main1():
     print("Hello World")
-    return 0
+    return 123
 """
             },
             {
@@ -116,11 +115,7 @@ if __name__ == "__main__":
         "entry_func_args": [], # list
         "entry_func_kwargs": {}, # dict
     }
-
     process_result = opencr.run(
         run_info
     )                            
 
-    None
-
-    
