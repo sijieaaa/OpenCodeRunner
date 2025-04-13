@@ -9,30 +9,14 @@ import io
 import dotenv
 import sys
 
-from .file import write_file_from_file_info
+from languages.file import write_file_from_file_info
+from languages.process_result import ProcessResult
 
-# 
 
 dotenv.load_dotenv()
 TMP_ROOT = os.getenv("TMP_ROOT")
 
 
-class ProcessResult:
-    def __init__(self):
-        self.returncode = 0
-        self.stdout = ""
-        self.stderr = ""
-        self.func_return = None
-
-    def __repr__(self):
-        return (
-            "====== ProcessResult ======\n"
-            f"returncode: {self.returncode}\n"
-            f"stdout: {self.stdout}\n"
-            f"stderr: {self.stderr}\n"
-            f"func_return: {self.func_return}\n"
-            "===========================\n"
-        )
 
 @DeprecationWarning
 def find_python_interpreter(python_version, torch_version):
@@ -99,6 +83,9 @@ def import_function_from_file(file_path, func_name):
 
 
 def run_python_run_info(run_info: dict):
+    """
+    Run the Python code according to `run_info`.
+    """
     # Write all files in the run_info to temporary files
     file_infos = run_info["file_infos"]
     for file_info in file_infos:

@@ -3,33 +3,12 @@ import subprocess
 import os
 import dotenv
 import shutil
+from languages.process_result import ProcessResult
 
 dotenv.load_dotenv()
 TMP_ROOT = os.getenv("TMP_ROOT")
 
 
-class ProcessResult:
-    def __init__(self):
-        self.returncode = 0
-        self.stdout = ""
-        self.stderr = ""
-        self.func_return = None
-        self.compile_returncode = 0
-        self.compile_stdout = ""
-        self.compile_stderr = ""
-
-    def __repr__(self):
-        return (
-            "====== ProcessResult ======\n"
-            f"returncode: {self.returncode}\n"
-            f"stdout: {self.stdout}\n"
-            f"stderr: {self.stderr}\n"
-            f"func_return: {self.func_return}\n"
-            f"compile_returncode: {self.compile_returncode}\n"
-            f"compile_stdout: {self.compile_stdout}\n"
-            f"compile_stderr: {self.compile_stderr}\n"
-            "===========================\n"
-        )
 
 def run_cpp_codestr(codestr: str):
     process_result = ProcessResult()

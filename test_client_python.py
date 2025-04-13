@@ -32,7 +32,7 @@ class OpenCodeRunner:
             ):
         language = run_info["language"]
         language = language.lower().strip()
-        root_dir = run_info["root_dir"]
+        root_folder_name = run_info["root_folder_name"]
 
         # Create a temporary directory for the session
         session_name = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
@@ -40,9 +40,9 @@ class OpenCodeRunner:
 
         # Update the `root_dir` to include the session name. So the structure will be:
         # TMP_ROOT 
-        #   |-session_dir
-        #      |-root_dir
-        root_dir = os.path.join(TMP_ROOT, session_name, root_dir)
+        #   |-session_name
+        #      |-root_folder_name
+        root_dir = os.path.join(TMP_ROOT, session_name, root_folder_name)
         rm_makedirs(root_dir)
         run_info["root_dir"] = root_dir
  
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     run_info = {
         "file_infos": [
             {
-                "file_relpath": "file1.py",
+                "file_relpath": "file1.py", # i.e. f"{root_folder_name}/file1.py"
                 "file_content": """
 def main1():
     print("Hello World")
@@ -95,7 +95,7 @@ def main1():
 """
             },
             {
-                "file_relpath": "file2.py",
+                "file_relpath": "file2.py", # i.e. f"{root_folder_name}/file2.py"
                 "file_content": """
 import file1
 from file1 import main1
@@ -108,7 +108,7 @@ if __name__ == "__main__":
             }
         ],
         "language": "python",
-        "root_dir": "zproj1/",
+        "root_folder_name": "zproj1", 
         "entry_file_relpath": "file2.py",
         "entry_func_name": "main2", # [str, None/Literal["__main__"]]
         # "entry_func_args": [arg1, arg2], # list
@@ -122,3 +122,5 @@ if __name__ == "__main__":
     )                            
 
     None
+
+    
