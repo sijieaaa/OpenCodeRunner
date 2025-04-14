@@ -10,8 +10,8 @@ import dotenv
 import sys
 from deprecated import deprecated
 
-from languages.file import write_file_from_file_info
-from languages.process_result import ProcessResult
+from opencoderunner.languages.file import write_file_from_file_info
+from opencoderunner.languages.process_result import ProcessResult
 
 
 dotenv.load_dotenv()

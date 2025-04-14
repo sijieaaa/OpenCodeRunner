@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
-
+import uvicorn
 
 from test_client_python import OpenCodeRunner  
 
@@ -45,4 +45,18 @@ async def service_run(run_info: RunInfo):
     process_result_dict = process_result.to_dict()
     return process_result_dict
 
-# uvicorn server:app --host 0.0.0.0 --port 8000 --reload
+
+
+def start_server(host: str = "localhost", port: int = 8000):
+    """
+    Start the FastAPI server.
+    """
+    uvicorn.run(app, host=host, port=port)
+
+
+
+if __name__ == "__main__":
+    # Start the server with default host and port
+    start_server(host="localhost", port=8000)
+
+    # uvicorn server:app --host 0.0.0.0 --port 8000 --reload

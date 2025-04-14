@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "opencoderunner"
+version = "0.1"
+description = "OpenCodeRunner: A FastAPI-based code execution server"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "requests"
+]
+
+[project.scripts]
+opencoderunner-start-server = "server.server:start_server"

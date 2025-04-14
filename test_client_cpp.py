@@ -9,8 +9,8 @@
 
 from typing import Literal
 
-from languages.python.run import run_python_run_info
-from languages.cpp.run import run_cpp_run_info
+from opencoderunner.languages.python.run import run_python_run_info
+from opencoderunner.languages.cpp.run import run_cpp_run_info
 
 import shutil
 import os

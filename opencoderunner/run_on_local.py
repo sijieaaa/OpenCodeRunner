@@ -17,6 +17,9 @@ READONLY_DIRS = os.getenv("READONLY_DIRS")
 WRITABLE_DIRS = os.getenv("WRITABLE_DIRS")
 
 
+print("TMP_ROOT:", TMP_ROOT)
+print("READONLY_DIRS:", READONLY_DIRS)
+print("WRITABLE_DIRS:", WRITABLE_DIRS)
 
 
 def rm_makedirs(dir_path: str):
@@ -29,43 +32,39 @@ def rm_makedirs(dir_path: str):
 
 
 
-class OpenCodeRunner:
-    def __init__(self):
-        None
+def run(
+        run_info: dict,
+    ):
+    language = run_info["language"]
+    language = language.lower().strip()
+    project_root_name = run_info["project_root_name"]
 
-    def run(self,
-            run_info: dict,
-            ):
-        language = run_info["language"]
-        language = language.lower().strip()
-        project_root_name = run_info["project_root_name"]
+    # Create a temporary directory for the session
+    session_name = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
+    session_dir = os.path.join(TMP_ROOT, session_name)
 
-        # Create a temporary directory for the session
-        session_name = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
-        session_dir = os.path.join(TMP_ROOT, session_name)
+    # Update the `root_dir` to include the session name. So the structure will be:
+    # TMP_ROOT 
+    #   |-session_name
+    #      |-project_root_name
+    project_root_dir = os.path.join(TMP_ROOT, session_name, project_root_name)
+    rm_makedirs(project_root_dir)
+    run_info["project_root_dir"] = project_root_dir
 
-        # Update the `root_dir` to include the session name. So the structure will be:
-        # TMP_ROOT 
-        #   |-session_name
-        #      |-project_root_name
-        project_root_dir = os.path.join(TMP_ROOT, session_name, project_root_name)
-        rm_makedirs(project_root_dir)
-        run_info["project_root_dir"] = project_root_dir
- 
-        # Update each `file_info` in `file_infos` to include the `project_root_dir`
-        for i in range(len(run_info["file_infos"])):
-            run_info['file_infos'][i]['file_root_dir'] = project_root_dir
+    # Update each `file_info` in `file_infos` to include the `project_root_dir`
+    for i in range(len(run_info["file_infos"])):
+        run_info['file_infos'][i]['file_root_dir'] = project_root_dir
 
-        if language in ["python", "py"]:
-            process_result = run_python_run_info(run_info=run_info)
-        else:
-            raise NotImplementedError
-        
-        # Clean up the temporary directory
-        shutil.rmtree(session_dir)
-        print(process_result)
-        
-        return process_result
+    if language in ["python", "py"]:
+        process_result = run_python_run_info(run_info=run_info)
+    else:
+        raise NotImplementedError
+    
+    # Clean up the temporary directory
+    shutil.rmtree(session_dir)
+    print(process_result)
+    
+    return process_result
 
 
 
@@ -75,8 +74,6 @@ if __name__ == "__main__":
 
 
 
-    # python example
-    opencr = OpenCodeRunner()
     run_info = {
         "file_infos": [
             {
@@ -110,7 +107,7 @@ if __name__ == "__main__":
         "entry_func_args": ["abc"], # list
         "entry_func_kwargs": {}, # dict
     }
-    process_result = opencr.run(
+    process_result = run(
         run_info
     )                            
 
