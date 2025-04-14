@@ -66,7 +66,7 @@ print(process_result_dict_local)
 ```
 
 #### 2. Run on Remote Servers
-To run on remote servers, you need first start the FastAPI Web Server using `opencoderunner-start-server`
+To run on remote servers, firstly you need to start the FastAPI Web Server using `opencoderunner-start-server`
 
 ```Bash
 opencoderunner-start-server --host 0.0.0.0 --port 8000
