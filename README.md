@@ -8,7 +8,7 @@
 
 
 # OpenCodeRunner
-An open-source code runner that can run project-level (multi-file) codes, including `Python` `Javascript/Typescript` `C/C++` `Java` `Dafny` etc.
+A fully open-source code runner that executes project-level (multi-file) code locally or via a server, supporting languages including `Python` `Javascript/Typescript` `C/C++` `Java` `Dafny` etc.
 ## Installation
 ```bash
 # Install
@@ -39,3 +39,10 @@ pip uninstall opencoderunner
 
 ### 2025-04-11
 - Support basic cpp, javascript, python
+
+
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=OpenCodeRunner/OpenCodeRunner)](https://github.com/OpenCodeRunner/OpenCodeRunner/graphs/contributors)
+
+> 🙌 Thanks to everyone who has contributed to OpenCodeRunner!
