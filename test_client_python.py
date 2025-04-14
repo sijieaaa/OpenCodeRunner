@@ -101,8 +101,9 @@ def main1():
                 "file_content": """
 import file1
 from file1 import main1
-def main2():
+def main2(a:str,b=1):
     output = main1()
+    output = f"{a}-{b}-{output}"
     return output
 if __name__ == "__main__":
     main2()
@@ -113,9 +114,9 @@ if __name__ == "__main__":
         "project_root_name": "zproj1", 
         "entry_file_relpath": "file2.py",
         "entry_func_name": "main2", # [str, None/Literal["__main__"]]
-        # "entry_func_args": [arg1, arg2], # list
-        # "entry_func_kwargs": {"key1": value1, "key2": value2}, # dict
-        "entry_func_args": [], # list
+        # "entry_func_args": [], # list
+        # "entry_func_kwargs": {"a": "aaa", "b": 123}, # dict
+        "entry_func_args": ["abc"], # list
         "entry_func_kwargs": {}, # dict
     }
     process_result = opencr.run(
