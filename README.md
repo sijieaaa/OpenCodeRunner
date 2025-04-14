@@ -8,7 +8,7 @@
 
 
 # OpenCodeRunner
-A fully open-source and free code runner that run project-level (multi-file) code on local machines or on remote servers. It supports languages including `Python` `JavaScript/TypeScript` `C/C++` `Java` `Dafny` `Bash`etc.
+A fully open-source and free code runner that run project-level (multi-file) code on local machines or on remote servers. It supports languages including `Python` `JavaScript/TypeScript` `C/C++` `Java` `Dafny` `Bash` etc.
 
 OpenCodeRunner can be used in many ways:
 - LLM/VLM/Agent training
