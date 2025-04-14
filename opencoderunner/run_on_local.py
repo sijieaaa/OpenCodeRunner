@@ -106,8 +106,8 @@ if __name__ == "__main__":
         "entry_func_args": ["abc"], # list
         "entry_func_kwargs": {"b": 123}, # dict
     }
-    process_result = run(
+    process_result_dict = run(
         run_info
     )           
-    print(process_result)              
+    print(process_result_dict)              
 

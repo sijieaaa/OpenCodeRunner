@@ -19,8 +19,71 @@ pip install -e .
 # Uninstall
 pip uninstall opencoderunner 
 ```
+## Usage
+OpenCodeRunner supports 2 ways of running codes: 
+- Run on local machines via Python function calling
+- Run on remote servers via FastAPI Web Server. Of course, you can also use this to run on local machines
 
 
+```Python
+from opencoderunner.run_on_local import run as run_on_local
+
+run_info = {
+    "file_infos": [
+        {
+            "file_relpath": "file1.py", # i.e. f"{project_root_name}/file1.py"
+            "file_content": """
+def main1():
+print("Hello World")
+return 123
+"""
+        },
+        {
+            "file_relpath": "file2.py", # i.e. f"{project_root_name}/file2.py"
+            "file_content": """
+import file1
+from file1 import main1
+def main2(a:str,b=1):
+output = main1()
+output = f"{a}-{b}-{output}"
+return output
+if __name__ == "__main__":
+main2()
+"""
+        }
+    ],
+    "language": "python",
+    "project_root_name": "zproj1", 
+    "entry_file_relpath": "file2.py",
+    "entry_func_name": "main2", # [str, None]
+    "entry_func_args": ["abc"], # list
+    "entry_func_kwargs": {"b": 123}, # dict
+}
+# Run on local machines
+process_result_dict_local = run_on_local(run_info)           
+print(process_result_dict_local)  
+```
+To run on remote servers, you need first start the FastAPI Web Server using `opencoderunner-start-server`.
+```Bash
+opencoderunner-start-server --host 0.0.0.0 --port 8000
+```
+Then, you need to specify `host` and `port` to run on remote servers.
+```Python
+from opencoderunner.run_on_local import run as run_on_server
+from opencoderunner.server import start_server
+
+run_info # You can copy from the local running example
+
+# Run on remote servers
+host = "0.0.0.0"
+port = 8000
+process_result_dict_server = run_on_server(
+    run_info,
+    host=host,
+    port=port    
+)       
+print(process_result_dict_server)  
+```
 
 ## TODO
 - [ ] Sandbox 
