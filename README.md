@@ -109,7 +109,7 @@ print(process_result_dict_server)
 
 
 ## Contributors
-We welcome passionate contributors! If you are interested, feel free to contact!
+😊 We welcome passionate contributors! If you are interested, feel free to contact!
 
 [![Contributors](https://contrib.rocks/image?repo=OpenCodeRunner/OpenCodeRunner)](https://github.com/OpenCodeRunner/OpenCodeRunner/graphs/contributors)
 
