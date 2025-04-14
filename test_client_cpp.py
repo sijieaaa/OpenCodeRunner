@@ -64,7 +64,7 @@ class OpenCodeRunner:
             process_result = run_python_run_info(run_info=run_info)
         elif language in ["cpp", "c++"]:
             # TODO: Add support for c++
-            # NOTE: Need to support `compiler` config
+            # NOTE: Need to support `compiler` config.
             #       Be careful about single quote `''` and double quote `""` in C/C++
             process_result = run_cpp_run_info(run_info=run_info)
             pass

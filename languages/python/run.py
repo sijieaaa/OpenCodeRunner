@@ -110,25 +110,28 @@ def run_python_run_info(run_info: dict):
         sys.path.append(root_absdir)
         try:
             func = import_function_from_file(file_abspath, entry_func_name)
+            sys.path.remove(root_absdir)
+            os.chdir(cwd_bak)
         except Exception as e:
             process_result.returncode = 1
             process_result.stdout = ""
             process_result.stderr = str(e)
+            sys.path.remove(root_absdir)
+            os.chdir(cwd_bak)
             return process_result
-        sys.path.remove(root_absdir)
-        os.chdir(cwd_bak)
 
-        try:
-            buffer = io.StringIO()
-            with redirect_stdout(buffer):
+        buffer = io.StringIO()
+        with redirect_stdout(buffer):
+            try:
                 entry_func_return = func(*entry_func_args, **entry_func_kwargs)
-            stdout = buffer.getvalue()
-            process_result.entry_func_return = entry_func_return
-            process_result.stdout = stdout
-        except Exception as e:
-            process_result.returncode = 1
-            process_result.stdout = ""
-            process_result.stderr = str(e)
+            except Exception as e:
+                process_result.returncode = 1
+                process_result.stdout = ""
+                process_result.stderr = str(e)
+                return process_result
+        stdout = buffer.getvalue()
+        process_result.entry_func_return = entry_func_return
+        process_result.stdout = stdout
 
     # If `entry_func_name` is None, run the file directly
     else:
