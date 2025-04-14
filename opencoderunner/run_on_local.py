@@ -63,8 +63,9 @@ def run(
     # Clean up the temporary directory
     shutil.rmtree(session_dir)
     print(process_result)
-    
-    return process_result
+
+    process_result_dict = process_result.to_dict()    
+    return process_result_dict
 
 
 
@@ -102,12 +103,11 @@ if __name__ == "__main__":
         "project_root_name": "zproj1", 
         "entry_file_relpath": "file2.py",
         "entry_func_name": "main2", # [str, None/Literal["__main__"]]
-        # "entry_func_args": [], # list
-        # "entry_func_kwargs": {"a": "aaa", "b": 123}, # dict
         "entry_func_args": ["abc"], # list
-        "entry_func_kwargs": {}, # dict
+        "entry_func_kwargs": {"b": 123}, # dict
     }
     process_result = run(
         run_info
-    )                            
+    )           
+    print(process_result)              
 

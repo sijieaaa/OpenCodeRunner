@@ -17,10 +17,13 @@ def run(run_info: dict,
 
 
 if __name__ == "__main__":
+
+
+
     run_info = {
         "file_infos": [
             {
-                "file_relpath": "file1.py",
+                "file_relpath": "file1.py", # i.e. f"{project_root_name}/file1.py"
                 "file_content": """
 def main1():
     print("Hello World")
@@ -28,14 +31,14 @@ def main1():
 """
             },
             {
-                "file_relpath": "file2.py",
+                "file_relpath": "file2.py", # i.e. f"{project_root_name}/file2.py"
                 "file_content": """
 import file1
 from file1 import main1
 def main2(a:str,b=1):
     output = main1()
     output = f"{a}-{b}-{output}"
-    return [output, 1]
+    return output
 if __name__ == "__main__":
     main2()
 """
@@ -44,9 +47,12 @@ if __name__ == "__main__":
         "language": "python",
         "project_root_name": "zproj1", 
         "entry_file_relpath": "file2.py",
-        "entry_func_name": "main2",
-        "entry_func_args": ["abc"],
-        "entry_func_kwargs": {}
+        "entry_func_name": "main2", # [str, None/Literal["__main__"]]
+        "entry_func_args": ["abc"], # list
+        "entry_func_kwargs": {"b": 123}, # dict
     }
+    process_result = run(
+        run_info
+    )           
+    print(process_result)              
 
-    process_result_dict = run(run_info)
