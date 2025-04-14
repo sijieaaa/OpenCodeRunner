@@ -7,9 +7,13 @@
 An open-source code runner that can run project-level (multi-file) codes, including `Python` `Javascript/Typescript` `C/C++` `Java` `Dafny` etc.
 
 ## Supported Languages
-- [ ] Python
-- [] JavaScript
+- [x] Python
+- [ ] JavaScript
 - [ ] TypeScript
+- [ ] C
+- [ ] C++
+- [ ] Java
+- [ ] Dafny
 
 ## Update
 
