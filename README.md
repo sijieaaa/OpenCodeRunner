@@ -8,7 +8,7 @@
 
 
 # OpenCodeRunner
-A fully open-source code runner that executes project-level (multi-file) code locally or via a server, supporting languages including `Python` `Javascript/Typescript` `C/C++` `Java` `Dafny` etc.
+A fully open-source and free code runner that run project-level (multi-file) code on local machines or on remote servers. It supports languages including `Python` `JavaScript/TypeScript` `C/C++` `Java` `Dafny` etc.
 ## Installation
 ```bash
 # Install
@@ -92,7 +92,7 @@ print(process_result_dict_server)
 ```
 
 ## TODO
-- [ ] Sandbox 
+- [ ] Sandbox for permission control
 
 ## Supported Languages
 - [x] Python
