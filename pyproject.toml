@@ -2,18 +2,30 @@
 requires = ["setuptools>=64", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+packages = ["opencoderunner"]
+
 [project]
 name = "opencoderunner"
 version = "0.1"
 description = "OpenCodeRunner: A FastAPI-based code execution server"
 readme = "README.md"
 requires-python = ">=3.8"
+authors = [
+    {name="Sijie Wang", email="wang1679@e.ntu.edu.sg"}
+]
 dependencies = [
     "fastapi",
     "uvicorn",
     "pydantic",
     "requests"
 ]
+license = { text = "MIT" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+]
+
 
 [project.scripts]
-opencoderunner-start-server = "server.server:start_server"
+opencoderunner-start-server = "opencoderunner.server:start_server"
+

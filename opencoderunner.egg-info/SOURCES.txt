@@ -1,6 +1,6 @@
+LICENSE
 README.md
 pyproject.toml
-setup.py
 opencoderunner/__init__.py
 opencoderunner/run_on_local.py
 opencoderunner/run_on_server.py

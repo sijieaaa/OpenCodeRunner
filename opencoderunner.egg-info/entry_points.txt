@@ -1,2 +1,2 @@
 [console_scripts]
-opencoderunner-start-server = server.server:start_server
+opencoderunner-start-server = opencoderunner.server:start_server
