@@ -6,9 +6,6 @@ from typing import List, Optional, Dict, Any
 from test_client_python import OpenCodeRunner  
 
 
-app = FastAPI()
-opencr = OpenCodeRunner()
-
 
 class FileInfo(BaseModel):
     file_relpath: str
@@ -26,8 +23,14 @@ class RunInfo(BaseModel):
     entry_func_kwargs: Optional[Dict[str, Any]] = {}
 
 
+
+app = FastAPI()
+opencr = OpenCodeRunner()
+
+
+
 @app.get("/")
-async def root():
+async def service_root():
     return_dict = {
         "message": "🚀 OpenCodeRunner is running!",
         "usage": "Send POST to /run with proper `run_info` JSON."
@@ -36,9 +39,10 @@ async def root():
 
 
 @app.post("/run")
-async def run_code(run_info: RunInfo):
+async def service_run(run_info: RunInfo):
     run_info_dict = run_info.dict()
-    # `process_result` is ProcessResult object
     process_result = opencr.run(run_info_dict)
     process_result_dict = process_result.to_dict()
     return process_result_dict
+
+# uvicorn server:app --host 0.0.0.0 --port 8000 --reload

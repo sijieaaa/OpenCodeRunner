@@ -1,9 +1,13 @@
 import requests
 
 
-def run(run_info: dict): 
+def run(run_info: dict,
+        ip: str = "localhost",
+        port: int = 8000,
+        ): 
     # `json=` should input a dict, not a json string
-    response = requests.post("http://localhost:8000/run", 
+    service_url = f"http://{ip}:{port}/run"
+    response = requests.post(service_url, 
                             json=run_info 
                             )
     process_result_dict = response.json()
@@ -45,4 +49,4 @@ if __name__ == "__main__":
         "entry_func_kwargs": {}
     }
 
-    result = run(run_info)
+    process_result_dict = run(run_info)
