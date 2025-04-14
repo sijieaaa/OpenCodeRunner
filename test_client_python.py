@@ -6,12 +6,16 @@ import shutil
 import os
 import random
 import string
+import json
+import os
 import dotenv
-
 dotenv.load_dotenv()
 
 
 TMP_ROOT = os.getenv("TMP_ROOT")
+READONLY_DIRS = os.getenv("READONLY_DIRS")
+WRITABLE_DIRS = os.getenv("WRITABLE_DIRS")
+
 
 def rm_makedirs(dir_path: str):
     """
@@ -52,21 +56,6 @@ class OpenCodeRunner:
 
         if language in ["python", "py"]:
             process_result = run_python_run_info(run_info=run_info)
-        # TODO: Add support for c++
-        elif language in ["cpp", "c++"]:
-            pass
-        # TODO: Add support for java
-        elif language in ["java", "javac"]:
-            pass
-        # TODO: Add support for javascript
-        elif language in ["javascript", "js"]:
-            pass
-        # TODO: Add support for typescript
-        elif language in ["typescript", "ts"]:
-            pass
-        # TODO: Add support for dafny
-        elif language in ["dafny","dfy"]:
-            pass
         else:
             raise NotImplementedError
         
