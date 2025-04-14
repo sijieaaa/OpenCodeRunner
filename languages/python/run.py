@@ -8,6 +8,7 @@ from contextlib import redirect_stdout
 import io
 import dotenv
 import sys
+from deprecated import deprecated
 
 from languages.file import write_file_from_file_info
 from languages.process_result import ProcessResult
@@ -18,7 +19,7 @@ TMP_ROOT = os.getenv("TMP_ROOT")
 
 
 
-@DeprecationWarning
+@deprecated
 def find_python_interpreter(python_version, torch_version):
     conda_env_name = f"python{python_version}-torch{torch_version}"
     python_path = f"/home/runner/miniconda3/envs/{conda_env_name}" 
@@ -27,7 +28,7 @@ def find_python_interpreter(python_version, torch_version):
 
 
 
-@DeprecationWarning
+@deprecated
 def run_python_codestr(codestr):
     process = subprocess.run(
         ["python", "-c", codestr],
@@ -37,7 +38,7 @@ def run_python_codestr(codestr):
 
 
 
-@DeprecationWarning
+@deprecated
 def run_python_funcstr(funcstr: str, 
                        func_name: str = None,
                        func_args: dict = None,
@@ -106,17 +107,19 @@ def run_python_run_info(run_info: dict):
     if entry_func_name is not None:
         # Change cwd + add `root_absdir` to sys.path. Otherwise, the import will fail
         cwd_bak = os.getcwd()
-        os.chdir(run_info["root_dir"])
-        sys.path.append(root_absdir)
+        os.chdir(root_absdir)
+        print(sys.path)
+        sys.path[0] = root_absdir
+        print(sys.path)
         try:
             func = import_function_from_file(file_abspath, entry_func_name)
-            sys.path.remove(root_absdir)
+            sys.path[0] = cwd_bak
             os.chdir(cwd_bak)
         except Exception as e:
             process_result.returncode = 1
             process_result.stdout = ""
             process_result.stderr = str(e)
-            sys.path.remove(root_absdir)
+            sys.path[0] = cwd_bak
             os.chdir(cwd_bak)
             return process_result
 
