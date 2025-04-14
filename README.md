@@ -45,4 +45,3 @@ pip uninstall opencoderunner
 
 [![Contributors](https://contrib.rocks/image?repo=OpenCodeRunner/OpenCodeRunner)](https://github.com/OpenCodeRunner/OpenCodeRunner/graphs/contributors)
 
-> 🙌 Thanks to everyone who has contributed to OpenCodeRunner!
