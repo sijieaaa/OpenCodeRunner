@@ -98,9 +98,9 @@ def run_python_run_info(run_info: dict):
     entry_func_kwargs = run_info["entry_func_kwargs"]
     
     # Import the function from the temporary file
-    filepath = os.path.join(run_info["root_dir"], run_info["entry_file_relpath"])
+    filepath = os.path.join(run_info["project_root_dir"], run_info["entry_file_relpath"])
     file_abspath = os.path.abspath(filepath)
-    root_absdir = os.path.abspath(run_info["root_dir"])
+    root_absdir = os.path.abspath(run_info["project_root_dir"])
 
     # Call the function
     process_result = ProcessResult()

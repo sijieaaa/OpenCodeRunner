@@ -32,7 +32,7 @@ class OpenCodeRunner:
             ):
         language = run_info["language"]
         language = language.lower().strip()
-        root_folder_name = run_info["root_folder_name"]
+        project_root_name = run_info["project_root_name"]
 
         # Create a temporary directory for the session
         session_name = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
@@ -41,14 +41,14 @@ class OpenCodeRunner:
         # Update the `root_dir` to include the session name. So the structure will be:
         # TMP_ROOT 
         #   |-session_name
-        #      |-root_folder_name
-        root_dir = os.path.join(TMP_ROOT, session_name, root_folder_name)
-        rm_makedirs(root_dir)
-        run_info["root_dir"] = root_dir
+        #      |-project_root_name
+        project_root_dir = os.path.join(TMP_ROOT, session_name, project_root_name)
+        rm_makedirs(project_root_dir)
+        run_info["project_root_dir"] = project_root_dir
  
-        # Update each `file_info` in `file_infos` to include the `root_dir`
+        # Update each `file_info` in `file_infos` to include the `project_root_dir`
         for i in range(len(run_info["file_infos"])):
-            run_info['file_infos'][i]['file_root_dir'] = root_dir
+            run_info['file_infos'][i]['file_root_dir'] = project_root_dir
 
         if language in ["python", "py"]:
             process_result = run_python_run_info(run_info=run_info)
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     run_info = {
         "file_infos": [
             {
-                "file_relpath": "file1.py", # i.e. f"{root_folder_name}/file1.py"
+                "file_relpath": "file1.py", # i.e. f"{project_root_name}/file1.py"
                 "file_content": """
 def main1():
     print("Hello World")
@@ -97,7 +97,7 @@ def main1():
 """
             },
             {
-                "file_relpath": "file2.py", # i.e. f"{root_folder_name}/file2.py"
+                "file_relpath": "file2.py", # i.e. f"{project_root_name}/file2.py"
                 "file_content": """
 import file1
 from file1 import main1
@@ -110,7 +110,7 @@ if __name__ == "__main__":
             }
         ],
         "language": "python",
-        "root_folder_name": "zproj1", 
+        "project_root_name": "zproj1", 
         "entry_file_relpath": "file2.py",
         "entry_func_name": "main2", # [str, None/Literal["__main__"]]
         # "entry_func_args": [arg1, arg2], # list
