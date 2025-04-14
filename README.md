@@ -11,8 +11,9 @@
 A fully open-source and free code runner that run project-level (multi-file) code on local machines or on remote servers. It supports languages including `Python` `JavaScript/TypeScript` `C/C++` `Java` `Dafny` etc.
 
 OpenCodeRunner can be used in many ways:
-- LLM RL training
-- AI code evaluation
+- LLM/VLM/Agent training
+- RL training
+- Code evaluation
 - Safe sandbox running
 - Multi-language running
 - Cloud or remote code running
@@ -101,6 +102,7 @@ print(process_result_dict_server)
 
 ## TODO
 - [ ] Sandbox for permission control
+
 
 ## Supported Languages
 - [x] Python
