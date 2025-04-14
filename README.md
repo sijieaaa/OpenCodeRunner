@@ -4,7 +4,12 @@
 
 
 # OpenCodeRunner
-An open-source code runner that can run project-level (multi-file) codes, including `Python` `Javascript/Typescript` `C/C++` `Dafny` etc.
+An open-source code runner that can run project-level (multi-file) codes, including `Python` `Javascript/Typescript` `C/C++` `Java` `Dafny` etc.
+
+## Supported Languages
+- [ ] Python
+- [] JavaScript
+- [ ] TypeScript
 
 ## Update
 
