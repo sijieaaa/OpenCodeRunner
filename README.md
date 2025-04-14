@@ -44,7 +44,7 @@ run_info = {
             "file_relpath": "file1.py", # i.e. f"{project_root_name}/file1.py"
             "file_content": """
 def main1():
-print("Hello World")
+    print("Hello World")
 return 123
 """
         },
@@ -54,11 +54,11 @@ return 123
 import file1
 from file1 import main1
 def main2(a:str,b=1):
-output = main1()
-output = f"{a}-{b}-{output}"
-return output
+    output = main1()
+    output = f"{a}-{b}-{output}"
+    return output
 if __name__ == "__main__":
-main2()
+    main2()
 """
         }
     ],
