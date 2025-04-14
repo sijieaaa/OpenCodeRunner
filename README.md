@@ -24,7 +24,8 @@ OpenCodeRunner supports 2 ways of running codes:
 - Run on local machines via Python function calling
 - Run on remote servers via FastAPI Web Server. Of course, you can also use this to run on local machines
 
-
+#### Run on local machines
+You can easily use `run_on_local` to obtain the results
 ```Python
 from opencoderunner.run_on_local import run as run_on_local
 
@@ -63,11 +64,16 @@ main2()
 process_result_dict_local = run_on_local(run_info)           
 print(process_result_dict_local)  
 ```
-To run on remote servers, you need first start the FastAPI Web Server using `opencoderunner-start-server`.
+
+#### Run on remote servers
+To run on remote servers, you need first start the FastAPI Web Server using `opencoderunner-start-server`
+
 ```Bash
 opencoderunner-start-server --host 0.0.0.0 --port 8000
 ```
-Then, you need to specify `host` and `port` to run on remote servers.
+
+Then, you need to specify `host` and `port` in `run_on_server` to run on remote servers
+
 ```Python
 from opencoderunner.run_on_local import run as run_on_server
 from opencoderunner.server import start_server
