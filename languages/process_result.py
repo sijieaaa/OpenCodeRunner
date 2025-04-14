@@ -31,3 +31,15 @@ class ProcessResult:
             f"entry_func_return: {self.entry_func_return}\n"
             "===========================\n"
         )
+
+    def to_dict(self):
+        return {
+            "compile_returncode": self.compile_returncode,
+            "compile_stdout": self.compile_stdout,
+            "compile_stderr": self.compile_stderr,
+            "returncode": self.returncode,
+            "stdout": self.stdout,
+            "stderr": self.stderr,
+            "entry_func_name": self.entry_func_name,
+            "entry_func_return": self.entry_func_return,
+        }

@@ -17,6 +17,8 @@ READONLY_DIRS = os.getenv("READONLY_DIRS")
 WRITABLE_DIRS = os.getenv("WRITABLE_DIRS")
 
 
+
+
 def rm_makedirs(dir_path: str):
     """
     Force to remove a directory. And then create a clean one.

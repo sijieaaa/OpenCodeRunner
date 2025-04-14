@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Uvicorn",
+        "type": "debugpy",
+        "request": "launch",
+        "module": "uvicorn",
+        "args": [
+          "server:app",            // 替换成你的文件名:app 对象名
+          "--host", "0.0.0.0",
+          "--port", "8000",
+          "--reload"               // 热重载，开发时推荐
+        ],
+        // "jinja": true,
+        // "console": "integratedTerminal"
+      }
+    ]
+  }
+  

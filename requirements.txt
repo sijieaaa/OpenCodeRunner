@@ -3,3 +3,5 @@ numpy
 Pillow
 dotenv
 deprecated
+fastapi
+uvicorn
