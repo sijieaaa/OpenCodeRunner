@@ -19,8 +19,7 @@ TMP_ROOT = os.getenv("TMP_ROOT")
 
 
 
-@deprecated
-def find_python_interpreter(python_version, torch_version):
+def find_python_path(python_version, torch_version):
     conda_env_name = f"python{python_version}-torch{torch_version}"
     python_path = f"/home/runner/miniconda3/envs/{conda_env_name}" 
     return python_path
@@ -109,6 +108,12 @@ def run_python_run_info(run_info: dict):
     entry_file_abspath = os.path.join(run_info["project_root_dir"], run_info["entry_file_relpath"])
     project_root_dir = os.path.abspath(run_info["project_root_dir"])
 
+    # Set python path
+    python_path = run_info.get("python_path", "python")
+
+    # # Temporary username
+    # username = run_info.get("username", "tmp_user")
+
 
     # Call the function
     process_result = ProcessResult()
@@ -153,6 +158,7 @@ def run_python_run_info(run_info: dict):
         print(sys.path)
         os.chdir(run_info["project_root_dir"])
         try:
+            # command = f"sudo -u {username} firejail --quiet "
             command = f"firejail --quiet "
             whitelist = []
             whitelist += sys.path  
@@ -160,7 +166,7 @@ def run_python_run_info(run_info: dict):
             whitelist.append("/home/runner/miniconda3")
             for item in whitelist:
                 command += f"--whitelist={item} "
-            command += f"python {entry_file_abspath} "
+            command += f"{python_path} {entry_file_abspath} "
             print(command)
             process_subrun = subprocess.run(
                 command,

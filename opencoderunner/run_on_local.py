@@ -1,6 +1,5 @@
 from typing import Literal
 
-from opencoderunner.languages.python.run import run_python_run_info
 
 import shutil
 import os
@@ -10,6 +9,9 @@ import json
 import os
 import dotenv
 dotenv.load_dotenv()
+
+from opencoderunner.languages.python.run import run_python_run_info
+from opencoderunner.languages.bash.run import run_bash_run_info
 
 
 TMP_ROOT = os.getenv("TMP_ROOT")
@@ -61,11 +63,14 @@ def run(
  
 
     # Include `entry_file_abspath`
-    run_info["entry_file_abspath"] = os.path.join(project_root_dir, run_info["entry_file_relpath"])
+    if "entry_file_relpath" in run_info:
+        run_info["entry_file_abspath"] = os.path.join(project_root_dir, run_info["entry_file_relpath"])
 
 
     if language in ["python", "py"]:
         process_result = run_python_run_info(run_info=run_info)
+    elif language in ["bash"]:
+        process_result = run_bash_run_info(run_info=run_info)
     else:
         raise NotImplementedError
     
@@ -113,13 +118,11 @@ if __name__ == "__main__":
         "entry_file_relpath": "file2.py",
 
         # You can also specify entry function as belows
-        
+
         # "entry_func_name": "main2", # [str, None/Literal["__main__"]]
         # "entry_func_args": ["abc"], # list
         # "entry_func_kwargs": {"b": 123}, # dict
     }
-    process_result_dict = run(
-        run_info
-    )           
+    process_result_dict = run(run_info)           
     print(process_result_dict)              
 
