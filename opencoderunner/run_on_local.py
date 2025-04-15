@@ -111,6 +111,9 @@ if __name__ == "__main__":
         "language": "python",
         "project_root_name": "zproj1", 
         "entry_file_relpath": "file2.py",
+
+        # You can also specify entry function as belows
+        
         # "entry_func_name": "main2", # [str, None/Literal["__main__"]]
         # "entry_func_args": ["abc"], # list
         # "entry_func_kwargs": {"b": 123}, # dict
