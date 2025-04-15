@@ -89,30 +89,38 @@ def run_python_run_info(run_info: dict):
     """
     # Write all files in the run_info to temporary files
     file_infos = run_info["file_infos"]
-    for file_info in file_infos:
-        write_file_from_file_info(file_info)
+    for i in range(len(file_infos)):
+        file_info = file_infos[i]
+        file_abspath = file_info["file_abspath"]
+        os.makedirs(os.path.dirname(file_abspath), exist_ok=True)
+        with open(file_abspath, 'w') as f:
+            f.write(file_info["file_content"])
+        assert os.path.exists(file_abspath)
+
+
+        # write_file_from_file_info(file_info)
 
     # Run the entry function
-    entry_func_name = run_info["entry_func_name"]
-    entry_func_args = run_info["entry_func_args"]
-    entry_func_kwargs = run_info["entry_func_kwargs"]
+    entry_func_name = run_info.get("entry_func_name", None)
+    entry_func_args = run_info.get("entry_func_args", [])
+    entry_func_kwargs = run_info.get("entry_func_kwargs", {})
     
     # Import the function from the temporary file
-    filepath = os.path.join(run_info["project_root_dir"], run_info["entry_file_relpath"])
-    file_abspath = os.path.abspath(filepath)
-    root_absdir = os.path.abspath(run_info["project_root_dir"])
+    entry_file_abspath = os.path.join(run_info["project_root_dir"], run_info["entry_file_relpath"])
+    project_root_dir = os.path.abspath(run_info["project_root_dir"])
+
 
     # Call the function
     process_result = ProcessResult()
     if entry_func_name is not None:
         # Change cwd + add `root_absdir` to sys.path. Otherwise, the import will fail
         cwd_bak = os.getcwd()
-        os.chdir(root_absdir)
+        os.chdir(project_root_dir)
         print(sys.path)
-        sys.path[0] = root_absdir
+        sys.path[0] = project_root_dir
         print(sys.path)
         try:
-            func = import_function_from_file(file_abspath, entry_func_name)
+            func = import_function_from_file(entry_file_abspath, entry_func_name)
             sys.path[0] = cwd_bak
             os.chdir(cwd_bak)
         except Exception as e:
@@ -137,21 +145,36 @@ def run_python_run_info(run_info: dict):
         process_result.stdout = stdout
 
     # If `entry_func_name` is None, run the file directly
-    else:
+    elif entry_func_name is None:
         cwd_bak = os.getcwd()
-        os.chdir(run_info["root_dir"])
+        os.chdir(project_root_dir)
+        print(sys.path)
+        sys.path[0] = project_root_dir
+        print(sys.path)
+        os.chdir(run_info["project_root_dir"])
         try:
-            process = subprocess.run(
-                ["python", run_info["entry_file_relpath"]],
+            command = f"firejail --quiet "
+            whitelist = []
+            whitelist += sys.path  
+            whitelist.append(run_info["session_dir"]) 
+            whitelist.append("/home/runner/miniconda3")
+            for item in whitelist:
+                command += f"--whitelist={item} "
+            command += f"python {entry_file_abspath} "
+            print(command)
+            process_subrun = subprocess.run(
+                command,
                 capture_output=True,
+                shell=True
             )
-            process_result.returncode = process.returncode
-            process_result.stdout = process.stdout
-            process_result.stderr = process.stderr
+            print(process_subrun)
+            process_result.returncode = process_subrun.returncode
+            process_result.stdout = process_subrun.stdout
+            process_result.stderr = process_subrun.stderr
         except Exception as e:
-            process_result.returncode = process.returncode
-            process_result.stdout = process.stdout
-            process_result.stderr = process.stderr
+            process_result.returncode = process_subrun.returncode
+            process_result.stdout = process_subrun.stdout
+            process_result.stderr = process_subrun.stderr
 
 
     return process_result

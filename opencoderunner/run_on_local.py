@@ -42,6 +42,9 @@ def run(
     # Create a temporary directory for the session
     session_name = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
     session_dir = os.path.join(TMP_ROOT, session_name)
+    rm_makedirs(session_dir)
+    run_info["session_dir"] = session_dir
+
 
     # Update the `root_dir` to include the session name. So the structure will be:
     # TMP_ROOT 
@@ -53,7 +56,13 @@ def run(
 
     # Update each `file_info` in `file_infos` to include the `project_root_dir`
     for i in range(len(run_info["file_infos"])):
-        run_info['file_infos'][i]['file_root_dir'] = project_root_dir
+        file_abspath = os.path.join(project_root_dir, run_info['file_infos'][i]['file_relpath'])
+        run_info['file_infos'][i]['file_abspath'] = file_abspath
+ 
+
+    # Include `entry_file_abspath`
+    run_info["entry_file_abspath"] = os.path.join(project_root_dir, run_info["entry_file_relpath"])
+
 
     if language in ["python", "py"]:
         process_result = run_python_run_info(run_info=run_info)
@@ -95,16 +104,16 @@ def main2(a:str,b=1):
     output = f"{a}-{b}-{output}"
     return output
 if __name__ == "__main__":
-    main2()
+    main2("abc", b=123)
 """
             }
         ],
         "language": "python",
         "project_root_name": "zproj1", 
         "entry_file_relpath": "file2.py",
-        "entry_func_name": "main2", # [str, None/Literal["__main__"]]
-        "entry_func_args": ["abc"], # list
-        "entry_func_kwargs": {"b": 123}, # dict
+        # "entry_func_name": "main2", # [str, None/Literal["__main__"]]
+        # "entry_func_args": ["abc"], # list
+        # "entry_func_kwargs": {"b": 123}, # dict
     }
     process_result_dict = run(
         run_info

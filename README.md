@@ -20,6 +20,7 @@ OpenCodeRunner can be used in many ways:
 - Bash running
 - ...
 ## Installation
+1. Install OpenCodeRunner
 ```bash
 # Install
 git clone https://github.com/OpenCodeRunner/OpenCodeRunner
@@ -28,6 +29,18 @@ pip install -e .
 
 # Uninstall
 pip uninstall opencoderunner 
+```
+2. Install Firejail sandbox for safety control (https://github.com/netblue30/firejail)
+```bash
+# Install via `apt`
+sudo add-apt-repository ppa:deki/firejail
+sudo apt-get update
+sudo apt-get install firejail firejail-profiles
+
+# Or install via building manually
+git clone https://github.com/netblue30/firejail.git
+cd firejail
+./configure && make && sudo make install-strip
 ```
 ## Usage
 OpenCodeRunner supports 2 ways of running codes: 
