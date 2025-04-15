@@ -115,6 +115,7 @@ print(process_result_dict_server)
 
 ## TODO
 - [x] Sandbox for permission control
+- [ ] User
 
 
 ## Supported Languages
@@ -125,7 +126,7 @@ print(process_result_dict_server)
 - [ ] C++
 - [ ] Java
 - [ ] Dafny
-- [ ] Bash
+- [x] Bash
 - ...
 
 
