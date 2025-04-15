@@ -88,10 +88,10 @@ print(process_result_dict_local)
 ```
 
 #### 2. Run on Remote Servers
-To run on remote servers, firstly you need to start the FastAPI Web Server using `opencoderunner-start-server`
+To run on remote servers, firstly you need to start FastAPI on your remote/cloud servers using `opencoderunner-start-server`. This command wraps `uvicorn` to launch the FastAPI server.
 
 ```Bash
-opencoderunner-start-server --host 0.0.0.0 --port 8000
+opencoderunner-start-server --host 0.0.0.0 --port 8000 --reload
 ```
 
 Then, you need to specify `host` and `port` in `run_on_server` to run on remote servers
