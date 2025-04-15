@@ -27,16 +27,32 @@ def run_bash_run_info(run_info: dict):
     # Import the function from the temporary file
     project_root_dir = run_info["project_root_dir"]
 
-    # Bash command
-    bash_command = run_info.get("bash_command", None)
+    # Bash path
+    bash_path = run_info.get("bash_path", "bash") 
 
     # Temporary username
-    username = run_info.get("username", "tmp_user")
+    user = run_info.get("user", None)
 
-    # Call the function
+    # Firejail
+    use_firejail = run_info.get("use_firejail", True)
+
+
+
+    # Run
     process_result = ProcessResult()
-    command = f"""
-firejail --quiet --whitelist={project_root_dir} bash <<'EOF'
+    bash_command = run_info.get("bash_command", "")
+    command = ""
+    if user is not None:
+        command += f"sudo -u {user} "
+    
+    if use_firejail:
+        command += f"""firejail --quiet --whitelist={project_root_dir} {bash_path} <<'EOF'
+{bash_command}
+EOF
+"""
+    else:
+        # TODO: EOF  'EOF'
+        command += f"""bash <<EOF
 {bash_command}
 EOF
 """

@@ -43,15 +43,24 @@ if __name__ == "__main__":
         "language": "python",
         "project_root_name": "zproj1", 
         "entry_file_relpath": "file2.py",
+        
+        # -- Specify the python path
         # python
         # /home/runner/miniconda3/bin/python
         # /home/runner/miniconda3/envs/tmp-python3.10/bin/python
         "python_path": "/home/runner/miniconda3/envs/tmp-python3.10/bin/python", 
 
-        # -- Uncomment belolws. You can also specify entry function as belows
+        # -- (Optional) Uncomment belows. You can also specify entry function as belows
         # "entry_func_name": "main2", # [str, None/Literal["__main__"]]
         # "entry_func_args": ["abc"], # list
         # "entry_func_kwargs": {"b": 123}, # dict
+
+        # -- (Optional) You can specify the user to run the code
+        # "user": "runner", # str or None
+        "user": None, # str or None
+
+        # -- (Optional) Whether to use Firejail sandbox
+        "use_firejail": False, # bool
     }
 
     process_result_dict = run_on_local(run_info=run_info)

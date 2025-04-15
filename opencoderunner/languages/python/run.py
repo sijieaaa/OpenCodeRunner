@@ -111,8 +111,11 @@ def run_python_run_info(run_info: dict):
     # Set python path
     python_path = run_info.get("python_path", "python")
 
-    # # Temporary username
-    # username = run_info.get("username", "tmp_user")
+    # Temporary username
+    user = run_info.get("user", None)
+
+    # Firejail
+    use_firejail = run_info.get("use_firejail", True)
 
 
     # Call the function
@@ -149,6 +152,7 @@ def run_python_run_info(run_info: dict):
         process_result.entry_func_return = entry_func_return
         process_result.stdout = stdout
 
+
     # If `entry_func_name` is None, run the file directly
     elif entry_func_name is None:
         cwd_bak = os.getcwd()
@@ -159,13 +163,17 @@ def run_python_run_info(run_info: dict):
         os.chdir(run_info["project_root_dir"])
         try:
             # command = f"sudo -u {username} firejail --quiet "
-            command = f"firejail --quiet "
-            whitelist = []
-            whitelist += sys.path  
-            whitelist.append(run_info["session_dir"]) 
-            whitelist.append("/home/runner/miniconda3")
-            for item in whitelist:
-                command += f"--whitelist={item} "
+            command = ""
+            if user is not None:
+                command += f"sudo -u {user} "
+            if use_firejail:
+                command += f"firejail --quiet "
+                whitelist = []
+                whitelist += sys.path  
+                whitelist.append(run_info["session_dir"]) 
+                whitelist.append("/home/runner/miniconda3")
+                for item in whitelist:
+                    command += f"--whitelist={item} "
             command += f"{python_path} {entry_file_abspath} "
             print(command)
             process_subrun = subprocess.run(

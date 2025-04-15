@@ -41,6 +41,7 @@ git clone https://github.com/netblue30/firejail.git
 cd firejail
 ./configure && make && sudo make install-strip
 ```
+
 ## Usage
 OpenCodeRunner supports 2 ways of running codes: 
 - Run on local machines via Python function calling
