@@ -6,7 +6,7 @@ import sys
 from opencoderunner.languages.process_result import ProcessResult
 
 
-def run_java_run_info(run_info: dict):
+def run_dafny_run_info(run_info: dict):
     """
     Run the Java code according to `run_info`.
     """
@@ -37,19 +37,24 @@ def run_java_run_info(run_info: dict):
     use_firejail = run_info.get("use_firejail", True)
 
 
-
     # Run
+    # node
     process_result = ProcessResult()
-    java_path = run_info.get("java_path", "java")
-    javac_path = run_info.get("javac_path", "javac")
-    java_bash_command = ""
-    java_bash_command += f"cd {project_root_dir}\n"
-    java_bash_command += f"{javac_path} "
+    dafny_path = run_info.get("dafny_path", "dafny")
+    dafny_bash_command = ""
+    dafny_bash_command += f"cd {project_root_dir}\n"
+    # dafny build Main.dfy utils/MathUtils.dfy
+    dafny_bash_command += f"{dafny_path} build "
     for file_info in file_infos:
         file_abspath = file_info["file_abspath"]
-        java_bash_command += f"{file_abspath} "
-    entry_file_abspath = run_info.get("entry_file_abspath")
-    java_bash_command += f"\n{java_path} {entry_file_abspath}"
+        file_relpath = file_info["file_relpath"]
+        dafny_bash_command += f"{file_relpath} " 
+    entry_file_relpath = run_info["entry_file_relpath"]
+    entry_file_abspath = run_info["entry_file_abspath"]
+    entry_file_relpath = os.path.join('./', entry_file_relpath)
+    dafny_bash_command += f"--output {entry_file_relpath.replace('.dfy', '')} "
+    dafny_bash_command += f"\n{entry_file_relpath.replace('.dfy', '')}"
+
     
 
     command = ""
@@ -58,13 +63,13 @@ def run_java_run_info(run_info: dict):
     
     if use_firejail:
         command += f"""firejail --quiet --whitelist={project_root_dir} {bash_path} <<'EOF'
-{java_bash_command}
+{dafny_bash_command}
 EOF
 """
     else:
         # TODO: EOF  'EOF'
         command += f"""{bash_path} <<EOF
-{java_bash_command}
+{dafny_bash_command}
 EOF
 """
     print(command)

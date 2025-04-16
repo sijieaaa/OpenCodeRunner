@@ -13,6 +13,9 @@ dotenv.load_dotenv()
 from opencoderunner.languages.python.run import run_python_run_info
 from opencoderunner.languages.bash.run import run_bash_run_info
 from opencoderunner.languages.java.run import run_java_run_info
+from opencoderunner.languages.typescript.run import run_typescript_run_info
+from opencoderunner.languages.javascript.run import run_javascript_run_info
+from opencoderunner.languages.dafny.run import run_dafny_run_info
 
 
 TMP_ROOT = os.getenv("TMP_ROOT")
@@ -74,6 +77,12 @@ def run(
         process_result = run_bash_run_info(run_info=run_info)
     elif language in ["java", "javac"]:
         process_result = run_java_run_info(run_info=run_info)
+    elif language in ["typescript", "ts"]:
+        process_result = run_typescript_run_info(run_info=run_info)
+    elif language in ["javascript", "js"]:
+        process_result = run_javascript_run_info(run_info=run_info)
+    elif language in ["dafny", "dfy"]:
+        process_result = run_dafny_run_info(run_info=run_info)
     else:
         raise NotImplementedError
     
@@ -84,48 +93,4 @@ def run(
     process_result_dict = process_result.to_dict()    
     return process_result_dict
 
-
-
-        
-if __name__ == "__main__":
-
-
-
-
-    run_info = {
-        "file_infos": [
-            {
-                "file_relpath": "file1.py", # i.e. f"{project_root_name}/file1.py"
-                "file_content": """
-def main1():
-    print("Hello World")
-    return 123
-"""
-            },
-            {
-                "file_relpath": "file2.py", # i.e. f"{project_root_name}/file2.py"
-                "file_content": """
-import file1
-from file1 import main1
-def main2(a:str,b=1):
-    output = main1()
-    output = f"{a}-{b}-{output}"
-    return output
-if __name__ == "__main__":
-    main2("abc", b=123)
-"""
-            }
-        ],
-        "language": "python",
-        "project_root_name": "zproj1", 
-        "entry_file_relpath": "file2.py",
-
-        # You can also specify entry function as belows
-
-        # "entry_func_name": "main2", # [str, None/Literal["__main__"]]
-        # "entry_func_args": ["abc"], # list
-        # "entry_func_kwargs": {"b": 123}, # dict
-    }
-    process_result_dict = run(run_info)           
-    print(process_result_dict)              
 

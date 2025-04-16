@@ -120,12 +120,13 @@ print(process_result_dict_server)
 - [ ] .env config
 - [ ] Project structure visualization
 - [ ] Input/argparse/stdin 
+- [ ] Blocking mode
 
 
 ## Supported Languages
 - [x] Python
-- [ ] JavaScript
-- [ ] TypeScript
+- [x] JavaScript
+- [x] TypeScript
 - [ ] C
 - [ ] C++
 - [x] Java
