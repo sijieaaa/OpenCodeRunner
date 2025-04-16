@@ -117,10 +117,10 @@ print(process_result_dict_server)
 ## TODO
 - [x] Sandbox for permission control
 - [x] User
-- [ ] .env config
+- [ ] Structural .env config
 - [ ] Project structure visualization
 - [ ] Input/argparse/stdin 
-- [ ] Blocking mode
+- [ ] Input blocking issue
 
 
 ## Supported Languages
@@ -130,7 +130,7 @@ print(process_result_dict_server)
 - [ ] C
 - [ ] C++
 - [x] Java
-- [ ] Dafny
+- [x] Dafny
 - [x] Bash
 - ...
 
