@@ -12,6 +12,7 @@ dotenv.load_dotenv()
 
 from opencoderunner.languages.python.run import run_python_run_info
 from opencoderunner.languages.bash.run import run_bash_run_info
+from opencoderunner.languages.java.run import run_java_run_info
 
 
 TMP_ROOT = os.getenv("TMP_ROOT")
@@ -71,6 +72,8 @@ def run(
         process_result = run_python_run_info(run_info=run_info)
     elif language in ["bash"]:
         process_result = run_bash_run_info(run_info=run_info)
+    elif language in ["java", "javac"]:
+        process_result = run_java_run_info(run_info=run_info)
     else:
         raise NotImplementedError
     

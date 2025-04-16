@@ -118,6 +118,8 @@ print(process_result_dict_server)
 - [x] Sandbox for permission control
 - [x] User
 - [ ] .env config
+- [ ] Project structure visualization
+- [ ] Input/argparse/stdin 
 
 
 ## Supported Languages
@@ -126,7 +128,7 @@ print(process_result_dict_server)
 - [ ] TypeScript
 - [ ] C
 - [ ] C++
-- [ ] Java
+- [x] Java
 - [ ] Dafny
 - [x] Bash
 - ...
