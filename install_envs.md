@@ -44,7 +44,9 @@ export PATH="PATH_of_{node-v22.14.0-linux-x64/bin}:$PATH"
 
 
 # Python
-You can follow https://www.anaconda.com/docs/getting-started/miniconda/install#linux-terminal-installer for miniconda installation
+You can follow https://www.anaconda.com/docs/getting-started/miniconda/install#linux-terminal-installer for `miniconda` installation
+
+Or `anaconda` in https://www.anaconda.com/docs/getting-started/anaconda/install#linux-installer
 
 
 # TypeScript
