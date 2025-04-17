@@ -1,7 +1,9 @@
-matplotlib
-numpy
-Pillow
-dotenv
 deprecated
 fastapi
+matplotlib
+msgpack
+numpy
+Pillow
+pydantic>=2.0.0
+dotenv
 uvicorn

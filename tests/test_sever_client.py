@@ -1,7 +1,6 @@
 
 
 import time
-import tqdm
 from opencoderunner.run_on_server import run_with_bytes, run_with_msgpack
 from opencoderunner.infos.run_info import RunInfo
 from opencoderunner.infos.result_info import ResultInfo
@@ -25,12 +24,12 @@ if __name__ == "__main__":
     port = 8000
 
     t0 = time.time()
-    for i in tqdm.tqdm(range(10)):
+    for i in range(10):
         result_info = run_with_msgpack(run_info=run_info, host=host, port=port)
     t1 = time.time()
 
 
-    for i in tqdm.tqdm(range(10)):
+    for i in range(10):
         result_info = run_with_bytes(run_info=run_info, host=host, port=port)
     t2 = time.time()
     
