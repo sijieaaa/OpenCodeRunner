@@ -4,7 +4,20 @@
   <a href="https://github.com/OpenCodeRunner/OpenCodeRunner/blob/main/LICENSE">
     <img alt="MIT License" src="https://img.shields.io/badge/License-MIT-yellow.svg">
   </a>
+  <a href="https://www.python.org/">
+    <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white">
+  </a>
+  <a href="https://github.com/OpenCodeRunner/OpenCodeRunner/stargazers">
+    <img alt="GitHub Stars" src="https://img.shields.io/github/stars/OpenCodeRunner/OpenCodeRunner?style=social">
+  </a>
+  <a href="https://github.com/OpenCodeRunner/OpenCodeRunner/issues">
+    <img alt="GitHub Issues" src="https://img.shields.io/github/issues/OpenCodeRunner/OpenCodeRunner">
+  </a>
+  <a href="https://github.com/OpenCodeRunner/OpenCodeRunner/commits/main">
+    <img alt="Last Commit" src="https://img.shields.io/github/last-commit/OpenCodeRunner/OpenCodeRunner">
+  </a>
 </div>
+
 
 
 # OpenCodeRunner
@@ -163,7 +176,7 @@ You can check `examples/` for more usage examples.
 
 
 ## Update
-- [2025-04-17] Launch OpenCodeRunner
+- [**2025-04-17**] Launch OpenCodeRunner
 
 
 ## Contributors
