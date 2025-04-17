@@ -16,8 +16,12 @@
   <a href="https://github.com/OpenCodeRunner/OpenCodeRunner/commits/main">
     <img alt="Last Commit" src="https://img.shields.io/github/last-commit/OpenCodeRunner/OpenCodeRunner">
   </a>
+  <a href="https://colab.research.google.com/drive/1TyG3tdcU3UfYJKVPjP2lBiZOoZC-FEAh?usp=sharing">
+    <img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg">
+  </a>
 </div>
 
+https://colab.research.google.com/drive/1TyG3tdcU3UfYJKVPjP2lBiZOoZC-FEAh?usp=sharing
 
 # OpenCodeRunner
 A fully open-source, free, and safe code runner that runs project-level (multi-file) code on both local machines and remote servers. It supports languages including `Python` `JavaScript/TypeScript` `Java` `Dafny` `Bash` etc.
