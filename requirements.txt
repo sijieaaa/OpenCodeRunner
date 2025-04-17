@@ -7,3 +7,4 @@ Pillow
 pydantic>=2.0.0
 dotenv
 uvicorn
+tqdm

@@ -23,7 +23,8 @@ dependencies = [
     "msgpack",
     "numpy",
     "Pillow",
-    "python-dotenv"
+    "python-dotenv",
+    "tqdm"
 ]
 license = { text = "MIT" }
 classifiers = [
