@@ -23,7 +23,7 @@ OpenCodeRunner can be used in many ways:
 # Install
 git clone https://github.com/OpenCodeRunner/OpenCodeRunner
 cd OpenCodeRunner
-pip install -r requirements
+pip install -r requirements.txt
 pip install -e .
 
 # Uninstall
