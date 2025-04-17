@@ -58,7 +58,7 @@ cd firejail
 ./configure && make && sudo make install-strip
 ```
 
-3. The installation guides for each language's environment is in [install_envs.md](install_envs.md)
+3. The installation guides for each code language's environment is in [install_envs.md](install_envs.md)
 
 
 ## Usage
