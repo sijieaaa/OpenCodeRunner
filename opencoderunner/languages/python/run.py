@@ -154,7 +154,6 @@ def run_python_run_info(run_info: RunInfo):
         print(sys.path)
         sys.path[0] = project_root_dir
         print(sys.path)
-        os.chdir(project_root_dir)
         result_info = ResultInfo()
 
         python_bash_command = ""
@@ -201,6 +200,10 @@ EOF
         result_info.returncode = process_subrun.returncode
         result_info.stdout = process_subrun.stdout
         result_info.stderr = process_subrun.stderr
+
+        # Change cwd back
+        sys.path[0] = cwd_bak
+        os.chdir(cwd_bak)
 
     return result_info
 

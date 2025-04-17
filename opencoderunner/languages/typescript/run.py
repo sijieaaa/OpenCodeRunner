@@ -94,4 +94,8 @@ EOF
     result_info.stdout = process_subrun.stdout
     result_info.stderr = process_subrun.stderr
 
+    # Change cwd back
+    sys.path[0] = cwd_bak
+    os.chdir(cwd_bak)
+    
     return result_info

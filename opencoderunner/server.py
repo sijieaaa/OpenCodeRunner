@@ -1,17 +1,19 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
 import uvicorn
 import argparse
+import pickle
+import msgpack
 
 from opencoderunner.run_on_local import run as run_on_local
-
 from opencoderunner.languages.info import RunInfo, FileInfo
 from opencoderunner.languages.result_info import ResultInfo
 
 
 
 app = FastAPI()
+
 
 @app.get("/")
 async def service_root():
@@ -28,6 +30,29 @@ async def service_run(run_info: RunInfo):
     return result_info
 
 
+@app.post("/run_bytes")
+async def service_run_bytes(request: Request):
+    run_info = pickle.loads(await request.body())
+    result_info = run_on_local(run_info)
+    response = Response(
+        content=pickle.dumps(result_info),
+        media_type="application/octet-stream"
+    )
+    return response
+
+
+@app.post("/run_msgpack")
+async def service_run_msgpack(request: Request):
+    raw = await request.body()
+    run_info_dict = msgpack.unpackb(raw, raw=False)
+    run_info = RunInfo.model_validate(run_info_dict)
+    result_info = run_on_local(run_info)
+    result_bytes = msgpack.packb(result_info.model_dump(), use_bin_type=True)
+    response = Response(
+        content=result_bytes,
+        media_type="application/msgpack"
+    )
+    return response
 
 
 def start_server(host: str = "localhost", port: int = 8000):

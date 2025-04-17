@@ -31,7 +31,7 @@ def run_bash_run_info(run_info: RunInfo):
     sys.path[0] = project_root_dir
     print(sys.path)
     os.chdir(project_root_dir)
-    process_result = ResultInfo()
+    result_info = ResultInfo()
     bash_command = run_info.bash_command
     command = ""
     if user is not None:
@@ -60,8 +60,12 @@ EOF
     )
     print(process_subrun)
 
-    process_result.returncode = process_subrun.returncode
-    process_result.stdout = process_subrun.stdout
-    process_result.stderr = process_subrun.stderr
+    result_info.returncode = process_subrun.returncode
+    result_info.stdout = process_subrun.stdout
+    result_info.stderr = process_subrun.stderr
 
-    return process_result
+    # Change cwd back
+    sys.path[0] = cwd_bak
+    os.chdir(cwd_bak)
+    
+    return result_info
