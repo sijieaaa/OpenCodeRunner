@@ -1,10 +1,13 @@
 import requests
-from opencoderunner.languages.info import RunInfo, FileInfo
-from opencoderunner.languages.result_info import ResultInfo
+from opencoderunner.infos.run_info import RunInfo
+from opencoderunner.infos.result_info import ResultInfo
+from opencoderunner.infos.file_info import FileInfo
+
 import pickle
 import msgpack
 import tqdm
 import time
+from typing import Optional, Literal
 
 def run_with_bytes(run_info: RunInfo,
               host: str = "localhost",
@@ -43,6 +46,26 @@ def run_with_msgpack(run_info: RunInfo,
     result_dict = msgpack.unpackb(response.content, raw=False)
     result_info = ResultInfo.model_validate(result_dict)
     print(result_info)
+    return result_info
+
+
+
+
+def run(
+        run_info: RunInfo,
+        host: str = "localhost",
+        port: int = 8000,
+        mode: Literal["bytes", "msgpack"] = "msgpack",
+) -> ResultInfo:
+    """
+    Run the code according to `run_info`.
+    """
+    if mode == "bytes":
+        result_info = run_with_bytes(run_info=run_info, host=host, port=port)
+    elif mode == "msgpack":
+        result_info = run_with_msgpack(run_info=run_info, host=host, port=port)
+    else:
+        raise NotImplementedError
     return result_info
 
 

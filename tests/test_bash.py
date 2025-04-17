@@ -1,8 +1,10 @@
 
 
 import os
+from opencoderunner.infos.run_info import RunInfo
+from opencoderunner.infos.result_info import ResultInfo
+from opencoderunner.infos.file_info import FileInfo
 
-from opencoderunner.languages.info import RunInfo, FileInfo
 from opencoderunner.run_on_local import run as run_on_local
 
 

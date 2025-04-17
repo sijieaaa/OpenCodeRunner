@@ -10,9 +10,9 @@ import dotenv
 import sys
 from deprecated import deprecated
 
-# from opencoderunner.languages.file import write_file_from_file_info
-from opencoderunner.languages.result_info import ResultInfo
-from opencoderunner.languages.info import RunInfo, FileInfo
+from opencoderunner.infos.run_info import RunInfo
+from opencoderunner.infos.result_info import ResultInfo
+from opencoderunner.infos.file_info import FileInfo
 
 dotenv.load_dotenv()
 TMP_ROOT = os.getenv("TMP_ROOT")

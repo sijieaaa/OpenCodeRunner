@@ -17,7 +17,10 @@ from opencoderunner.languages.typescript.run import run_typescript_run_info
 from opencoderunner.languages.javascript.run import run_javascript_run_info
 from opencoderunner.languages.dafny.run import run_dafny_run_info
 
-from opencoderunner.languages.info import RunInfo, FileInfo
+from opencoderunner.infos.run_info import RunInfo
+from opencoderunner.infos.result_info import ResultInfo
+from opencoderunner.infos.file_info import FileInfo
+
 
 
 

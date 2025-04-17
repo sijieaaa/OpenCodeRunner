@@ -5,7 +5,9 @@
 
 from opencoderunner.run_on_local import run as run_on_local
 from opencoderunner.run_on_server import run as run_on_server
-from opencoderunner.languages.info import RunInfo, FileInfo
+from opencoderunner.infos.run_info import RunInfo
+from opencoderunner.infos.result_info import ResultInfo
+from opencoderunner.infos.file_info import FileInfo
 
 
 
@@ -47,14 +49,8 @@ if __name__ == "__main__":
     )
     run_info.print_tree()
 
-    # result_info = run_on_local(run_info=run_info)
-    # None
+    result_info = run_on_local(run_info=run_info)
+    None
 
 
     
-    result_info_server = run_on_server(
-        run_info=run_info,
-        host="localhost",
-        port=8000,
-    )
-    None

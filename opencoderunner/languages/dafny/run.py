@@ -3,7 +3,9 @@
 import os
 import subprocess
 import sys
-from opencoderunner.languages.result_info import ResultInfo
+from opencoderunner.infos.run_info import RunInfo
+from opencoderunner.infos.result_info import ResultInfo
+from opencoderunner.infos.file_info import FileInfo
 
 
 def run_dafny_run_info(run_info: dict):
