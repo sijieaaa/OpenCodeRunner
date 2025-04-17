@@ -160,6 +160,7 @@ You can check `examples/` for more usage examples.
 - [x] Project structure visualization
 - [ ] Input/argparse/stdin 
 - [ ] Input blocking issue
+- [ ] PyPi/Conda
 
 
 ## Supported Languages
