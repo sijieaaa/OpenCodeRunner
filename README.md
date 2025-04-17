@@ -28,6 +28,7 @@ pip install -e .
 
 # Uninstall
 pip uninstall opencoderunner 
+bash ./uninstall.sh
 ```
 2. (Optional) Install Firejail sandbox for safety control (https://github.com/netblue30/firejail)
 ```bash
