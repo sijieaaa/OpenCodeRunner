@@ -8,11 +8,10 @@
 
 
 # OpenCodeRunner
-A fully open-source, free, and safe code runner that runs project-level (multi-file) code on both local machines and remote servers. It supports languages including `Python` `JavaScript/TypeScript` `C/C++` `Java` `Dafny` `Bash` etc.
+A fully open-source, free, and safe code runner that runs project-level (multi-file) code on both local machines and remote servers. It supports languages including `Python` `JavaScript/TypeScript` `Java` `Dafny` `Bash` etc.
 
 OpenCodeRunner can be used in many ways:
-- LLM/Agent training
-- RL training
+- LLM, agent, reasoning, RL
 - Code evaluation
 - Safe sandbox running
 - Multi-language running
@@ -24,12 +23,13 @@ OpenCodeRunner can be used in many ways:
 # Install
 git clone https://github.com/OpenCodeRunner/OpenCodeRunner
 cd OpenCodeRunner
+pip install -r requirements
 pip install -e .
 
 # Uninstall
 pip uninstall opencoderunner 
 ```
-2. Install Firejail sandbox for safety control (https://github.com/netblue30/firejail)
+2. (Optional) Install Firejail sandbox for safety control (https://github.com/netblue30/firejail)
 ```bash
 # Install via `apt`
 sudo add-apt-repository ppa:deki/firejail
@@ -44,11 +44,11 @@ cd firejail
 
 ## Usage
 OpenCodeRunner supports 2 ways of running codes: 
-- Run on local machines via Python function calling
-- Run on remote servers via FastAPI Web Server. Of course, you can also use this to run on local machines
+- Run on local machines via `Python`.
+- Run on remote servers via `FastAPI`. Of course, you can also use this to run on local machines.
 
 #### 1. Run on Local Machines
-You can easily use `run_on_local` to obtain the results
+You can easily use `run_on_local` to obtain the results. You need to specify `RunInfo` `FileInfo`.
 ```python
 from opencoderunner.run_on_local import run as run_on_local
 from opencoderunner.languages.info import RunInfo, FileInfo
@@ -93,36 +93,54 @@ if __name__ == "__main__":
 ```
 
 #### 2. Run on Remote Servers
-To run on remote servers, firstly you need to start FastAPI on your remote/cloud servers using `opencoderunner-start-server`. This command wraps `uvicorn` to launch the FastAPI server.
+To run on remote servers, firstly you need to start FastAPI on your remote servers using `uvicorn`. Make sure your remote server has also installed OpenCodeRunner.
 
-```Bash
-opencoderunner-start-server --host 0.0.0.0 --port 8000 --reload
+```bash
+# Under OpenCodeRunner's root dir. E.g., `/home/user/OpenCodeRunner/`
+uvicorn opencoderunner.server:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-Then, you need to specify `host` and `port` in `run_on_server` to run on remote servers
+Then in the client, you need to specify `host` and `port` in `run_on_server` to run on remote servers
 
-```Python
-from opencoderunner.run_on_local import run as run_on_server
-from opencoderunner.server import start_server
+```python
+import time
+from opencoderunner.run_on_server import run as run_on_server
+from opencoderunner.infos.run_info import RunInfo
+from opencoderunner.infos.result_info import ResultInfo
+from opencoderunner.infos.file_info import FileInfo
 
-run_info # You can copy from the local running example
+if __name__ == "__main__":
+    run_info = RunInfo(
+        file_infos=[
+            FileInfo(
+                file_relpath="file1.py",
+                file_content="""print("Hello World")"""
+            ),
+        ],
+        language="python",
+        project_root_name="zproj1",
+        entry_file_relpath="file1.py",
+        use_firejail=True,
+    )
 
-# Run on remote servers
-host = "0.0.0.0"
-port = 8000
-process_result_dict_server = run_on_server(
-    run_info,
-    host=host,
-    port=port    
-)       
-print(process_result_dict_server)  
+    host = "0.0.0.0"
+    port = 8000
+
+    result_info = run_on_server(
+        run_info=run_info,
+        host=host,
+        port=port,
+    )
 ```
+
+#### 3. More Examples
+You can check `examples/` for more usage examples.
 
 ## TODO
 - [x] Sandbox for permission control
 - [x] User
 - [ ] Structural .env config
-- [ ] Project structure visualization
+- [x] Project structure visualization
 - [ ] Input/argparse/stdin 
 - [ ] Input blocking issue
 
@@ -140,7 +158,7 @@ print(process_result_dict_server)
 
 
 ## Update
-- [2025-04-11] Support basic cpp, javascript, python
+- [2025-04-17] Launch OpenCodeRunner
 
 
 ## Contributors

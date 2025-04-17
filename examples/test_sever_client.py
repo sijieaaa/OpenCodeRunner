@@ -1,7 +1,7 @@
 
 
 import time
-from opencoderunner.run_on_server import run_with_bytes, run_with_msgpack
+from opencoderunner.run_on_server import run as run_on_server
 from opencoderunner.infos.run_info import RunInfo
 from opencoderunner.infos.result_info import ResultInfo
 from opencoderunner.infos.file_info import FileInfo
@@ -23,15 +23,8 @@ if __name__ == "__main__":
     host = "0.0.0.0"
     port = 8000
 
-    t0 = time.time()
-    for i in range(10):
-        result_info = run_with_msgpack(run_info=run_info, host=host, port=port)
-    t1 = time.time()
-
-
-    for i in range(10):
-        result_info = run_with_bytes(run_info=run_info, host=host, port=port)
-    t2 = time.time()
-    
-    print(f"msgpack time: {t1 - t0}")
-    print(f"bytes time: {t2 - t1}")
+    result_info = run_on_server(
+        run_info=run_info,
+        host=host,
+        port=port,
+    )
