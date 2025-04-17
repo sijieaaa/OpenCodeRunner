@@ -1,10 +1,10 @@
 
 
-from languages.process_result import ProcessResult
+from opencoderunner.languages.result_info import ResultInfo
 from languages.file import write_file_from_file_info
 
 
-def run_cpp_run_info(run_info: dict) -> ProcessResult: 
+def run_cpp_run_info(run_info: dict) -> ResultInfo: 
     """
     Run C++ according to `run_info`
     """

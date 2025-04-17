@@ -10,9 +10,9 @@ import dotenv
 import sys
 from deprecated import deprecated
 
-from opencoderunner.languages.file import write_file_from_file_info
-from opencoderunner.languages.process_result import ProcessResult
-
+# from opencoderunner.languages.file import write_file_from_file_info
+from opencoderunner.languages.result_info import ResultInfo
+from opencoderunner.languages.info import RunInfo, FileInfo
 
 dotenv.load_dotenv()
 TMP_ROOT = os.getenv("TMP_ROOT")
@@ -52,7 +52,7 @@ def run_python_funcstr(funcstr: str,
     func = import_function_from_file(filepath, func_name)
     
     # Call the function
-    process_result = ProcessResult()
+    process_result = ResultInfo()
     try:
         buffer = io.StringIO()
         with redirect_stdout(buffer):
@@ -82,45 +82,39 @@ def import_function_from_file(file_path, func_name):
 
 
 
-def run_python_run_info(run_info: dict):
+def run_python_run_info(run_info: RunInfo):
     """
     Run the Python code according to `run_info`.
     """
-    # Write all files in the run_info to temporary files
-    file_infos = run_info["file_infos"]
-    for i in range(len(file_infos)):
-        file_info = file_infos[i]
-        file_abspath = file_info["file_abspath"]
-        os.makedirs(os.path.dirname(file_abspath), exist_ok=True)
-        with open(file_abspath, 'w') as f:
-            f.write(file_info["file_content"])
-        assert os.path.exists(file_abspath)
 
-
-        # write_file_from_file_info(file_info)
 
     # Run the entry function
-    entry_func_name = run_info.get("entry_func_name", None)
-    entry_func_args = run_info.get("entry_func_args", [])
-    entry_func_kwargs = run_info.get("entry_func_kwargs", {})
+    entry_func_name = run_info.entry_func_name
+    entry_func_args = run_info.entry_func_args
+    entry_func_kwargs = run_info.entry_func_kwargs
     
+
     # Import the function from the temporary file
-    entry_file_abspath = os.path.join(run_info["project_root_dir"], run_info["entry_file_relpath"])
-    project_root_dir = os.path.abspath(run_info["project_root_dir"])
+    entry_file_abspath = run_info.entry_file_abspath
+    project_root_dir = run_info.project_root_dir
+    
 
     # Set python path
-    python_path = run_info.get("python_path", "python")
+    python_path = run_info.python_path
+    bash_path = run_info.bash_path
 
     # Temporary username
-    user = run_info.get("user", None)
+    user = run_info.user
 
     # Firejail
-    use_firejail = run_info.get("use_firejail", True)
+    use_firejail = run_info.use_firejail
 
 
     # Call the function
-    process_result = ProcessResult()
+    process_result = ResultInfo()
     if entry_func_name is not None:
+        # TODO
+        raise NotImplementedError
         # Change cwd + add `root_absdir` to sys.path. Otherwise, the import will fail
         cwd_bak = os.getcwd()
         os.chdir(project_root_dir)
@@ -160,36 +154,53 @@ def run_python_run_info(run_info: dict):
         print(sys.path)
         sys.path[0] = project_root_dir
         print(sys.path)
-        os.chdir(run_info["project_root_dir"])
-        try:
-            # command = f"sudo -u {username} firejail --quiet "
-            command = ""
-            if user is not None:
-                command += f"sudo -u {user} "
-            if use_firejail:
-                command += f"firejail --quiet "
-                whitelist = []
-                whitelist += sys.path  
-                whitelist.append(run_info["session_dir"]) 
-                whitelist.append("/home/runner/miniconda3")
-                for item in whitelist:
-                    command += f"--whitelist={item} "
-            command += f"{python_path} {entry_file_abspath} "
-            print(command)
-            process_subrun = subprocess.run(
-                command,
-                capture_output=True,
-                shell=True
-            )
-            print(process_subrun)
-            process_result.returncode = process_subrun.returncode
-            process_result.stdout = process_subrun.stdout
-            process_result.stderr = process_subrun.stderr
-        except Exception as e:
-            process_result.returncode = process_subrun.returncode
-            process_result.stdout = process_subrun.stdout
-            process_result.stderr = process_subrun.stderr
+        os.chdir(project_root_dir)
+        result_info = ResultInfo()
+
+        python_bash_command = ""
+        python_bash_command += f"cd {project_root_dir}\n"
+        python_bash_command += f"{python_path} {entry_file_abspath}"
+
+        command = ""
+        if user is not None:
+            command += f"sudo -u {user} "
+        
+        command += f"cd {project_root_dir}\n"
+        if use_firejail:
+            command += f"firejail --quiet "
+            whitelist = []
+            whitelist += sys.path  
+            whitelist.append(run_info.project_root_dir)
+            whitelist.append(os.environ.get("CONDA_PREFIX"))
+            whitelist.append(sys.executable)
+            for item in whitelist:
+                command += f"--whitelist={item} "
+            command += f"""{bash_path} <<EOF
+{python_bash_command}
+EOF
+"""
+        else:
+            command += f"""{bash_path} <<EOF
+{python_bash_command}
+EOF
+"""
+        
 
 
-    return process_result
+            
+        run_info.command = command
+        run_info.print_command()
+        result_info.command = command
+        process_subrun = subprocess.run(
+            command,
+            shell=True,
+            capture_output=True,
+        )
+        print(process_subrun)
+
+        result_info.returncode = process_subrun.returncode
+        result_info.stdout = process_subrun.stdout
+        result_info.stderr = process_subrun.stderr
+
+    return result_info
 

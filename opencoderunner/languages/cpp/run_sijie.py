@@ -3,7 +3,7 @@ import subprocess
 import os
 import dotenv
 import shutil
-from languages.process_result import ProcessResult
+from opencoderunner.languages.result_info import ResultInfo
 
 dotenv.load_dotenv()
 TMP_ROOT = os.getenv("TMP_ROOT")
@@ -11,7 +11,7 @@ TMP_ROOT = os.getenv("TMP_ROOT")
 
 
 def run_cpp_codestr(codestr: str):
-    process_result = ProcessResult()
+    process_result = ResultInfo()
 
     with tempfile.TemporaryDirectory(dir=TMP_ROOT) as tmp_dir:
         cpp_path = os.path.join(tmp_dir, "main.cpp")

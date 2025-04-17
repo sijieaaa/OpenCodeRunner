@@ -7,8 +7,8 @@ import random
 import string
 import json
 import os
-import dotenv
-dotenv.load_dotenv()
+
+
 
 from opencoderunner.languages.python.run import run_python_run_info
 from opencoderunner.languages.bash.run import run_bash_run_info
@@ -17,15 +17,9 @@ from opencoderunner.languages.typescript.run import run_typescript_run_info
 from opencoderunner.languages.javascript.run import run_javascript_run_info
 from opencoderunner.languages.dafny.run import run_dafny_run_info
 
-
-TMP_ROOT = os.getenv("TMP_ROOT")
-READONLY_DIRS = os.getenv("READONLY_DIRS")
-WRITABLE_DIRS = os.getenv("WRITABLE_DIRS")
+from opencoderunner.languages.info import RunInfo, FileInfo
 
 
-print("TMP_ROOT:", TMP_ROOT)
-print("READONLY_DIRS:", READONLY_DIRS)
-print("WRITABLE_DIRS:", WRITABLE_DIRS)
 
 
 def rm_makedirs(dir_path: str):
@@ -39,36 +33,46 @@ def rm_makedirs(dir_path: str):
 
 
 def run(
-        run_info: dict,
+        run_info: RunInfo,
     ):
-    language = run_info["language"]
+    language = run_info.language
     language = language.lower().strip()
-    project_root_name = run_info["project_root_name"]
+    project_root_name = run_info.project_root_name
+
 
     # Create a temporary directory for the session
+    TMP_ROOT = run_info.tmp_root
     session_name = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
     session_dir = os.path.join(TMP_ROOT, session_name)
     rm_makedirs(session_dir)
-    run_info["session_dir"] = session_dir
+    run_info.session_dir = session_dir
 
 
-    # Update the `root_dir` to include the session name. So the structure will be:
+    # Update the `project_root_dir` to include the session name. So the structure will be:
     # TMP_ROOT 
     #   |-session_name
     #      |-project_root_name
     project_root_dir = os.path.join(TMP_ROOT, session_name, project_root_name)
     rm_makedirs(project_root_dir)
-    run_info["project_root_dir"] = project_root_dir
+    run_info.project_root_dir = project_root_dir
 
-    # Update each `file_info` in `file_infos` to include the `project_root_dir`
-    for i in range(len(run_info["file_infos"])):
-        file_abspath = os.path.join(project_root_dir, run_info['file_infos'][i]['file_relpath'])
-        run_info['file_infos'][i]['file_abspath'] = file_abspath
+
+    # Include `file_abspath`
+    # Write all files in the run_info to temporary files
+    for i in range(len(run_info.file_infos)):
+        file_abspath = os.path.join(project_root_dir, run_info.file_infos[i].file_relpath)
+        if not os.path.exists(os.path.dirname(file_abspath)):
+            os.makedirs(os.path.dirname(file_abspath), exist_ok=True)
+        run_info.file_infos[i].file_abspath = file_abspath
+        file_content = run_info.file_infos[i].file_content
+        with open(file_abspath, 'w') as f:
+            f.write(file_content)
  
 
     # Include `entry_file_abspath`
-    if "entry_file_relpath" in run_info:
-        run_info["entry_file_abspath"] = os.path.join(project_root_dir, run_info["entry_file_relpath"])
+    if run_info.entry_file_relpath is not None:
+        run_info.entry_file_abspath = os.path.join(project_root_dir, run_info.entry_file_relpath)
+
 
 
     if language in ["python", "py"]:
@@ -87,10 +91,13 @@ def run(
         raise NotImplementedError
     
     # Clean up the temporary directory
-    shutil.rmtree(session_dir)
+    if run_info.delete_after_run:
+        if os.path.exists(session_dir):
+            shutil.rmtree(session_dir)
     print(process_result)
 
-    process_result_dict = process_result.to_dict()    
+
+    process_result_dict = process_result.model_dump()  
     return process_result_dict
 
 
