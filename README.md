@@ -51,8 +51,11 @@ OpenCodeRunner supports 2 ways of running codes:
 #### 1. Run on Local Machines
 You can easily use `run_on_local` to obtain the results. You need to specify `RunInfo` `FileInfo`.
 ```python
+import opencoderunner
 from opencoderunner.run_on_local import run as run_on_local
-from opencoderunner.languages.info import RunInfo, FileInfo
+from opencoderunner.infos.run_info import RunInfo
+from opencoderunner.infos.file_info import FileInfo
+from opencoderunner.infos.result_info import ResultInfo
 
 if __name__ == "__main__":
     run_info = RunInfo(
@@ -105,6 +108,7 @@ Then in the client, you need to specify `host` and `port` in `run_on_server` to 
 
 ```python
 import time
+import opencoderunner
 from opencoderunner.run_on_server import run as run_on_server
 from opencoderunner.infos.run_info import RunInfo
 from opencoderunner.infos.result_info import ResultInfo
