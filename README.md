@@ -19,13 +19,12 @@
 </div>
 
 
-
 # OpenCodeRunner
 A fully open-source, free, and safe code runner that runs project-level (multi-file) code on both local machines and remote servers. It supports languages including `Python` `JavaScript/TypeScript` `Java` `Dafny` `Bash` etc.
 
 OpenCodeRunner can be used in many ways:
 - LLM, agent, reasoning, RL
-- Code evaluation
+- Project-level code evaluation
 - Safe sandbox running
 - Multi-language running
 - Cloud or remote code running
