@@ -76,17 +76,17 @@ def run(
 
 
     if language in ["python", "py"]:
-        process_result = run_python_run_info(run_info=run_info)
+        result_info = run_python_run_info(run_info=run_info)
     elif language in ["bash"]:
-        process_result = run_bash_run_info(run_info=run_info)
+        result_info = run_bash_run_info(run_info=run_info)
     elif language in ["java", "javac"]:
-        process_result = run_java_run_info(run_info=run_info)
+        result_info = run_java_run_info(run_info=run_info)
     elif language in ["typescript", "ts"]:
-        process_result = run_typescript_run_info(run_info=run_info)
+        result_info = run_typescript_run_info(run_info=run_info)
     elif language in ["javascript", "js"]:
-        process_result = run_javascript_run_info(run_info=run_info)
+        result_info = run_javascript_run_info(run_info=run_info)
     elif language in ["dafny", "dfy"]:
-        process_result = run_dafny_run_info(run_info=run_info)
+        result_info = run_dafny_run_info(run_info=run_info)
     else:
         raise NotImplementedError
     
@@ -94,10 +94,9 @@ def run(
     if run_info.delete_after_run:
         if os.path.exists(session_dir):
             shutil.rmtree(session_dir)
-    print(process_result)
+    print(result_info)
 
 
-    process_result_dict = process_result.model_dump()  
-    return process_result_dict
+    return result_info
 
 

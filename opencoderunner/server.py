@@ -6,28 +6,12 @@ import argparse
 
 from opencoderunner.run_on_local import run as run_on_local
 
-
-
-class FileInfo(BaseModel):
-    file_relpath: str
-    file_content: str
-
-
-
-class RunInfo(BaseModel):
-    file_infos: List[FileInfo]
-    language: str
-    project_root_name: str
-    entry_file_relpath: str
-    entry_func_name: Optional[str] = None
-    entry_func_args: Optional[List[Any]] = []
-    entry_func_kwargs: Optional[Dict[str, Any]] = {}
+from opencoderunner.languages.info import RunInfo, FileInfo
+from opencoderunner.languages.result_info import ResultInfo
 
 
 
 app = FastAPI()
-
-
 
 @app.get("/")
 async def service_root():
@@ -38,11 +22,11 @@ async def service_root():
     return return_dict
 
 
-@app.post("/run")
-async def service_run(run_info_obj: RunInfo):
-    run_info_dict = run_info_obj.dict()
-    process_result_dict = run_on_local(run_info=run_info_dict)
-    return process_result_dict
+@app.post("/run", response_model=ResultInfo)
+async def service_run(run_info: RunInfo):
+    result_info = run_on_local(run_info=run_info)
+    return result_info
+
 
 
 

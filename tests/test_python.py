@@ -3,10 +3,9 @@
 
 
 
-import os
-from opencoderunner.languages.info import RunInfo, FileInfo
-
 from opencoderunner.run_on_local import run as run_on_local
+from opencoderunner.run_on_server import run as run_on_server
+from opencoderunner.languages.info import RunInfo, FileInfo
 
 
 
@@ -47,5 +46,15 @@ if __name__ == "__main__":
         use_firejail=True,
     )
     run_info.print_tree()
-    process_result_dict = run_on_local(run_info=run_info)
-    a=1
+
+    # result_info = run_on_local(run_info=run_info)
+    # None
+
+
+    
+    result_info_server = run_on_server(
+        run_info=run_info,
+        host="localhost",
+        port=8000,
+    )
+    None

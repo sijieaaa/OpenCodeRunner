@@ -1,18 +1,18 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "name": "Uvicorn",
-        "type": "debugpy",
-        "request": "launch",
-        "module": "uvicorn",
-        "args": [
-          "server:app",            
-          "--host", "0.0.0.0",
-          "--port", "8000",
-          "--reload"               
-        ],
-      }
-    ]
-  }
-  
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "uvicorn",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "opencoderunner.server:app",
+        "--host", "0.0.0.0",
+        "--port", "8000",
+        "--reload"
+      ],
+      "console": "integratedTerminal"
+    }
+  ]
+}
