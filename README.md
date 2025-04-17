@@ -101,7 +101,7 @@ if __name__ == "__main__":
         language="python",
         project_root_name="zproj1",
         entry_file_relpath="file2.py",
-        use_firejail=True,
+        use_firejail=False, # If you want to use sandbox
     )
     run_info.print_tree()
     process_result_dict = run_on_local(run_info=run_info)
@@ -137,7 +137,7 @@ if __name__ == "__main__":
         language="python",
         project_root_name="zproj1",
         entry_file_relpath="file1.py",
-        use_firejail=True,
+        use_firejail=False, # If you want to use sandbox
     )
 
     host = "0.0.0.0"

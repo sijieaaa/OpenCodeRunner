@@ -1,8 +1,4 @@
 
-
-
-
-
 from opencoderunner.run_on_local import run as run_on_local
 from opencoderunner.run_on_server import run as run_on_server
 from opencoderunner.infos.run_info import RunInfo
@@ -45,7 +41,7 @@ if __name__ == "__main__":
         language="python",
         project_root_name="zproj1",
         entry_file_relpath="file2.py",
-        use_firejail=True,
+        use_firejail=False,
     )
     run_info.print_tree()
 
