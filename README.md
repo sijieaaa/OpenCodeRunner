@@ -21,7 +21,6 @@
   </a>
 </div>
 
-https://colab.research.google.com/drive/1TyG3tdcU3UfYJKVPjP2lBiZOoZC-FEAh?usp=sharing
 
 # OpenCodeRunner
 A fully open-source, free, and safe code runner that runs project-level (multi-file) code on both local machines and remote servers. It supports languages including `Python` `JavaScript/TypeScript` `Java` `Dafny` `Bash` etc.
