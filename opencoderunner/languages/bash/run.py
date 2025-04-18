@@ -28,20 +28,25 @@ def run_bash_run_info(run_info: RunInfo):
     # Run
     cwd_bak = os.getcwd()
     os.chdir(project_root_dir)
-    print(sys.path)
+    # print(sys.path)
     sys.path[0] = project_root_dir
-    print(sys.path)
+    # print(sys.path)
     os.chdir(project_root_dir)
     result_info = ResultInfo()
     bash_command = run_info.bash_command
+
+
     command = ""
     if user is not None:
         command += f"sudo -u {user} "
-    
+    command += f"cd {project_root_dir}\n"
+
+
     if use_firejail:
         command += f"firejail --quiet "
         whitelist = []
         whitelist.append(project_root_dir)
+        whitelist.append(run_info.session_dir)
         for item in whitelist:
             command += f"--whitelist={item} "
         command += f"""{bash_path} <<EOF
@@ -53,13 +58,15 @@ EOF
 {bash_command}
 EOF
 """
-    print(command)
+    run_info.command = command
+    # run_info.print_command()
+    result_info.command = command
     process_subrun = subprocess.run(
         command,
         shell=True,
         capture_output=True,
     )
-    print(process_subrun)
+    # print(process_subrun)
 
     result_info.returncode = process_subrun.returncode
     result_info.stdout = process_subrun.stdout

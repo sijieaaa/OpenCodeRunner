@@ -23,7 +23,7 @@
 
 
 # OpenCodeRunner
-A fully open-source, free, and safe code runner that runs project-level (multi-file) code on both local machines and remote servers. It supports languages including `Python` `JavaScript/TypeScript` `Java` `Dafny` `Bash` etc.
+A fully open-source, free, and safe code runner that runs project-level (multi-file) code on both local machines and remote servers. It supports languages including `Python` `JavaScript/TypeScript` `C/C++` `Java` `Dafny` `Bash` etc.
 
 OpenCodeRunner can be used in many ways:
 - LLM, agent, reasoning, RL
@@ -33,7 +33,7 @@ OpenCodeRunner can be used in many ways:
 - Cloud or remote code running
 - ...
 ## Installation
-1. Install OpenCodeRunner
+#### 1. Install OpenCodeRunner
 ```bash
 # Install
 git clone https://github.com/OpenCodeRunner/OpenCodeRunner
@@ -45,7 +45,7 @@ pip install -e .
 pip uninstall opencoderunner 
 bash ./uninstall.sh
 ```
-2. (Optional) Install Firejail sandbox for safety control (https://github.com/netblue30/firejail)
+#### 2. (Optional) Install Firejail sandbox for safety control (https://github.com/netblue30/firejail)
 ```bash
 # Install via `apt`
 sudo add-apt-repository ppa:deki/firejail
@@ -58,7 +58,7 @@ cd firejail
 ./configure && make && sudo make install-strip
 ```
 
-3. The installation guides for each code language's environment is in [install_envs.md](install_envs.md)
+#### 3. The installation guides for each code language's environment is in [install_envs.md](install_envs.md)
 
 
 ## Usage
@@ -157,7 +157,7 @@ if __name__ == "__main__":
 ```
 
 #### 3. More Examples
-You can check `examples/` for more usage examples.
+More examples for various code languages are in [examples/](examples/). You can run them easily.
 
 ## TODO
 - [x] Sandbox for permission control
@@ -173,8 +173,8 @@ You can check `examples/` for more usage examples.
 - [x] Python
 - [x] JavaScript
 - [x] TypeScript
-- [ ] C
-- [ ] C++
+- [x] C (CMake)
+- [x] C++ (CMake)
 - [x] Java
 - [x] Dafny
 - [x] Bash

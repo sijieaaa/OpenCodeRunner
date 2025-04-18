@@ -25,6 +25,7 @@ class RunInfo(BaseModel):
     use_firejail: Optional[bool] = False
 
     tmp_root: Optional[str] = "/tmp" # Can change to your own temporary root.
+    # tmp_root: Optional[str] = "/home/runner/Tools/OpenCodeRunner/tmp"
     delete_after_run: Optional[bool] = True # Delelte the created temporary files after run.
 
     # -- bash

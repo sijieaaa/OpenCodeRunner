@@ -1,4 +1,15 @@
 
+# CMake for C/C++
+We use `CMake` for `C/C++` running. (https://cmake.org/download/)
+```bash
+wget https://github.com/Kitware/CMake/releases/download/v4.0.1/cmake-4.0.1-linux-x86_64.tar.gz
+tar -xzvf cmake-4.0.1-linux-x86_64.tar.gz
+
+# Add the following line into `~/.bashrc`
+export PATH="PATH_OF_CMAKE/cmake-4.0.1-linux-x86_64/bin:$PATH"
+```
+
+
 
 # Dafny
 ```bash

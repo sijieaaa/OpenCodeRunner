@@ -97,7 +97,7 @@ def run(
     if run_info.delete_after_run:
         if os.path.exists(session_dir):
             shutil.rmtree(session_dir)
-    print(result_info)
+    # print(result_info)
 
 
     return result_info
