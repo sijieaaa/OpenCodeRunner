@@ -23,7 +23,7 @@
 
 
 # OpenCodeRunner
-A fully open-source, free, and safe code runner that runs project-level (multi-file) code on both local machines and remote servers. It supports languages including `Python` `JS/TS` `C/C++` `Java` `Dafny` `Bash` etc.
+A fully open-source API that runs project-level (multi-file) code on both local machines and remote servers. It supports languages including `Python` `JS/TS` `C/C++` `Java` `Dafny` `Bash` etc.
 
 OpenCodeRunner can be used in many ways:
 - LLM, agent, reasoning, RL
