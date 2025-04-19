@@ -1,12 +1,14 @@
 
+
+
 # CMake for C/C++
-We use `CMake` for `C/C++` running. (https://cmake.org/download/)
+We use `cmake` for `C/C++` running. (https://cmake.org/download/)
 ```bash
 wget https://github.com/Kitware/CMake/releases/download/v4.0.1/cmake-4.0.1-linux-x86_64.tar.gz
 tar -xzvf cmake-4.0.1-linux-x86_64.tar.gz
 
 # Add the following line into `~/.bashrc`
-export PATH="PATH_OF_CMAKE/cmake-4.0.1-linux-x86_64/bin:$PATH"
+export PATH="ABSPATH_OF_{cmake-4.0.1-linux-x86_64/bin}:$PATH"
 ```
 
 
@@ -15,11 +17,11 @@ export PATH="PATH_OF_CMAKE/cmake-4.0.1-linux-x86_64/bin:$PATH"
 ```bash
 wget https://github.com/dafny-lang/dafny/releases/download/v4.10.0/dafny-4.10.0-x64-ubuntu-20.04.zip
 unzip dafny-4.10.0-x64-ubuntu-20.04.zip
+
+# Add the following line into `~/.bashrc`
+export PATH="ABSPATH_OF_{dafny}:$PATH"
 ```
-Modify `~/.bashrc` to include following lines:
-```bash
-export PATH="PATH_OF_dafny:$PATH"
-```
+If you need `dotnet`:
 ```bash
 sudo add-apt-repository ppa:dotnet/backports
 sudo apt-get update && \
@@ -32,23 +34,21 @@ sudo apt-get update && \
 ```bash
 wget https://download.java.net/java/GA/jdk21/fd2272bbf8e04c3dbaee13770090416c/35/GPL/openjdk-21_linux-x64_bin.tar.gz
 tar -xf openjdk-21_linux-x64_bin.tar.gz
-```
-Modify `~/.bashrc` to include following lines:
-```bash
-export JAVA_HOME="PATH_of_{jdk-21}"
+
+# Add the following line into `~/.bashrc`
+export JAVA_HOME="ABSPATH_of_{jdk-21}"
 export PATH="$JAVA_HOME/bin:$PATH"
 ```
 
 
 # JavaScript
 We use `node.js` to run JS code (https://nodejs.org/en)
-```
+```bash
 wget https://nodejs.org/dist/v22.14.0/node-v22.14.0-linux-x64.tar.xz
 tar -xf node-v22.14.0-linux-x64.tar.xz
-```
-Modify `~/.bashrc` to include following lines:
-```bash
-export PATH="PATH_of_{node-v22.14.0-linux-x64/bin}:$PATH"
+
+# Add the following line into `~/.bashrc`
+export PATH="ABSPATH_of_{node-v22.14.0-linux-x64/bin}:$PATH"
 ```
 
 

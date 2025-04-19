@@ -1,3 +1,25 @@
+Metadata-Version: 2.4
+Name: opencoderunner
+Version: 0.1
+Summary: OpenCodeRunner: A FastAPI-based code execution server
+Author-email: Sijie Wang <wang1679@e.ntu.edu.sg>
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fastapi
+Requires-Dist: uvicorn
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: requests
+Requires-Dist: matplotlib
+Requires-Dist: msgpack
+Requires-Dist: numpy
+Requires-Dist: Pillow
+Requires-Dist: python-dotenv
+Requires-Dist: tqdm
+Dynamic: license-file
+
 <div align="center">
   <img src="https://github.com/OpenCodeRunner/OpenCodeRunner/blob/main/assets/opencoderunner_v3_marginborder.png" alt="OpenCodeRunner Logo" width="200"/>
   <br>
@@ -164,6 +186,7 @@ More examples for various code languages are in [examples/](examples/). You can 
 ## TODO
 - [x] Sandbox for permission control
 - [x] User
+- [ ] Structural .env config
 - [x] Project structure visualization
 - [ ] Input/argparse/stdin 
 - [ ] Input blocking issue
