@@ -155,8 +155,10 @@ if __name__ == "__main__":
         port=port,
     )
 ```
+#### 3. Configure Paths
+You can configure the default paths for different languages in [opencoderunner/infos/run_info.py](opencoderunner/infos/run_info.py). For example, python path, cmake path, java JDK path, node.js path, etc. 
 
-#### 3. More Examples
+#### 4. More Examples
 More examples for various code languages are in [examples/](examples/). You can run them easily.
 
 ## TODO
