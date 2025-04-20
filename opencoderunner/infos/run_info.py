@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 from pydantic import model_validator
-from typing import Optional, Literal
+from typing import Optional, Literal, Any
 import warnings
 from collections import defaultdict
 from opencoderunner.infos.file_info import FileInfo
@@ -20,6 +20,7 @@ class RunInfo(BaseModel):
     ]
     project_root_name: str
     entry_file_relpath: Optional[str] = None # Optional for bash. Required for all other languages.
+    input_content: Optional[Any] = None # Input for the entry function. Optional for bash. Required for all other languages.
 
     user: Optional[str] = None # Testing
     use_firejail: Optional[bool] = False
@@ -51,6 +52,11 @@ class RunInfo(BaseModel):
     # -- typescript
     ts_node_path: Optional[str] = "ts-node"
     
+
+    # def __setattr__(self, key, value):
+    #     super().__setattr__(key, value)  
+    #     if key not in self.model_fields:
+    #         self.__dict__[key] = value
 
 
     @model_validator(mode='after')

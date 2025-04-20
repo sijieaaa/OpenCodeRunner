@@ -54,6 +54,7 @@ method Main() {
         "project_root_name": "project_dafny", 
         "entry_file_relpath": "Main.dfy",
         
+        
         # -- (Optional) Specify the java/javac path
         "dafny_path": "/home/runner/Tools/dafny/dafny", 
 
@@ -99,9 +100,11 @@ method Main() {
         project_root_name="project_dafny",
         entry_file_relpath="Main.dfy",
         dafny_path="/home/runner/Tools/dafny/dafny",  # -- (Optional) Specify the java/javac path
-        use_firejail=False,  # May run slowly in Firejail
     )
     
+    
 
-    process_result_dict = run_on_local(run_info=run_info)
+    result_info = run_on_local(run_info=run_info)
+    print(result_info.stdout)
+    print(result_info.stdout.decode())
     a=1

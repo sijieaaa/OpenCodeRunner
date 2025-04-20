@@ -40,9 +40,12 @@ console.log(greet(name));
         project_root_name="project_typescript",
         entry_file_relpath="main.ts",
         ts_node_path="/home/runner/Tools/node-v22.14.0-linux-x64/bin/ts-node",
-        use_firejail=True,
+        delete_after_run=False
     )
+    run_info.print_tree()
 
-
-    process_result_dict = run_on_local(run_info=run_info)
+    result_info = run_on_local(run_info=run_info)
+    print(result_info)
+    print(result_info.stdout)
+    
     a=1

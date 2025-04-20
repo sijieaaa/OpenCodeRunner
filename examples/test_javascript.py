@@ -83,9 +83,13 @@ console.log(greet(name));
         project_root_name="project_javascript", 
         entry_file_relpath="index.js",
         node_path="/home/runner/Tools/node-v22.14.0-linux-x64/bin/node", 
-        use_firejail=True, # bool
     )
+    run_info.print_tree()
 
 
-    process_result_dict = run_on_local(run_info=run_info)
+    result_info = run_on_local(run_info=run_info)
+    print(result_info)
+    print(result_info.stdout)
+    print(result_info.stdout.decode())
+
     a=1

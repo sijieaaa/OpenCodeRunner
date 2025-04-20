@@ -26,26 +26,37 @@ def main1():
             FileInfo(
                 file_relpath="file2.py",
                 file_content="""
-import file1
-from file1 import main1
-def main2(a:str,b=1):
-    output = main1()
-    output = f"{a}-{b}-{output}"
-    print(output)
-    return output
-if __name__ == "__main__":
-    main2("abc", b=123)
+# import file1
+# from file1 import main1
+# def main2(a:str,b=1):
+#     output = ""
+#     output = main1()
+#     output = f"{a}-{b}-{output}"
+#     print(output)
+#     return output
+# if __name__ == "__main__":
+#     main2("abc", b=123)
+import sys
+import json
+
+print("Starting")
+for line in sys.stdin:
+    line = line.strip()
+    print(line)
 """
             )
         ],
         language="python",
         project_root_name="zproj1",
         entry_file_relpath="file2.py",
-        use_firejail=False,
+        input_content="INPUT1\nINPUT2\n",
+        delete_after_run=False
     )
     run_info.print_tree()
 
     result_info = run_on_local(run_info=run_info)
+    print(result_info)
+    print(result_info.stdout.decode())
     None
 
 

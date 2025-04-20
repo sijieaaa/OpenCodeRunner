@@ -27,49 +27,6 @@ def find_python_path(python_version, torch_version):
 
 
 
-@deprecated
-def run_python_codestr(codestr):
-    process = subprocess.run(
-        ["python", "-c", codestr],
-        capture_output=True,
-    )
-    return process
-
-
-
-@deprecated
-def run_python_funcstr(funcstr: str, 
-                       func_name: str = None,
-                       func_args: dict = None,
-                       ):
-    # Write in a temporary file
-    with tempfile.NamedTemporaryFile(mode='w+', suffix='.py', dir=TMP_ROOT, delete=False) as f:
-        f.write(funcstr)
-        f.flush()
-        filepath = f.name
-    
-    # Import the function from the temporary file
-    func = import_function_from_file(filepath, func_name)
-    
-    # Call the function
-    process_result = ResultInfo()
-    try:
-        buffer = io.StringIO()
-        with redirect_stdout(buffer):
-            func_return = func(**func_args)
-        stdout = buffer.getvalue()
-        process_result.func_return = func_return
-        process_result.stdout = stdout
-    except Exception as e:
-        process_result.returncode = 1
-        process_result.stderr = str(e)
-        process_result.func_return = None
-    os.remove(filepath)
-
-    return process_result
-
-
-
 def import_function_from_file(file_path, func_name):
     module_name = os.path.splitext(os.path.basename(file_path))[0]
     
@@ -158,34 +115,21 @@ def run_python_run_info(run_info: RunInfo):
 
         python_bash_command = ""
         python_bash_command += f"cd {project_root_dir}\n"
-        python_bash_command += f"{python_path} {entry_file_abspath}"
+        python_bash_command += f"printf {repr(run_info.input_content)} | {python_path} {entry_file_abspath}"
+            
+        # whitelist = []
+        # whitelist.append(project_root_dir)
+        # whitelist.append(run_info.session_dir)
+        # whitelist_command = ""
+        # for item in whitelist:
+        #     whitelist_command += f"--whitelist={item} "
+    
+        # if run_info.use_firejail:
+        #     command = f"cd {project_root_dir} && firejail {whitelist_command} --quiet -- printf {repr(run_info.input_content)} | {python_path} {entry_file_abspath}"
+        # else:
+        #     command = f"cd {project_root_dir} && printf {repr(run_info.input_content)} {python_path} {entry_file_abspath}"
 
-        command = ""
-        if user is not None:
-            command += f"sudo -u {user} "
-        
-        command += f"cd {project_root_dir}\n"
-        if use_firejail:
-            command += f"firejail --quiet "
-            whitelist = []
-            whitelist += sys.path  
-            whitelist.append(run_info.project_root_dir)
-            whitelist.append(os.environ.get("CONDA_PREFIX"))
-            whitelist.append(sys.executable)
-            for item in whitelist:
-                command += f"--whitelist={item} "
-            command += f"""{bash_path} <<EOF
-{python_bash_command}
-EOF
-"""
-        else:
-            command += f"""{bash_path} <<EOF
-{python_bash_command}
-EOF
-"""
-        
-
-
+        command = python_bash_command
             
         run_info.command = command
         run_info.print_command()
@@ -194,6 +138,7 @@ EOF
             command,
             shell=True,
             capture_output=True,
+            cwd=project_root_dir,
         )
         print(process_subrun)
 

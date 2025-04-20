@@ -67,27 +67,17 @@ def run_dafny_run_info(run_info: dict):
     dafny_bash_command += f"\n{entry_file_relpath.replace('.dfy', '')}"
 
     
-    command = ""
-    if user is not None:
-        command += f"sudo -u {user} "
     
-    command += f"cd {project_root_dir}\n"
-    if use_firejail:
-        command += f"firejail --quiet "
-        whitelist = []
-        whitelist.append(project_root_dir)
-        whitelist.append(run_info.session_dir)
-        for item in whitelist:
-            command += f"--whitelist={item} "
-        command += f"""{bash_path} <<EOF
-{dafny_bash_command}
-EOF
-"""
-    else:
-        command += f"""{bash_path} <<EOF
-{dafny_bash_command}
-EOF
-"""
+    
+    # if run_info.use_firejail:
+    #     command = f"cd {project_root_dir} && firejail --quiet -- {bash_path} <<EOF\n{dafny_bash_command}\nEOF"
+    # else:
+    #     command = f"cd {project_root_dir} && {bash_path} <<EOF\n{dafny_bash_command}\nEOF"
+
+    command = dafny_bash_command
+
+        
+
     run_info.command = command
     run_info.print_command()
     result_info.command = command
@@ -95,6 +85,7 @@ EOF
         command,
         shell=True,
         capture_output=True,
+        cwd=project_root_dir,
     )
     print(process_subrun)
 

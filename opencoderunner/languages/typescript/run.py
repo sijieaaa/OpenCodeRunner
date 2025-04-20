@@ -60,28 +60,45 @@ def run_typescript_run_info(run_info: dict):
 
     
 
-    command = ""
-    if user is not None:
-        command += f"sudo -u {user} "
+#     command = ""
+#     if user is not None:
+#         command += f"sudo -u {user} "
     
-    command += f"cd {project_root_dir}\n"
-    if use_firejail:
-        command += f"firejail --quiet "
-        whitelist = []
-        whitelist.append(project_root_dir)
-        whitelist.append(run_info.session_dir)
-        for item in whitelist:
-            command += f"--whitelist={item} "
-        command += f"""{bash_path} <<EOF
-{typescript_bash_command}
-EOF
-"""
-    else:
-        command += f"""{bash_path} <<EOF
-{typescript_bash_command}
-EOF
-"""
+#     command += f"cd {project_root_dir}\n"
+#     if use_firejail:
+#         command += f"firejail --quiet "
+#         whitelist = []
+#         whitelist.append(project_root_dir)
+#         whitelist.append(run_info.session_dir)
+#         for item in whitelist:
+#             command += f"--whitelist={item} "
+#         command += f"""{bash_path} <<EOF
+# {typescript_bash_command}
+# EOF
+# """
+#     else:
+#         command += f"""{bash_path} <<EOF
+# {typescript_bash_command}
+# EOF
+# """
         
+                
+    # whitelist = []
+    # whitelist.append(project_root_dir)
+    # whitelist.append(run_info.session_dir)
+    # whitelist_command = ""
+    # for item in whitelist:
+    #     whitelist_command += f"--whitelist={item} "
+    
+    
+    # if run_info.use_firejail:
+    #     command = f"cd {project_root_dir} && firejail {whitelist_command} --quiet -- {bash_path} <<EOF\n{typescript_bash_command}\nEOF"
+    # else:
+    #     command = f"cd {project_root_dir} && {bash_path} <<EOF\n{typescript_bash_command}\nEOF"
+
+    command = typescript_bash_command
+
+
     run_info.command = command
     run_info.print_command()
     result_info.command = command
@@ -89,6 +106,7 @@ EOF
         command,
         shell=True,
         capture_output=True,
+        cwd=project_root_dir,
     )
     print(process_subrun)
 

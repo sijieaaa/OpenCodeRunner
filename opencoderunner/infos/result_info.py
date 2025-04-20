@@ -9,13 +9,13 @@ class ResultInfo(BaseModel):
     model_config = ConfigDict(extra="allow")  # Allow adding extra fields after initialization.
     
     # Compilation result
-    compile_returncode: Optional[Any] = 0
+    compile_returncode: Optional[Any] = None
     compile_stdout: Optional[Any] = ""
     compile_stderr: Optional[Any] = ""
 
     # Execution result
     # Nearly for all languages
-    returncode: Optional[Any] = 0
+    returncode: Optional[Any] = None
     stdout: Optional[Any] = ""
     stderr: Optional[Any] = ""
 

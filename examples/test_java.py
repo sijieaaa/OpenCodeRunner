@@ -47,10 +47,14 @@ public class MainApp {
         entry_file_relpath="MainApp.java",
         java_path="/home/runner/Tools/jdk-21/bin/java",
         javac_path="/home/runner/Tools/jdk-21/bin/javac",
-        use_firejail=True, # bool
     )
+    run_info.print_tree()
 
 
 
-    process_result_dict = run_on_local(run_info=run_info)
+
+    result_info = run_on_local(run_info=run_info)
+    print(result_info)
+    print(result_info.stdout)
+    print(result_info.stdout.decode())
     a=1
