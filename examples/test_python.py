@@ -22,20 +22,12 @@ def main1():
             FileInfo(
                 file_relpath="file2.py",
                 file_content="""
-# import file1
-# from file1 import main1
-# def main2(a:str,b=1):
-#     output = ""
-#     output = main1()
-#     output = f"{a}-{b}-{output}"
-#     print(output)
-#     return output
-# if __name__ == "__main__":
-#     main2("abc", b=123)
+import file1
+from file1 import main1
 import sys
 import json
 
-print("Starting")
+print(main1())
 for line in sys.stdin:
     line = line.strip()
     print(line)
