@@ -24,14 +24,14 @@ def write_opencoderunner_home_to_bashrc():
         else:
             print("ℹ️ OEPNCODERUNNER_HOME already exists in ~/.bashrc")
 
-        # Add alias for start-opencoderunner
-        if "start-opencoderunner" not in bashrc_content:
+        # Add alias for opencoderunner-start-server
+        if "opencoderunner-start-server" not in bashrc_content:
             with open(bashrc_path, "a") as f2:
                 f2.write(f"{alias_line}\n")
-            print("✅ Alias start-opencoderunner has been added to ~/.bashrc")
+            print("✅ Alias opencoderunner-start-server has been added to ~/.bashrc")
             updated = True
         else:
-            print("ℹ️ Alias start-opencoderunner already exists in ~/.bashrc")
+            print("ℹ️ Alias opencoderunner-start-server already exists in ~/.bashrc")
 
         if updated:
             print("👉 Please run `source ~/.bashrc` to activate the changes")
