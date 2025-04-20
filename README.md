@@ -98,10 +98,12 @@ def main1():
             FileInfo(
                 file_relpath="file2.py",
                 file_content="""
+import file1
+from file1 import main1
 import sys
 import json
 
-print("Starting")
+print(main1())
 for line in sys.stdin:
     line = line.strip()
     print(line)
@@ -109,11 +111,11 @@ for line in sys.stdin:
             )
         ],
         language="python",
-        project_root_name="zproj1",
+        project_root_name="zproj1",                   
         entry_file_relpath="file2.py",
         input_content="INPUT1\nINPUT2\n",
         delete_after_run=False
-    )
+    )                               
     run_info.print_tree()
 
     # -- Run locally
@@ -121,6 +123,7 @@ for line in sys.stdin:
     print(result_info)
     print(result_info.stdout.decode())
     None
+
 
     # -- Or Run on server
     result_info = run_on_server(run_info=run_info,
