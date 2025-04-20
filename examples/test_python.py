@@ -35,11 +35,11 @@ for line in sys.stdin:
             )
         ],
         language="python",
-        project_root_name="zproj1",
+        project_root_name="zproj1",                   
         entry_file_relpath="file2.py",
         input_content="INPUT1\nINPUT2\n",
         delete_after_run=False
-    )
+    )                               
     run_info.print_tree()
 
     # -- Run locally

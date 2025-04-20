@@ -63,9 +63,13 @@ cd firejail
 
 ## Usage
 #### 1. (Optional) Start OpenCodeRunner Server 
-You can use `opencoderunner-start-server` to start the OpenCodeRunner server for remotely code execution.
+You can use `firejail` `uvicorn` to start the OpenCodeRunner server for remotely code execution.
 ```bash
-opencoderunner-start-server --host 0.0.0.0 --port 8000 --reload
+# Under the repo's root `OpenCodeRunner/` directory
+firejail && uvicorn opencoderunner.server:app --host 0.0.0.0 --port 8000 --reload
+
+# Or if you don't have `firejail`
+uvicorn opencoderunner.server:app --host 0.0.0.0 --port 8000 --reload
 ```
 #### 2. Running Code
 Then you can use either `run_on_local` or `run_on_server` for code running.
