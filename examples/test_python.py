@@ -52,8 +52,9 @@ for line in sys.stdin:
     result_info = run_on_server(run_info=run_info,
                                 host="0.0.0.0",
                                 port=8000,
+                                api_key="sample-api-key-1",
                                 # You can specify Server/Client API keys in `.env`
-                                api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") # api_key="sample-api-key-1"
+                                # api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") 
                                 )
     print(result_info)
     print(result_info.stdout.decode())
