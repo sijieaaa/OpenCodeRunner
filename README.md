@@ -72,7 +72,7 @@ uvicorn opencoderunner.server:app --host 0.0.0.0 --port 8000 --reload
 Then you can use either `run_on_local` or `run_on_server` for code running.
 If you use `run_on_server`, you need to specify `host` `port`.
 
-Below is a project-level examples.
+Below is a project-level example.
 ```python
 from opencoderunner.run_on_local import run as run_on_local
 from opencoderunner.run_on_server import run as run_on_server
