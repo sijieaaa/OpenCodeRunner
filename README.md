@@ -60,7 +60,7 @@ cd firejail
 
 ## Usage
 #### 1. (Optional) Start OpenCodeRunner Server 
-You can use `firejail` `uvicorn` to start the OpenCodeRunner server for remotely code execution. You can set trusted API keys in [.env](.env).
+You can use `firejail` `uvicorn` to start the OpenCodeRunner server for remotely code execution. You can set server/client API keys in [.env](.env).
 ```bash
 # Under the repo's root `OpenCodeRunner/` directory
 firejail && uvicorn opencoderunner.server:app --host 0.0.0.0 --port 8000 --reload
