@@ -74,6 +74,7 @@ If you use `run_on_server`, you need to specify `host` `port`.
 
 Below is a project-level example.
 ```python
+import dotenv
 from opencoderunner.run_on_local import run as run_on_local
 from opencoderunner.run_on_server import run as run_on_server
 from opencoderunner.infos.run_info import RunInfo
@@ -81,12 +82,10 @@ from opencoderunner.infos.result_info import ResultInfo
 from opencoderunner.infos.file_info import FileInfo
 
 if __name__ == "__main__":
-
-    # ====== A project-level example =====
     run_info = RunInfo(
         file_infos=[
             FileInfo(
-                file_relpath="folder1/file1.py",
+                file_relpath="file1.py",
                 file_content="""
 def main1():
     import numpy as np
@@ -99,7 +98,8 @@ def main1():
             FileInfo(
                 file_relpath="file2.py",
                 file_content="""
-from folder1.file1 import main1 # project-level imports
+import file1
+from file1 import main1
 import sys
 import json
 
@@ -127,6 +127,8 @@ for line in sys.stdin:
     result_info = run_on_server(run_info=run_info,
                                 host="0.0.0.0",
                                 port=8000,
+                                # You can specify Server/Client API keys in `.env`
+                                api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") 
                                 )
     print(result_info)
     print(result_info.stdout.decode())
