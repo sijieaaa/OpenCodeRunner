@@ -23,7 +23,9 @@ setup(
         "numpy",
         "Pillow",
         "python-dotenv",
-        "tqdm"
+        "tqdm",
+        "dotenv",
+        "deprecated"
     ],
     license="MIT",
     classifiers=[

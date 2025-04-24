@@ -5,6 +5,8 @@ import uvicorn
 import argparse
 import pickle
 import msgpack
+import dotenv
+import os
 
 from opencoderunner.run_on_local import run as run_on_local
 from opencoderunner.infos.run_info import RunInfo
@@ -13,6 +15,18 @@ from opencoderunner.infos.file_info import FileInfo
 
 
 app = FastAPI()
+# Load `.env` file for API keys
+trusted_api_keys = dotenv.get_key(".env", "TRUSTED_OPENCODERUNNER_API_KEYS")
+trusted_api_keys = trusted_api_keys.split(",") if trusted_api_keys else []
+
+
+
+def verify_api_key(api_key: str):
+    """
+    Verify the API key against the trusted keys.
+    """
+    if api_key not in trusted_api_keys:
+        raise ValueError("Invalid API key")
 
 
 @app.get("/")
@@ -32,10 +46,21 @@ async def service_run(run_info: RunInfo):
 
 @app.post("/run_bytes")
 async def service_run_bytes(request: Request):
-    run_info = pickle.loads(await request.body())
+    api_key = request.headers.get("api_key")
+    if api_key not in trusted_api_keys:
+        response = Response(
+            content="Invalid api_key",
+            media_type="text/plain",
+            status_code=401
+        )
+        return response
+    raw = await request.body()
+    run_info = pickle.loads(raw)
+    run_info = RunInfo.model_validate(run_info)
     result_info = run_on_local(run_info)
+    result_bytes = pickle.dumps(result_info)
     response = Response(
-        content=pickle.dumps(result_info),
+        content=result_bytes,
         media_type="application/octet-stream"
     )
     return response
@@ -43,9 +68,17 @@ async def service_run_bytes(request: Request):
 
 @app.post("/run_msgpack")
 async def service_run_msgpack(request: Request):
+    api_key = request.headers.get("api_key")
+    if api_key not in trusted_api_keys:
+        response = Response(
+            content="Invalid api_key".encode(),
+            media_type="text/plain",
+            status_code=401
+        )
+        return response
     raw = await request.body()
-    run_info_dict = msgpack.unpackb(raw, raw=False)
-    run_info = RunInfo.model_validate(run_info_dict)
+    run_info = msgpack.unpackb(raw, raw=False)
+    run_info = RunInfo.model_validate(run_info)
     result_info = run_on_local(run_info)
     result_bytes = msgpack.packb(result_info.model_dump(), use_bin_type=True)
     response = Response(

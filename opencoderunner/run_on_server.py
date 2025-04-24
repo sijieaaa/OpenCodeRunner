@@ -8,19 +8,26 @@ import msgpack
 import tqdm
 import time
 from typing import Optional, Literal
+import dotenv
 
 def run_with_bytes(run_info: RunInfo,
               host: str = "localhost",
               port: int = 8000,
+              api_key: Optional[str] = None,
               ) -> ResultInfo: 
     service_url = f"http://{host}:{port}/run_bytes"
     run_info_bytes = pickle.dumps(run_info)
     response = requests.post(
         service_url,
         data=run_info_bytes,
-        headers={"Content-Type": "application/octet-stream"},
+        headers={
+            "Content-Type": "application/octet-stream",
+            "api_key": api_key,
+        },
     )
-    response.raise_for_status()
+    if response.status_code != 200:
+        print(f"Error {response.status_code}: {response.text}")
+        return response
     result_info: ResultInfo = pickle.loads(response.content)
     print(result_info)
     return result_info
@@ -30,6 +37,7 @@ def run_with_bytes(run_info: RunInfo,
 def run_with_msgpack(run_info: RunInfo,
                      host: str = "localhost",
                      port: int = 8000,
+                     api_key: Optional[str] = None,
                      ) -> ResultInfo:
     service_url = f"http://{host}:{port}/run_msgpack"
 
@@ -39,9 +47,14 @@ def run_with_msgpack(run_info: RunInfo,
     response = requests.post(
         service_url,
         data=run_info_bytes,
-        headers={"Content-Type": "application/msgpack"},
+        headers={
+            "Content-Type": "application/msgpack",
+            "api_key": api_key, 
+        },
     )
-    response.raise_for_status()
+    if response.status_code != 200:
+        print(f"Error {response.status_code}: {response.text}")
+        return response
 
     result_dict = msgpack.unpackb(response.content, raw=False)
     result_info = ResultInfo.model_validate(result_dict)
@@ -55,15 +68,16 @@ def run(
         run_info: RunInfo,
         host: str = "localhost",
         port: int = 8000,
+        api_key: Optional[str] = None,
         mode: Literal["bytes", "msgpack"] = "msgpack",
 ) -> ResultInfo:
     """
     Run the code according to `run_info`.
     """
     if mode == "bytes":
-        result_info = run_with_bytes(run_info=run_info, host=host, port=port)
+        result_info = run_with_bytes(run_info=run_info, host=host, port=port, api_key=api_key)
     elif mode == "msgpack":
-        result_info = run_with_msgpack(run_info=run_info, host=host, port=port)
+        result_info = run_with_msgpack(run_info=run_info, host=host, port=port, api_key=api_key)
     else:
         raise NotImplementedError
     return result_info
@@ -86,15 +100,17 @@ if __name__ == "__main__":
 
     host = "0.0.0.0"
     port = 8000
+    api_key = dotenv.get_key(".env", "OPENCODERUNNER_API_KEY")
+    # api_key = '1'
 
     t0 = time.time()
     for i in tqdm.tqdm(range(10)):
-        result_info = run_with_msgpack(run_info=run_info, host=host, port=port)
+        result_info = run_with_msgpack(run_info=run_info, host=host, port=port, api_key=api_key)
     t1 = time.time()
 
 
     for i in tqdm.tqdm(range(10)):
-        result_info = run_with_bytes(run_info=run_info, host=host, port=port)
+        result_info = run_with_bytes(run_info=run_info, host=host, port=port, api_key=api_key)
     t2 = time.time()
     
     print(f"msgpack time: {t1 - t0}")
