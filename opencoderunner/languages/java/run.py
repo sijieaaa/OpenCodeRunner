@@ -45,8 +45,10 @@ def run_java_run_info(run_info: dict):
     for file_info in run_info.file_infos:
         file_abspath = file_info.file_abspath
         java_bash_command += f"{file_abspath} "
-    entry_file_abspath = run_info.entry_file_abspath
-    java_bash_command += f"\n{java_path} {entry_file_abspath}"
+    java_bash_command += "\n"
+    if run_info.input_content is not None:
+        java_bash_command += f"printf {repr(run_info.input_content)} | "
+    java_bash_command += f"{java_path} {run_info.entry_file_abspath}"
     
 
 #     command = ""
@@ -73,12 +75,12 @@ def run_java_run_info(run_info: dict):
 # EOF
 # """
         
-    whitelist = []
-    whitelist.append(project_root_dir)
-    whitelist.append(run_info.session_dir)
-    whitelist_command = ""
-    for item in whitelist:
-        whitelist_command += f"--whitelist={item} "
+    # whitelist = []
+    # whitelist.append(project_root_dir)
+    # whitelist.append(run_info.session_dir)
+    # whitelist_command = ""
+    # for item in whitelist:
+    #     whitelist_command += f"--whitelist={item} "
     
     
     # if run_info.use_firejail:

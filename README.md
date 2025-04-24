@@ -72,7 +72,7 @@ uvicorn opencoderunner.server:app --host 0.0.0.0 --port 8000 --reload
 Then you can use either `run_on_local` or `run_on_server` for code running.
 If you use `run_on_server`, you need to specify `host` `port` `api_key`.
 
-- Code string-level example.
+- Code string running example.
 ```python
 import dotenv
 from opencoderunner.run_on_local import run as run_on_local
@@ -85,13 +85,14 @@ if __name__ == "__main__":
     run_info = RunInfo(
         code_str="import sys; print(sys.stdin.read())",
         language="python",
+        project_root_name="zproj1",  
         input_content="INPUT1\nINPUT2\n",
-    )                          
+    )           
+    run_info.print_tree()               
 
     # -- Run locally
     result_info = run_on_local(run_info=run_info)
     print(result_info)
-    print(result_info.stdout.decode())
 
     # -- Or Run on server
     result_info = run_on_server(run_info=run_info,
@@ -102,10 +103,9 @@ if __name__ == "__main__":
                                 # api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") 
                                 )
     print(result_info)
-    print(result_info.stdout.decode())
 ```
 
-- Project-level example, consisting of multiple files.
+- Project-level example. It consists of multiple files.
 ```python
 import dotenv
 from opencoderunner.run_on_local import run as run_on_local
@@ -153,7 +153,6 @@ for line in sys.stdin:
     # -- Run locally
     result_info = run_on_local(run_info=run_info)
     print(result_info)
-    print(result_info.stdout.decode())
 
     # -- Or Run on server
     result_info = run_on_server(run_info=run_info,
@@ -164,7 +163,6 @@ for line in sys.stdin:
                                 # api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") 
                                 )
     print(result_info)
-    print(result_info.stdout.decode())
 ```
 
 

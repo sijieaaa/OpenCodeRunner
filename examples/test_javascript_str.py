@@ -15,32 +15,9 @@ if __name__ == "__main__":
 
 
     run_info = RunInfo(
-        file_infos=[
-            FileInfo(
-                file_relpath="src/utils.js",
-                file_content="""
-// src/utils.js
-function greet(name) {
-    return `Hello, ${name}!`;
-}
-module.exports = {
-    greet,
-};
-"""
-            ),
-            FileInfo(
-                file_relpath="index.js",
-                file_content="""
-// index.js
-const { greet } = require('./src/utils');
-const name = 'JavaScript with folder';
-console.log(greet(name));
-"""
-            )
-        ],
+        code_str="""console.log("Hello from JavaScript!");""",
         language="javascript",
         project_root_name="project_javascript", 
-        entry_file_relpath="index.js",
         node_path="/home/runner/Tools/node-v22.14.0-linux-x64/bin/node", 
     )
     run_info.print_tree()

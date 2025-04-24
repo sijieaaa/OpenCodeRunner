@@ -10,13 +10,14 @@ if __name__ == "__main__":
     run_info = RunInfo(
         code_str="import sys; print(sys.stdin.read())",
         language="python",
+        project_root_name="zproj1",  
         input_content="INPUT1\nINPUT2\n",
-    )                          
+    )           
+    run_info.print_tree()               
 
     # -- Run locally
     result_info = run_on_local(run_info=run_info)
     print(result_info)
-    print(result_info.stdout.decode())
 
     # -- Or Run on server
     result_info = run_on_server(run_info=run_info,
@@ -27,4 +28,3 @@ if __name__ == "__main__":
                                 # api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") 
                                 )
     print(result_info)
-    print(result_info.stdout.decode())

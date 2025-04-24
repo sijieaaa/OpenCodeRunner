@@ -35,14 +35,15 @@ def run_bash_run_info(run_info: RunInfo):
     result_info = ResultInfo()
 
 
-    bash_command = run_info.bash_command
 
 
-    
-    # if run_info.use_firejail:
-    #     command = f"cd {project_root_dir} && firejail --quiet -- {bash_path} <<EOF\n{bash_command}\nEOF"
-    # else:
-    #     command = f"cd {project_root_dir} && {bash_path} <<EOF\n{bash_command}\nEOF"
+    bash_command = ""
+    bash_command += f"cd {project_root_dir}\n"
+    if run_info.input_content is not None:
+        bash_command += f"printf {repr(run_info.input_content)} | "
+    bash_command += f"{bash_path} {run_info.entry_file_abspath}"
+
+
 
             
     command = bash_command

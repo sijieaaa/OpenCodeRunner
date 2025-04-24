@@ -15,8 +15,7 @@ from opencoderunner.run_on_server import run as run_on_server
 if __name__ == "__main__":
 
     run_info = RunInfo(
-        file_infos=[],
-        bash_command="""
+        code_str="""
 whoami
 echo "Hello World!!!"
 echo ${USER}
@@ -33,7 +32,9 @@ printf "hello world\\n" | bash -c 'read line; echo "received: $line"'
     
     result_info = run_on_server(run_info=run_info,
                                 host="localhost",
-                                port=8000,)
+                                port=8000,
+                                api_key="sample-api-key-1"
+                                )
     print(result_info)
 
     a=1

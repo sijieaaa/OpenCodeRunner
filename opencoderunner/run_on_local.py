@@ -22,7 +22,15 @@ from opencoderunner.infos.result_info import ResultInfo
 from opencoderunner.infos.file_info import FileInfo
 
 
-
+ext_map = {
+    "python": "py", 
+    "bash": "sh",
+    "cpp": "cpp",
+    "java": "java",
+    "dafny": "dfy",
+    "javascript": "js",
+    "typescript": "ts",
+}
 
 
 def rm_makedirs(dir_path: str):
@@ -63,6 +71,28 @@ def run(
     run_info.project_root_dir = project_root_dir
 
 
+    # Include `entry_file_abspath`
+    if run_info.entry_file_relpath is not None:
+        run_info.entry_file_abspath = os.path.join(project_root_dir, run_info.entry_file_relpath)
+    else:
+        run_info.entry_file_abspath = None
+
+
+    if run_info.code_str is not None:
+        if run_info.entry_file_relpath is not None:
+            run_info.entry_file_relpath = run_info.entry_file_relpath
+        else:
+            run_info.entry_file_relpath = f"__code_str__.{ext_map[language]}"
+        run_info.file_infos = [
+            FileInfo(
+                file_relpath=run_info.entry_file_relpath,
+                file_content=run_info.code_str,
+            )
+        ]
+        run_info.entry_file_relpath = run_info.file_infos[0].file_relpath
+        run_info.entry_file_abspath = os.path.join(project_root_dir, run_info.entry_file_relpath)
+
+
     # Include `file_abspath`
     # Write all files in the run_info to temporary files
     for i in range(len(run_info.file_infos)):
@@ -75,13 +105,6 @@ def run(
             f.write(file_content)
  
 
-    # Include `entry_file_abspath`
-    if run_info.entry_file_relpath is not None:
-        run_info.entry_file_abspath = os.path.join(project_root_dir, run_info.entry_file_relpath)
-
-
-    # # `file_infos` `code_str`
-    # if (run_info.code_str is not None) and 
 
 
 

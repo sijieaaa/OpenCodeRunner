@@ -52,7 +52,7 @@ def run_python_run_info(run_info: RunInfo):
     
 
     # Import the function from the temporary file
-    entry_file_abspath = getattr(run_info, "entry_file_abspath", None)
+    entry_file_abspath = run_info.entry_file_abspath
     project_root_dir = run_info.project_root_dir
     
 
@@ -114,16 +114,11 @@ def run_python_run_info(run_info: RunInfo):
         result_info = ResultInfo()
 
 
-        # Code str running
-        if run_info.code_str is not None:
-            python_bash_command = ""
-            python_bash_command += f"cd {project_root_dir}\n"
-            python_bash_command += f"printf {repr(run_info.input_content)} | {python_path} -c {repr(run_info.code_str)}"
-        # Project file running
-        else:
-            python_bash_command = ""
-            python_bash_command += f"cd {project_root_dir}\n"
-            python_bash_command += f"printf {repr(run_info.input_content)} | {python_path} {entry_file_abspath}"
+        python_bash_command = ""
+        python_bash_command += f"cd {project_root_dir}\n"
+        if run_info.input_content is not None:
+            python_bash_command += f"printf {repr(run_info.input_content)} | "
+        python_bash_command += f"{python_path} {entry_file_abspath}"
             
         # whitelist = []
         # whitelist.append(project_root_dir)

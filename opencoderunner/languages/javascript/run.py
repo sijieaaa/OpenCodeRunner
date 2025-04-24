@@ -43,8 +43,9 @@ def run_javascript_run_info(run_info: dict):
     node_path = run_info.node_path
     javascript_bash_command = ""
     javascript_bash_command += f"cd {project_root_dir}\n"
-    entry_file_abspath = run_info.entry_file_abspath
-    javascript_bash_command += f"\n{node_path} {entry_file_abspath}"
+    if run_info.input_content is not None:
+        javascript_bash_command += f"printf {repr(run_info.input_content)} | "
+    javascript_bash_command += f"{node_path} {run_info.entry_file_abspath}"
 
     
 

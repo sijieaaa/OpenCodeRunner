@@ -32,7 +32,7 @@ class RunInfo(BaseModel):
 
     # -- bash
     bash_path: Optional[str] = "bash"
-    bash_command: Optional[str] = None
+    # bash_command: Optional[str] = None
 
     # -- dafny
     dafny_path: Optional[str] = "dafny"
@@ -62,8 +62,8 @@ class RunInfo(BaseModel):
 
     @model_validator(mode='after')
     def check(self):
-        # if self.language not in ["bash"]:
-        #     assert self.entry_file_relpath is not None, f"`entry_file_relpath` is required for {self.language} except bash"
+        # if self.language in ["bash"]:
+        #     assert self.input_content is None, f"`input_content` is not supported for {self.language}."
 
         if self.user is not None:
             warnings.warn(f"`user` option is still not fully supported. It may not work as expected.")
