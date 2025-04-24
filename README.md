@@ -60,7 +60,7 @@ cd firejail
 
 ## Usage
 #### 1. (Optional) Start OpenCodeRunner Server 
-You can use `firejail` `uvicorn` to start the OpenCodeRunner server for remotely code execution. You can set server/client API keys in [.env](.env).
+You can use `firejail` `uvicorn` to start the OpenCodeRunner server for remotely code execution. You can set your own server/client API keys in [.env](.env).
 ```bash
 # Under the repo's root `OpenCodeRunner/` directory
 firejail && uvicorn opencoderunner.server:app --host 0.0.0.0 --port 8000 --reload
@@ -70,11 +70,10 @@ uvicorn opencoderunner.server:app --host 0.0.0.0 --port 8000 --reload
 ```
 #### 2. Running Code
 Then you can use either `run_on_local` or `run_on_server` for code running.
-If you use `run_on_server`, you need to specify `host` `port` `api_key`.
+If you use `run_on_server`, you need to specify `host` `port` `api_key`. You can set your own server/client API keys in [.env](.env).
 
 - Code string running example.
 ```python
-import dotenv
 from opencoderunner.run_on_local import run as run_on_local
 from opencoderunner.run_on_server import run as run_on_server
 from opencoderunner.infos.run_info import RunInfo
@@ -96,7 +95,7 @@ if __name__ == "__main__":
     result_info = run_on_server(run_info=run_info,
                                 host="0.0.0.0",
                                 port=8000,
-                                api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") 
+                                api_key="sample-api-key-1"
                                 )
     print(result_info)
 ```
