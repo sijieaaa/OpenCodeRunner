@@ -40,7 +40,10 @@ def run(
     ):
     language = run_info.language
     language = language.lower().strip()
+    if run_info.project_root_name is None:
+        run_info.project_root_name = "project_tmp"
     project_root_name = run_info.project_root_name
+
 
 
     # Create a temporary directory for the session
@@ -75,6 +78,10 @@ def run(
     # Include `entry_file_abspath`
     if run_info.entry_file_relpath is not None:
         run_info.entry_file_abspath = os.path.join(project_root_dir, run_info.entry_file_relpath)
+
+
+    # # `file_infos` `code_str`
+    # if (run_info.code_str is not None) and 
 
 
 

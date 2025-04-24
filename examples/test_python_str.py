@@ -8,39 +8,10 @@ from opencoderunner.infos.file_info import FileInfo
 
 if __name__ == "__main__":
     run_info = RunInfo(
-        file_infos=[
-            FileInfo(
-                file_relpath="folder1/file1.py",
-                file_content="""
-def main1():
-    import numpy as np
-    arr = np.array([1, 2, 3])
-    print("Hello World")
-    output = arr.sum()
-    return output
-"""
-            ),
-            FileInfo(
-                file_relpath="file2.py",
-                file_content="""
-from folder1.file1 import main1
-import sys
-import json
-
-print(main1())
-for line in sys.stdin:
-    line = line.strip()
-    print(line)
-"""
-            )
-        ],
+        code_str="import sys; print(sys.stdin.read())",
         language="python",
-        project_root_name="zproj1",                   
-        entry_file_relpath="file2.py",
         input_content="INPUT1\nINPUT2\n",
-        delete_after_run=False
-    )                               
-    run_info.print_tree()
+    )                          
 
     # -- Run locally
     result_info = run_on_local(run_info=run_info)

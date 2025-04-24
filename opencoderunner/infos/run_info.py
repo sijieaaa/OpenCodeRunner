@@ -9,7 +9,8 @@ from opencoderunner.infos.file_info import FileInfo
 class RunInfo(BaseModel):
     model_config = ConfigDict(extra="allow") # Allow adding extra fields after initialization.
 
-    file_infos: list[FileInfo]
+    file_infos: Optional[list[FileInfo]] = [] # List of file information. 
+    code_str: Optional[str] = None # Code string. 
     language: Literal[
         "bash",
         "dafny", "dfy",
@@ -18,7 +19,7 @@ class RunInfo(BaseModel):
         "python", "py",
         "typescript", "ts",
     ]
-    project_root_name: str
+    project_root_name: Optional[str] = None 
     entry_file_relpath: Optional[str] = None # Optional for bash. Required for all other languages.
     input_content: Optional[Any] = None # Input for the entry function. Optional for bash. Required for all other languages.
 
@@ -61,13 +62,17 @@ class RunInfo(BaseModel):
 
     @model_validator(mode='after')
     def check(self):
-        if self.language not in ["bash"]:
-            assert self.entry_file_relpath is not None, f"`entry_file_relpath` is required for {self.language} except bash"
+        # if self.language not in ["bash"]:
+        #     assert self.entry_file_relpath is not None, f"`entry_file_relpath` is required for {self.language} except bash"
 
         if self.user is not None:
             warnings.warn(f"`user` option is still not fully supported. It may not work as expected.")
 
-
+        if (self.code_str is not None) and (len(self.file_infos) > 0):
+            raise ValueError("`code_str` and `file_infos` cannot be used together. Please use one of them.")
+        if (self.code_str is None) and (len(self.file_infos) == 0):
+            raise ValueError("`code_str` or `file_infos` must be provided. Please use one of them.")
+        
 
         return self
     

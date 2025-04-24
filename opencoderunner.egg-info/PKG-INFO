@@ -1,3 +1,36 @@
+Metadata-Version: 2.2
+Name: opencoderunner
+Version: 0.1
+Summary: OpenCodeRunner: A FastAPI-based code execution server
+Author: Sijie Wang
+Author-email: wang1679@e.ntu.edu.sg
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fastapi
+Requires-Dist: uvicorn
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: requests
+Requires-Dist: matplotlib
+Requires-Dist: msgpack
+Requires-Dist: numpy
+Requires-Dist: Pillow
+Requires-Dist: python-dotenv
+Requires-Dist: tqdm
+Requires-Dist: dotenv
+Requires-Dist: deprecated
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
 <div align="center">
   <img src="https://github.com/OpenCodeRunner/OpenCodeRunner/blob/main/assets/opencoderunner_v3_marginborder.png" alt="OpenCodeRunner Logo" width="200"/>
   <br>
@@ -73,35 +106,7 @@ Then you can use either `run_on_local` or `run_on_server` for code running.
 If you use `run_on_server`, you need to specify `host` `port` `api_key`.
 - Code string-level example.
 ```python
-import dotenv
-from opencoderunner.run_on_local import run as run_on_local
-from opencoderunner.run_on_server import run as run_on_server
-from opencoderunner.infos.run_info import RunInfo
-from opencoderunner.infos.result_info import ResultInfo
-from opencoderunner.infos.file_info import FileInfo
-
-if __name__ == "__main__":
-    run_info = RunInfo(
-        code_str="import sys; print(sys.stdin.read())",
-        language="python",
-        input_content="INPUT1\nINPUT2\n",
-    )                          
-
-    # -- Run locally
-    result_info = run_on_local(run_info=run_info)
-    print(result_info)
-    print(result_info.stdout.decode())
-
-    # -- Or Run on server
-    result_info = run_on_server(run_info=run_info,
-                                host="0.0.0.0",
-                                port=8000,
-                                api_key="sample-api-key-1",
-                                # You can set Server/Client API keys in `.env`
-                                # api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") 
-                                )
-    print(result_info)
-    print(result_info.stdout.decode())
+TBD
 ```
 
 - Project-level example, consisting of multiple files.
@@ -178,8 +183,8 @@ More examples for various code languages are in [examples/](examples/). You can 
 - [x] Project structure visualization
 - [x] Input/argparse/stdin 
 - [ ] PyPi/Conda
-- [x] API key
-- [x] Code str running (simple running)
+- [ ] API key
+- [ ] Code str running (simple running)
 - [ ] OpenAI tools
 - [ ] Langchain tools
 
