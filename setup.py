@@ -1,7 +1,12 @@
-import os
 from setuptools import setup, find_packages
-from setuptools.command.install import install
-from setuptools.command.develop import develop
+
+
+with open("requirements.txt", encoding="utf-8") as f:
+    install_requires = [
+        line.strip()
+        for line in f.readlines()
+        if line.strip() and not line.startswith("#")
+    ]
 
 setup(
     name="opencoderunner",
@@ -13,22 +18,9 @@ setup(
     author_email="wang1679@e.ntu.edu.sg",
     python_requires=">=3.8",
     packages=find_packages(include=["opencoderunner", "opencoderunner.*"]),
-    install_requires=[
-        "fastapi",
-        "uvicorn",
-        "pydantic>=2.0.0",
-        "requests",
-        "matplotlib",
-        "msgpack",
-        "numpy",
-        "Pillow",
-        "python-dotenv",
-        "tqdm",
-        "dotenv",
-        "deprecated"
-    ],
-    license="MIT",
+    install_requires=install_requires,
+    license="Apache-2.0",
     classifiers=[
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: Apache-2.0",
     ]
 )
