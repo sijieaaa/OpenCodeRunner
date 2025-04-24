@@ -74,6 +74,8 @@ uvicorn opencoderunner.server:app --host 0.0.0.0 --port 8000 --reload
 #### 2. Running Code
 Then you can use either `run_on_local` or `run_on_server` for code running.
 If you use `run_on_server`, you need to specify `host` `port`.
+
+Below is a project-level examples.
 ```python
 from opencoderunner.run_on_local import run as run_on_local
 from opencoderunner.run_on_server import run as run_on_server
@@ -82,10 +84,12 @@ from opencoderunner.infos.result_info import ResultInfo
 from opencoderunner.infos.file_info import FileInfo
 
 if __name__ == "__main__":
+
+    # ====== A project-level example =====
     run_info = RunInfo(
         file_infos=[
             FileInfo(
-                file_relpath="file1.py",
+                file_relpath="folder1/file1.py",
                 file_content="""
 def main1():
     import numpy as np
@@ -98,8 +102,7 @@ def main1():
             FileInfo(
                 file_relpath="file2.py",
                 file_content="""
-import file1
-from file1 import main1
+from folder1.file1 import main1 # project-level imports
 import sys
 import json
 
@@ -122,8 +125,6 @@ for line in sys.stdin:
     result_info = run_on_local(run_info=run_info)
     print(result_info)
     print(result_info.stdout.decode())
-    None
-
 
     # -- Or Run on server
     result_info = run_on_server(run_info=run_info,
@@ -146,6 +147,7 @@ More examples for various code languages are in [examples/](examples/). You can 
 - [x] Project structure visualization
 - [x] Input/argparse/stdin 
 - [ ] PyPi/Conda
+- [ ] API key
 
 
 ## Supported Languages
