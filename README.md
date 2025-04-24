@@ -1,9 +1,6 @@
 <div align="center">
   <img src="https://github.com/OpenCodeRunner/OpenCodeRunner/blob/main/assets/opencoderunner_v3_marginborder.png" alt="OpenCodeRunner Logo" width="200"/>
   <br>
-  <a href="https://github.com/OpenCodeRunner/OpenCodeRunner/blob/main/LICENSE">
-    <img alt="MIT License" src="https://img.shields.io/badge/License-MIT-yellow.svg">
-  </a>
   <a href="https://www.python.org/">
     <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white">
   </a>
