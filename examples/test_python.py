@@ -51,7 +51,7 @@ for line in sys.stdin:
     result_info = run_on_server(run_info=run_info,
                                 host="0.0.0.0",
                                 port=8000,
-                                api_key="sample-api-key-1",
+                                api_key="12345",
                                 # You can set Server/Client API keys in `.env`
                                 # api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") 
                                 )

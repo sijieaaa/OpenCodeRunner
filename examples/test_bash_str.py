@@ -33,7 +33,7 @@ printf "hello world\\n" | bash -c 'read line; echo "received: $line"'
     result_info = run_on_server(run_info=run_info,
                                 host="localhost",
                                 port=8000,
-                                api_key="sample-api-key-1"
+                                api_key="12345"
                                 )
     print(result_info)
 

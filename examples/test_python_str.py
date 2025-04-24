@@ -1,4 +1,3 @@
-
 from opencoderunner.run_on_local import run as run_on_local
 from opencoderunner.run_on_server import run as run_on_server
 from opencoderunner.infos.run_info import RunInfo
@@ -20,6 +19,6 @@ if __name__ == "__main__":
     result_info = run_on_server(run_info=run_info,
                                 host="0.0.0.0",
                                 port=8000,
-                                api_key="sample-api-key-1"
+                                api_key="12345"
                                 )
     print(result_info)

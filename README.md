@@ -1,9 +1,6 @@
 <div align="center">
   <img src="https://github.com/OpenCodeRunner/OpenCodeRunner/blob/main/assets/opencoderunner_v3_marginborder.png" alt="OpenCodeRunner Logo" width="200"/>
   <br>
-  <a href="https://www.python.org/">
-    <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white">
-  </a>
   <a href="https://github.com/OpenCodeRunner/OpenCodeRunner/stargazers">
     <img alt="GitHub Stars" src="https://img.shields.io/github/stars/OpenCodeRunner/OpenCodeRunner?style=social">
   </a>
@@ -59,8 +56,8 @@ cd firejail
 
 
 ## Usage
-#### 1. (Optional) Start OpenCodeRunner Server 
-You can use `firejail` `uvicorn` to start the OpenCodeRunner server for remotely code execution. You can set your own server/client API keys in [.env](.env).
+#### 1. (Optional) Start OpenCodeRunner Service
+You can use `firejail` `uvicorn` to start the OpenCodeRunner service for remotely code execution. You can configure API key settings in [.env](.env) for both client and server. 
 ```bash
 # Under the repo's root `OpenCodeRunner/` directory
 firejail && uvicorn opencoderunner.server:app --host 0.0.0.0 --port 8000 --reload
@@ -70,7 +67,7 @@ uvicorn opencoderunner.server:app --host 0.0.0.0 --port 8000 --reload
 ```
 #### 2. Running Code
 Then you can use either `run_on_local` or `run_on_server` for code running.
-If you use `run_on_server`, you need to specify `host` `port` `api_key`. You can set your own server/client API keys in [.env](.env).
+If you use `run_on_server`, you need to specify `host` `port` `api_key`. You can configure API key settings in [.env](.env) for both client and server.
 
 - Code string running example.
 ```python
@@ -95,7 +92,7 @@ if __name__ == "__main__":
     result_info = run_on_server(run_info=run_info,
                                 host="0.0.0.0",
                                 port=8000,
-                                api_key="sample-api-key-1"
+                                api_key="12345"
                                 )
     print(result_info)
 ```
@@ -153,7 +150,7 @@ for line in sys.stdin:
     result_info = run_on_server(run_info=run_info,
                                 host="0.0.0.0",
                                 port=8000,
-                                api_key="sample-api-key-1",
+                                api_key="12345",
                                 # You can set Server/Client API keys in `.env`
                                 # api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") 
                                 )
