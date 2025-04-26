@@ -29,6 +29,7 @@ class RunInfo(BaseModel):
     tmp_root: Optional[str] = "/tmp" # Can change to your own temporary root.
     # tmp_root: Optional[str] = "/home/runner/Tools/OpenCodeRunner/tmp"
     delete_after_run: Optional[bool] = True # Delelte the created temporary files after run.
+    timeout: Optional[float] = 60 # Timeout for the run. Default is 60 seconds.
 
     # -- bash
     bash_path: Optional[str] = "bash"

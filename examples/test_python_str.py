@@ -4,10 +4,11 @@ from opencoderunner.infos.run_info import RunInfo
 
 if __name__ == "__main__":
     run_info = RunInfo(
-        code_str="import sys; print(sys.stdin.read())",
+        code_str="import sys; import time; time.sleep(2); print(sys.stdin.read())",
         language="python",
         project_root_name="zproj1",  
         input_content="INPUT1\nINPUT2\n",
+        timeout=1, # Test timeout
     )           
     run_info.print_tree()               
 

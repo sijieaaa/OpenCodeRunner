@@ -94,12 +94,21 @@ def run_java_run_info(run_info: dict):
     run_info.command = command
     run_info.print_command()
     result_info.command = command
-    process_subrun = subprocess.run(
-        command,
-        shell=True,
-        capture_output=True,
-        cwd=project_root_dir,
-    )
+    try:
+        process_subrun = subprocess.run(
+            command,
+            shell=True,
+            capture_output=True,
+            cwd=project_root_dir,
+            timeout=run_info.timeout,
+        )
+    except Exception as e:
+        process_subrun = subprocess.CompletedProcess(
+            args=command,
+            returncode=1,
+            stdout="",
+            stderr=str(e),
+        )
     print(process_subrun)
 
     result_info.returncode = process_subrun.returncode
