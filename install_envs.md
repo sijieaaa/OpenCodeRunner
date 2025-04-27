@@ -52,6 +52,12 @@ export PATH="ABSPATH_of_{node-v22.14.0-linux-x64/bin}:$PATH"
 ```
 
 
+# SQL (PostgreSQL)
+We use `postgresql` for SQL running (https://www.postgresql.org/download/linux/ubuntu/).
+```
+sudo apt install postgresql
+```
+
 
 
 # Python

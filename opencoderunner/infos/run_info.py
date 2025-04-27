@@ -18,6 +18,7 @@ class RunInfo(BaseModel):
         "javascript", "js",
         "python", "py",
         "typescript", "ts",
+        "sql", "postgres", "postgresql",
     ]
     project_root_name: Optional[str] = None 
     entry_file_relpath: Optional[str] = None # Optional for bash. Required for all other languages.
@@ -53,6 +54,9 @@ class RunInfo(BaseModel):
 
     # -- typescript
     ts_node_path: Optional[str] = "ts-node"
+
+    # -- sql
+    psql_path: Optional[str] = "psql"
     
 
     # def __setattr__(self, key, value):

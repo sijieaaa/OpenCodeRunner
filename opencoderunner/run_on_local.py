@@ -16,6 +16,7 @@ from opencoderunner.languages.java.run import run_java_run_info
 from opencoderunner.languages.typescript.run import run_typescript_run_info
 from opencoderunner.languages.javascript.run import run_javascript_run_info
 from opencoderunner.languages.dafny.run import run_dafny_run_info
+from opencoderunner.languages.sql.run import run_sql_run_info
 
 from opencoderunner.infos.run_info import RunInfo
 from opencoderunner.infos.result_info import ResultInfo
@@ -30,6 +31,7 @@ ext_map = {
     "dafny": "dfy",
     "javascript": "js",
     "typescript": "ts",
+    "sql": "sql",
 }
 
 
@@ -120,6 +122,8 @@ def run(
         result_info = run_javascript_run_info(run_info=run_info)
     elif language in ["dafny", "dfy"]:
         result_info = run_dafny_run_info(run_info=run_info)
+    elif language in ["sql"]:
+        result_info = run_sql_run_info(run_info=run_info)
     else:
         raise NotImplementedError
     
