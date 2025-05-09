@@ -16,6 +16,13 @@ if __name__ == "__main__":
     result_info = run_on_local(run_info=run_info)
     print(result_info)
 
+    # -- is_run=False
+    run_info = run_on_local(
+        run_info=run_info,
+        is_run=False
+    )
+    print(run_info)
+
     # -- Or Run on server
     result_info = run_on_server(run_info=run_info,
                                 host="0.0.0.0",
