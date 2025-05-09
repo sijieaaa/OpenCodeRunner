@@ -111,19 +111,19 @@ def run(
 
 
     if language in ["python", "py"]:
-        result_info = run_python_run_info(run_info=run_info)
+        result_info = run_python_run_info(run_info=run_info, is_run=is_run)
     elif language in ["bash"]:
-        result_info = run_bash_run_info(run_info=run_info)
+        result_info = run_bash_run_info(run_info=run_info, is_run=is_run)
     elif language in ["java", "javac"]:
-        result_info = run_java_run_info(run_info=run_info)
+        result_info = run_java_run_info(run_info=run_info, is_run=is_run)
     elif language in ["typescript", "ts"]:
-        result_info = run_typescript_run_info(run_info=run_info)
+        result_info = run_typescript_run_info(run_info=run_info, is_run=is_run)
     elif language in ["javascript", "js"]:
-        result_info = run_javascript_run_info(run_info=run_info)
+        result_info = run_javascript_run_info(run_info=run_info, is_run=is_run)
     elif language in ["dafny", "dfy"]:
-        result_info = run_dafny_run_info(run_info=run_info)
+        result_info = run_dafny_run_info(run_info=run_info, is_run=is_run)
     elif language in ["sql"]:
-        result_info = run_sql_run_info(run_info=run_info)
+        result_info = run_sql_run_info(run_info=run_info, is_run=is_run)
     else:
         raise NotImplementedError
     
