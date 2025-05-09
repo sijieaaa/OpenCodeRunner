@@ -8,7 +8,10 @@ from opencoderunner.infos.result_info import ResultInfo
 from opencoderunner.infos.file_info import FileInfo
 
 
-def run_java_run_info(run_info: dict):
+def run_java_run_info(
+        run_info: RunInfo, 
+        is_run: bool = True
+    ):
     """
     Run the code according to `run_info`.
     """
@@ -94,6 +97,9 @@ def run_java_run_info(run_info: dict):
     run_info.command = command
     run_info.print_command()
     result_info.command = command
+    # If do not run, just fill run_info
+    if not is_run:
+        return run_info
     try:
         process_subrun = subprocess.run(
             command,

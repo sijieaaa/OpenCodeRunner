@@ -39,7 +39,10 @@ def import_function_from_file(file_path, func_name):
 
 
 
-def run_python_run_info(run_info: RunInfo):
+def run_python_run_info(
+        run_info: RunInfo, 
+        is_run: bool = True
+    ):
     """
     Run the Python code according to `run_info`.
     """
@@ -137,6 +140,10 @@ def run_python_run_info(run_info: RunInfo):
         run_info.command = command
         run_info.print_command()
         result_info.command = command
+        # If do not run, just fill run_info
+        if not is_run:
+            return run_info
+        
         try:
             process_subrun = subprocess.run(
                 command,

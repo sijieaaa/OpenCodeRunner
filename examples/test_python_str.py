@@ -12,9 +12,9 @@ if __name__ == "__main__":
     )           
     run_info.print_tree()               
 
-    # -- Run locally
-    result_info = run_on_local(run_info=run_info)
-    print(result_info)
+    # # -- Run locally
+    # result_info = run_on_local(run_info=run_info)
+    # print(result_info)
 
     # -- is_run=False
     run_info = run_on_local(

@@ -108,8 +108,6 @@ def run(
             f.write(file_content)
  
 
-    if not is_run:
-        return run_info
 
 
     if language in ["python", "py"]:
