@@ -47,6 +47,13 @@ for line in sys.stdin:
     print(result_info)
     print(result_info.stdout.decode())
 
+    # -- is_run=False
+    run_info = run_on_local(
+        run_info=run_info,
+        is_run=False
+    )
+    print(run_info)
+
     # -- Or Run on server
     result_info = run_on_server(run_info=run_info,
                                 host="0.0.0.0",

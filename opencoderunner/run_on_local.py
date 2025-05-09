@@ -69,9 +69,8 @@ def run(
     # TMP_ROOT 
     #   |-session_name
     #      |-project_root_name
-    if run_info.project_root_dir is None:
-        project_root_dir = os.path.join(TMP_ROOT, session_name, project_root_name)
-        run_info.project_root_dir = project_root_dir
+    project_root_dir = os.path.join(TMP_ROOT, session_name, project_root_name)
+    run_info.project_root_dir = project_root_dir
     rm_makedirs(project_root_dir)
 
 
