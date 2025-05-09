@@ -47,6 +47,7 @@ def rm_makedirs(dir_path: str):
 
 def run(
         run_info: RunInfo,
+        is_run: bool = True,
     ):
     language = run_info.language
     language = language.lower().strip()
@@ -68,9 +69,10 @@ def run(
     # TMP_ROOT 
     #   |-session_name
     #      |-project_root_name
-    project_root_dir = os.path.join(TMP_ROOT, session_name, project_root_name)
+    if run_info.project_root_dir is None:
+        project_root_dir = os.path.join(TMP_ROOT, session_name, project_root_name)
+        run_info.project_root_dir = project_root_dir
     rm_makedirs(project_root_dir)
-    run_info.project_root_dir = project_root_dir
 
 
     # Include `entry_file_abspath`
@@ -107,7 +109,8 @@ def run(
             f.write(file_content)
  
 
-
+    if not is_run:
+        return run_info
 
 
     if language in ["python", "py"]:

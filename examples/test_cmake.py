@@ -103,8 +103,8 @@ int multiply(int a, int b) {
         # As there needs many bash-related commands to run cmake, we use `bash` as the language.
         language="bash", 
         project_root_name="MyCMakeProject",
-        use_firejail=True,
-        delete_after_run=True,
+        use_firejail=False,
+        delete_after_run=False,
         bash_command="""
 rm -rf build
 mkdir build 
