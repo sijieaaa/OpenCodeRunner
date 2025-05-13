@@ -109,11 +109,12 @@ def run_python_run_info(
 
     # If `entry_func_name` is None, run the file directly
     elif entry_func_name is None:
-        cwd_bak = os.getcwd()
+        # cwd_bak = os.getcwd()
         os.chdir(project_root_dir)
-        print(sys.path)
+
+        # print(sys.path)
         sys.path[0] = project_root_dir
-        print(sys.path)
+        # print(sys.path)
         result_info = ResultInfo()
 
 
@@ -138,7 +139,7 @@ def run_python_run_info(
         command = python_bash_command
             
         run_info.command = command
-        run_info.print_command()
+        # run_info.print_command()
         result_info.command = command
         # If do not run, just fill run_info
         if not is_run:
@@ -159,15 +160,15 @@ def run_python_run_info(
                 stdout="",
                 stderr=str(e),
             )
-        print(process_subrun)
+        # print(process_subrun)
 
         result_info.returncode = process_subrun.returncode
         result_info.stdout = process_subrun.stdout
         result_info.stderr = process_subrun.stderr
 
-        # Change cwd back
-        sys.path[0] = cwd_bak
-        os.chdir(cwd_bak)
+        # # Change cwd back
+        # sys.path[0] = cwd_bak
+        # os.chdir(cwd_bak)
 
     return result_info
 
