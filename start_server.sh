@@ -1,4 +1,4 @@
 
 
 
-firejail && uvicorn opencoderunner.server:app  
+uvicorn opencoderunner.server:app --host 0.0.0.0 --port 8000 --reload
