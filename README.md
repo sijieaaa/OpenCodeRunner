@@ -171,8 +171,7 @@ More examples for various code languages are in [examples/](examples/). You can 
 - [ ] PyPi/Conda
 - [x] API key
 - [x] Code str running (simple running)
-- [ ] OpenAI tools
-- [ ] Langchain tools
+- [ ] Merge local+server
 
 
 ## Supported Languages
