@@ -172,6 +172,8 @@ More examples for various code languages are in [examples/](examples/). You can 
 - [x] API key
 - [x] Code str running (simple running)
 - [ ] Merge local+server
+- [ ] os.getcwd issue
+- [ ] remove too much print
 
 
 ## Supported Languages
