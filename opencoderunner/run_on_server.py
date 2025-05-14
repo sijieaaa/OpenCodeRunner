@@ -30,7 +30,7 @@ def run_with_bytes(run_info: RunInfo,
         print(f"Error {response.status_code}: {response.text}")
         return response
     result_info: ResultInfo = pickle.loads(response.content)
-    print(result_info)
+    # print(result_info)
     return result_info
 
 
@@ -59,7 +59,7 @@ def run_with_msgpack(run_info: RunInfo,
 
     result_dict = msgpack.unpackb(response.content, raw=False)
     result_info = ResultInfo.model_validate(result_dict)
-    print(result_info)
+    # print(result_info)
     return result_info
 
 
