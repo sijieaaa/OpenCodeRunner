@@ -1,7 +1,8 @@
 import requests
-from opencoderunner.infos.run_info import RunInfo
-from opencoderunner.infos.result_info import ResultInfo
-from opencoderunner.infos.file_info import FileInfo
+
+from opencoderunner.run_info import RunInfo
+from opencoderunner.result_info import ResultInfo
+from opencoderunner.file_info import FileInfo
 
 import pickle
 import msgpack

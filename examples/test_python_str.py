@@ -1,33 +1,37 @@
-from opencoderunner.run_on_local import run as run_on_local
-from opencoderunner.run_on_server import run as run_on_server
-from opencoderunner.infos.run_info import RunInfo
+# from opencoderunner.run_on_local import run as run_on_local
+# from opencoderunner.run_on_server import run as run_on_server
+from opencoderunner.run_info import RunInfo
+from opencoderunner.result_info import ResultInfo
+from opencoderunner.file_info import FileInfo
+from opencoderunner import run 
 
 if __name__ == "__main__":
     run_info = RunInfo(
         code_str="import sys; print(sys.stdin.read())",
         language="python",
-        project_root_name="zproj1",  
+        project_root_name="project_root_name",  
         input_content="INPUT1\nINPUT2\n",
         timeout=1, # Test timeout
-    )           
-    run_info.print_tree()               
+    )                    
 
     # # -- Run locally
-    result_info = run_on_local(run_info=run_info)
-    # print(result_info)
+    for i in range(3):
+        result_info = run(run_info=run_info)
+        print(run_info.command)
+        print(result_info)
 
-    # # -- is_run=False
-    # run_info = run_on_local(
-    #     run_info=run_info,
-    #     is_run=False
-    # )
-    # print(run_info)
+    # -- is_run=False
+    run_info = run(
+        run_info=run_info,
+        is_run=False
+    )
+    print(run_info)
 
     # -- Or Run on server
-    # for i in range(3):
-    #     result_info = run_on_server(run_info=run_info,
-    #                                 host="0.0.0.0",
-    #                                 port=8000,
-    #                                 api_key="12345"
-    #                                 )
-    #     print(result_info)
+    for i in range(3):
+        result_info = run(run_info=run_info,
+                        host="0.0.0.0",
+                        port=8000,
+                        api_key="12345"
+                        )
+        print(result_info)

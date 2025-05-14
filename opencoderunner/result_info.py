@@ -6,8 +6,10 @@ import os, shutil, sys
 
 
 class ResultInfo(BaseModel):
-    model_config = ConfigDict(extra="allow")  # Allow adding extra fields after initialization.
+    # model_config = ConfigDict(extra="allow")  # Allow adding extra fields after initialization.
     
+    command: Optional[str] = None  # Command to run the code. Optional for bash. Required for all other languages.
+
     # Compilation result
     compile_returncode: Optional[Any] = None
     compile_stdout: Optional[Any] = ""

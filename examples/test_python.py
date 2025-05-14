@@ -1,10 +1,8 @@
 
-import dotenv
-from opencoderunner.run_on_local import run as run_on_local
-from opencoderunner.run_on_server import run as run_on_server
-from opencoderunner.infos.run_info import RunInfo
-from opencoderunner.infos.result_info import ResultInfo
-from opencoderunner.infos.file_info import FileInfo
+
+from opencoderunner.run_info import RunInfo
+from opencoderunner.file_info import FileInfo
+from opencoderunner import run
 
 if __name__ == "__main__":
     run_info = RunInfo(
@@ -35,32 +33,35 @@ for line in sys.stdin:
             )
         ],
         language="python",
-        project_root_name="zproj1",                   
+        project_root_name="project_root_name",                   
         entry_file_relpath="file2.py",
         input_content="INPUT1\nINPUT2\n",
-        delete_after_run=False
     )                               
     run_info.print_tree()
 
     # -- Run locally
-    result_info = run_on_local(run_info=run_info)
-    print(result_info)
-    print(result_info.stdout.decode())
+    for i in range(3):
+        result_info = run(run_info=run_info)
+        print(result_info)
+        print(result_info.stdout.decode())
 
     # -- is_run=False
-    run_info = run_on_local(
-        run_info=run_info,
-        is_run=False
-    )
-    print(run_info)
+    for i in range(3):
+        run_info = run(
+            run_info=run_info,
+            is_run=False
+        )
+        print(run_info)
+
 
     # -- Or Run on server
-    result_info = run_on_server(run_info=run_info,
-                                host="0.0.0.0",
-                                port=8000,
-                                api_key="12345",
-                                # You can set Server/Client API keys in `.env`
-                                # api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") 
-                                )
-    print(result_info)
-    print(result_info.stdout.decode())
+    for i in range(3):
+        result_info = run(run_info=run_info,
+                        host="0.0.0.0",
+                        port=8000,
+                        api_key="12345",
+                        # You can set Server/Client API keys in `.env`
+                        # api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") 
+                        )
+        print(result_info)
+        print(result_info.stdout.decode())

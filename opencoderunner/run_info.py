@@ -3,11 +3,11 @@ from pydantic import model_validator
 from typing import Optional, Literal, Any
 import warnings
 from collections import defaultdict
-from opencoderunner.infos.file_info import FileInfo
+from opencoderunner.file_info import FileInfo
 
 
 class RunInfo(BaseModel):
-    model_config = ConfigDict(extra="allow") # Allow adding extra fields after initialization.
+    # model_config = ConfigDict(extra="allow") # Allow adding extra fields after initialization.
 
     file_infos: Optional[list[FileInfo]] = [] # List of file information. 
     code_str: Optional[str] = None # Code string. 
@@ -20,21 +20,29 @@ class RunInfo(BaseModel):
         "typescript", "ts",
         "sql", "postgres", "postgresql",
     ]
+    tmp_root: Optional[str] = "/tmp" # Can change to your own temporary root.
+    session_name: Optional[str] = None # Session name. If not provided, a random name will be generated.
     project_root_name: Optional[str] = None 
+
+    session_dir: Optional[str] = None # Session directory. If not provided, a random name will be generated.
+    project_root_dir: Optional[str] = None # Project root directory. If not provided, a random name will be generated.
+
     entry_file_relpath: Optional[str] = None # Optional for bash. Required for all other languages.
+    entry_file_abspath: Optional[str] = None # Absolute path of the entry file. Optional for bash. Required for all other languages.
     input_content: Optional[Any] = None # Input for the entry function. Optional for bash. Required for all other languages.
+
 
     user: Optional[str] = None # Testing
     use_firejail: Optional[bool] = False
 
-    tmp_root: Optional[str] = "/tmp" # Can change to your own temporary root.
     # tmp_root: Optional[str] = "/home/runner/Tools/OpenCodeRunner/tmp"
     delete_after_run: Optional[bool] = True # Delelte the created temporary files after run.
     timeout: Optional[float] = 60 # Timeout for the run. Default is 60 seconds.
 
+    command: Optional[str] = None 
+
     # -- bash
     bash_path: Optional[str] = "bash"
-    # bash_command: Optional[str] = None
 
     # -- dafny
     dafny_path: Optional[str] = "dafny"

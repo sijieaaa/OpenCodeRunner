@@ -10,9 +10,9 @@ import dotenv
 import sys
 from deprecated import deprecated
 
-from opencoderunner.infos.run_info import RunInfo
-from opencoderunner.infos.result_info import ResultInfo
-from opencoderunner.infos.file_info import FileInfo
+from opencoderunner.run_info import RunInfo
+from opencoderunner.result_info import ResultInfo
+from opencoderunner.file_info import FileInfo
 
 dotenv.load_dotenv()
 TMP_ROOT = os.getenv("TMP_ROOT")
@@ -123,18 +123,8 @@ def run_python_run_info(
         if run_info.input_content is not None:
             python_bash_command += f"printf {repr(run_info.input_content)} | "
         python_bash_command += f"{python_path} {entry_file_abspath}"
-            
-        # whitelist = []
-        # whitelist.append(project_root_dir)
-        # whitelist.append(run_info.session_dir)
-        # whitelist_command = ""
-        # for item in whitelist:
-        #     whitelist_command += f"--whitelist={item} "
-    
-        # if run_info.use_firejail:
-        #     command = f"cd {project_root_dir} && firejail {whitelist_command} --quiet -- printf {repr(run_info.input_content)} | {python_path} {entry_file_abspath}"
-        # else:
-        #     command = f"cd {project_root_dir} && printf {repr(run_info.input_content)} {python_path} {entry_file_abspath}"
+
+
 
         command = python_bash_command
             

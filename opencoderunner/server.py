@@ -9,9 +9,10 @@ import dotenv
 import os
 
 from opencoderunner.run_on_local import run as run_on_local
-from opencoderunner.infos.run_info import RunInfo
-from opencoderunner.infos.result_info import ResultInfo
-from opencoderunner.infos.file_info import FileInfo
+
+from opencoderunner.run_info import RunInfo
+from opencoderunner.result_info import ResultInfo
+from opencoderunner.file_info import FileInfo
 
 
 app = FastAPI()
