@@ -60,10 +60,10 @@ cd firejail
 You can use `firejail` `uvicorn` to start the OpenCodeRunner service for remotely code execution. You can configure API key settings in [.env](.env) for both client and server sides.
 ```bash
 # Under the repo's root `OpenCodeRunner/` directory
-firejail && uvicorn opencoderunner.server:app --host 0.0.0.0 --port 8000 --reload
+firejail && bash start_server.sh
 
 # Or if you don't have `firejail`
-uvicorn opencoderunner.server:app --host 0.0.0.0 --port 8000 --reload
+bash start_server.sh
 ```
 #### 2. Running Code
 Then you can use either `run_on_local` or `run_on_server` for code running.
@@ -71,40 +71,39 @@ If you use `run_on_server`, you need to specify `host` `port` `api_key`. You can
 
 - Code string running example.
 ```python
-from opencoderunner.run_on_local import run as run_on_local
-from opencoderunner.run_on_server import run as run_on_server
-from opencoderunner.infos.run_info import RunInfo
+from opencoderunner.run_info import RunInfo
+from opencoderunner import run 
 
 if __name__ == "__main__":
     run_info = RunInfo(
         code_str="import sys; print(sys.stdin.read())",
         language="python",
-        project_root_name="zproj1",  
+        project_root_name="project_root_name",  
         input_content="INPUT1\nINPUT2\n",
-    )           
-    run_info.print_tree()               
+        timeout=1, # Test timeout
+    )                    
 
-    # -- Run locally
-    result_info = run_on_local(run_info=run_info)
-    print(result_info)
+    # # -- Run locally
+    for i in range(3):
+        result_info = run(run_info=run_info)
+        print(run_info.command)
+        print(result_info)
 
     # -- Or Run on server
-    result_info = run_on_server(run_info=run_info,
-                                host="0.0.0.0",
-                                port=8000,
-                                api_key="12345"
-                                )
-    print(result_info)
+    for i in range(3):
+        result_info = run(run_info=run_info,
+                        host="0.0.0.0",
+                        port=8000,
+                        api_key="12345"
+                        )
+        print(result_info)
 ```
 
 - Project-level example. It consists of multiple files.
 ```python
-import dotenv
-from opencoderunner.run_on_local import run as run_on_local
-from opencoderunner.run_on_server import run as run_on_server
-from opencoderunner.infos.run_info import RunInfo
-from opencoderunner.infos.result_info import ResultInfo
-from opencoderunner.infos.file_info import FileInfo
+from opencoderunner.run_info import RunInfo
+from opencoderunner.file_info import FileInfo
+from opencoderunner import run
 
 if __name__ == "__main__":
     run_info = RunInfo(
@@ -135,26 +134,36 @@ for line in sys.stdin:
             )
         ],
         language="python",
-        project_root_name="zproj1",                   
+        project_root_name="project_root_name",                   
         entry_file_relpath="file2.py",
         input_content="INPUT1\nINPUT2\n",
-        delete_after_run=False
     )                               
     run_info.print_tree()
 
     # -- Run locally
-    result_info = run_on_local(run_info=run_info)
-    print(result_info)
+    for i in range(3):
+        result_info = run(run_info=run_info)
+        print(result_info)
+
+    # -- is_run=False
+    for i in range(3):
+        run_info = run(
+            run_info=run_info,
+            is_run=False
+        )
+        print(run_info)
+
 
     # -- Or Run on server
-    result_info = run_on_server(run_info=run_info,
-                                host="0.0.0.0",
-                                port=8000,
-                                api_key="12345",
-                                # You can set Server/Client API keys in `.env`
-                                # api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") 
-                                )
-    print(result_info)
+    for i in range(3):
+        result_info = run(run_info=run_info,
+                        host="0.0.0.0",
+                        port=8000,
+                        api_key="12345",
+                        # You can set Server/Client API keys in `.env`
+                        # api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") 
+                        )
+        print(result_info)
 ```
 
 
@@ -171,9 +180,9 @@ More examples for various code languages are in [examples/](examples/). You can 
 - [ ] PyPi/Conda
 - [x] API key
 - [x] Code str running (simple running)
-- [ ] Merge local+server
-- [ ] os.getcwd issue
-- [ ] remove too much print
+- [x] Merge local+server
+- [x] os.getcwd issue
+- [x] remove too much print
 
 
 ## Supported Languages

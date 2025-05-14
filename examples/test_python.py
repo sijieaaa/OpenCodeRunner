@@ -1,5 +1,3 @@
-
-
 from opencoderunner.run_info import RunInfo
 from opencoderunner.file_info import FileInfo
 from opencoderunner import run
@@ -43,7 +41,6 @@ for line in sys.stdin:
     for i in range(3):
         result_info = run(run_info=run_info)
         print(result_info)
-        print(result_info.stdout.decode())
 
     # -- is_run=False
     for i in range(3):
@@ -64,4 +61,3 @@ for line in sys.stdin:
                         # api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") 
                         )
         print(result_info)
-        print(result_info.stdout.decode())

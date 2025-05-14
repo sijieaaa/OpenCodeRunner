@@ -1,8 +1,5 @@
-# from opencoderunner.run_on_local import run as run_on_local
-# from opencoderunner.run_on_server import run as run_on_server
+
 from opencoderunner.run_info import RunInfo
-from opencoderunner.result_info import ResultInfo
-from opencoderunner.file_info import FileInfo
 from opencoderunner import run 
 
 if __name__ == "__main__":
@@ -19,13 +16,6 @@ if __name__ == "__main__":
         result_info = run(run_info=run_info)
         print(run_info.command)
         print(result_info)
-
-    # -- is_run=False
-    run_info = run(
-        run_info=run_info,
-        is_run=False
-    )
-    print(run_info)
 
     # -- Or Run on server
     for i in range(3):
