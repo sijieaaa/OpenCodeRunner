@@ -13,6 +13,7 @@ from deprecated import deprecated
 from opencoderunner.run_info import RunInfo
 from opencoderunner.result_info import ResultInfo
 from opencoderunner.file_info import FileInfo
+import signal
 
 dotenv.load_dotenv()
 TMP_ROOT = os.getenv("TMP_ROOT")
@@ -134,27 +135,27 @@ def run_python_run_info(
         # If do not run, just fill run_info
         if not is_run:
             return run_info
-        
+
         try:
-            process_subrun = subprocess.run(
-                command,
-                shell=True,
+            process_sub = subprocess.run(
+                command = command.split(),
                 capture_output=True,
                 cwd=project_root_dir,
                 timeout=run_info.timeout,
+                preexec_fn=os.setsid,
             )
         except Exception as e:
-            process_subrun = subprocess.CompletedProcess(
+            # os.killpg(process_sub.pid, signal.SIGTERM)
+            process_sub = subprocess.CompletedProcess(
                 args=command,
                 returncode=1,
                 stdout="",
                 stderr=str(e),
             )
-        # print(process_subrun)
+        result_info.returncode = process_sub.returncode
+        result_info.stdout = process_sub.stdout
+        result_info.stderr = process_sub.stderr
 
-        result_info.returncode = process_subrun.returncode
-        result_info.stdout = process_subrun.stdout
-        result_info.stderr = process_subrun.stderr
 
         # # Change cwd back
         # sys.path[0] = cwd_bak
