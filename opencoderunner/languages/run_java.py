@@ -43,7 +43,7 @@ def run_java_run_info(
     java_path = run_info.java_path
     javac_path = run_info.javac_path
     java_bash_command = ""
-    java_bash_command += f"cd {project_root_dir}\n"
+    # java_bash_command += f"cd {project_root_dir}\n"
     java_bash_command += f"{javac_path} "
     for file_info in run_info.file_infos:
         file_abspath = file_info.file_abspath
@@ -102,8 +102,8 @@ def run_java_run_info(
         return run_info
     try:
         process_subrun = subprocess.run(
-            command,
-            shell=True,
+            command.split(),
+            shell=False,
             capture_output=True,
             cwd=project_root_dir,
             timeout=run_info.timeout,

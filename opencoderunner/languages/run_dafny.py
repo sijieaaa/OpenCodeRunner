@@ -56,7 +56,7 @@ def run_dafny_run_info(
     result_info = ResultInfo()
     dafny_path = run_info.dafny_path
     dafny_bash_command = ""
-    dafny_bash_command += f"cd {project_root_dir}\n"
+    # dafny_bash_command += f"cd {project_root_dir}\n"
     # dafny build Main.dfy utils/MathUtils.dfy
     dafny_bash_command += f"{dafny_path} build "
     for file_info in run_info.file_infos:
@@ -89,8 +89,8 @@ def run_dafny_run_info(
         return run_info
     try:
         process_subrun = subprocess.run(
-            command,
-            shell=True,
+            command.split(),
+            shell=False,
             capture_output=True,
             cwd=project_root_dir,
             timeout=run_info.timeout,

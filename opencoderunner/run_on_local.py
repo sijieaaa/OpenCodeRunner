@@ -62,7 +62,7 @@ def run(
 
 
 
-    # Update the `project_root_dir` to include the session name. So the structure will be:
+    # Create project_root_dir
     # TMP_ROOT 
     #   |-session_name (can be random)
     #      |-project_root_name

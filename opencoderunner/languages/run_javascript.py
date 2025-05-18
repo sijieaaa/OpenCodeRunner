@@ -45,7 +45,7 @@ def run_javascript_run_info(
     result_info = ResultInfo()
     node_path = run_info.node_path
     javascript_bash_command = ""
-    javascript_bash_command += f"cd {project_root_dir}\n"
+    # javascript_bash_command += f"cd {project_root_dir}\n"
     if run_info.input_content is not None:
         javascript_bash_command += f"printf {repr(run_info.input_content)} | "
     javascript_bash_command += f"{node_path} {run_info.entry_file_abspath}"
@@ -100,8 +100,8 @@ def run_javascript_run_info(
         return run_info
     try:
         process_subrun = subprocess.run(
-            command,
-            shell=True,
+            command.split(),
+            shell=False,
             capture_output=True,
             cwd=project_root_dir,
             timeout=run_info.timeout,

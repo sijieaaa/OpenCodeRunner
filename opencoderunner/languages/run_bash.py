@@ -41,7 +41,7 @@ def run_bash_run_info(
 
 
     bash_command = ""
-    bash_command += f"cd {project_root_dir}\n"
+    # bash_command += f"cd {project_root_dir}\n"
     if run_info.input_content is not None:
         bash_command += f"printf {repr(run_info.input_content)} | "
     bash_command += f"{bash_path} {run_info.entry_file_abspath}"
@@ -61,8 +61,8 @@ def run_bash_run_info(
         return run_info
     try:
         process_subrun = subprocess.run(
-            command,
-            shell=True,
+            command.split(),
+            shell=False,
             capture_output=True,
             cwd=project_root_dir,
             timeout=run_info.timeout,

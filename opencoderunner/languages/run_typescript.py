@@ -57,47 +57,12 @@ def run_typescript_run_info(
     result_info = ResultInfo()
     ts_node_path = run_info.ts_node_path
     typescript_bash_command = ""
-    typescript_bash_command += f"cd {project_root_dir}\n"
+    # typescript_bash_command += f"cd {project_root_dir}\n"
     entry_file_abspath = run_info.entry_file_abspath
     typescript_bash_command += f"\n{ts_node_path} --compiler-options '{{\"module\":\"CommonJS\"}}' {entry_file_abspath}"
 
     
 
-#     command = ""
-#     if user is not None:
-#         command += f"sudo -u {user} "
-    
-#     command += f"cd {project_root_dir}\n"
-#     if use_firejail:
-#         command += f"firejail --quiet "
-#         whitelist = []
-#         whitelist.append(project_root_dir)
-#         whitelist.append(run_info.session_dir)
-#         for item in whitelist:
-#             command += f"--whitelist={item} "
-#         command += f"""{bash_path} <<EOF
-# {typescript_bash_command}
-# EOF
-# """
-#     else:
-#         command += f"""{bash_path} <<EOF
-# {typescript_bash_command}
-# EOF
-# """
-        
-                
-    # whitelist = []
-    # whitelist.append(project_root_dir)
-    # whitelist.append(run_info.session_dir)
-    # whitelist_command = ""
-    # for item in whitelist:
-    #     whitelist_command += f"--whitelist={item} "
-    
-    
-    # if run_info.use_firejail:
-    #     command = f"cd {project_root_dir} && firejail {whitelist_command} --quiet -- {bash_path} <<EOF\n{typescript_bash_command}\nEOF"
-    # else:
-    #     command = f"cd {project_root_dir} && {bash_path} <<EOF\n{typescript_bash_command}\nEOF"
 
     command = typescript_bash_command
 
@@ -110,8 +75,8 @@ def run_typescript_run_info(
         return run_info
     try:
         process_subrun = subprocess.run(
-            command,
-            shell=True,
+            command.split(),
+            shell=False,
             capture_output=True,
             cwd=project_root_dir,
             timeout=run_info.timeout,

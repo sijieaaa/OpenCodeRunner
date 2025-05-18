@@ -13,17 +13,8 @@ def run_sql_run_info(
         is_run: bool = True
     ):
     """
-    Run the Java code according to `run_info`.
+    Run the SQL code according to `run_info`.
     """
-    # Write all files in the run_info to temporary files
-    # file_infos = run_info["file_infos"]
-    # for i in range(len(file_infos)):
-    #     file_info = file_infos[i]
-    #     file_abspath = file_info["file_abspath"]
-    #     os.makedirs(os.path.dirname(file_abspath), exist_ok=True)
-    #     with open(file_abspath, 'w') as f:
-    #         f.write(file_info["file_content"])
-    #     assert os.path.exists(file_abspath)
 
 
 
@@ -78,8 +69,8 @@ def run_sql_run_info(
         return run_info
     try:
         process_subrun = subprocess.run(
-            command,
-            shell=True,
+            command.split(),
+            shell=False,
             capture_output=True,
             cwd=project_root_dir,
             timeout=run_info.timeout,
