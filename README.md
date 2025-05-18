@@ -94,7 +94,6 @@ if __name__ == "__main__":
         result_info = run(run_info=run_info,
                         host="0.0.0.0",
                         port=8000,
-                        api_key="12345"
                         )
         print(result_info)
 ```
@@ -159,9 +158,6 @@ for line in sys.stdin:
         result_info = run(run_info=run_info,
                         host="0.0.0.0",
                         port=8000,
-                        api_key="12345",
-                        # You can set Server/Client API keys in `.env`
-                        # api_key=dotenv.get_key(".env", "OPENCODERUNNER_API_KEY") 
                         )
         print(result_info)
 ```
