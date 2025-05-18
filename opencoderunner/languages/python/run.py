@@ -137,16 +137,13 @@ def run_python_run_info(
             return run_info
 
         try:
-            process_sub = subprocess.Popen(
+            process_sub = subprocess.run(
                 command.split(),
                 cwd=project_root_dir,
-                preexec_fn=os.setsid,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                capture_output=True,
+                shell=False,
+                timeout=run_info.timeout,
             )
-            stdout, stderr = process_sub.communicate(timeout=run_info.timeout)
-            process_sub.stdout = stdout
-            process_sub.stderr = stderr
         except Exception as e:
             process_sub = subprocess.CompletedProcess(
                 args=command,

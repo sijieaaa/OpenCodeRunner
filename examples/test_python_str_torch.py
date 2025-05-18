@@ -91,7 +91,7 @@ print(prime_fibfib(5))  # 23
         def collate_fn(self, batch):
             return batch
     dataset = AAA()
-    batch_size = 0
+    batch_size = 8
     dataloader = DataLoader(dataset, batch_size=max(1,batch_size), collate_fn=dataset.collate_fn,
                             num_workers=batch_size)
     for batch in tqdm(dataloader):
