@@ -10,13 +10,13 @@ import os
 
 
 
-from opencoderunner.languages.python.run import run_python_run_info
-from opencoderunner.languages.bash.run import run_bash_run_info
-from opencoderunner.languages.java.run import run_java_run_info
-from opencoderunner.languages.typescript.run import run_typescript_run_info
-from opencoderunner.languages.javascript.run import run_javascript_run_info
-from opencoderunner.languages.dafny.run import run_dafny_run_info
-from opencoderunner.languages.sql.run import run_sql_run_info
+from opencoderunner.languages.run_python import run_python_run_info
+from opencoderunner.languages.run_bash import run_bash_run_info
+from opencoderunner.languages.run_java import run_java_run_info
+from opencoderunner.languages.run_typescript import run_typescript_run_info
+from opencoderunner.languages.run_javascript import run_javascript_run_info
+from opencoderunner.languages.run_dafny import run_dafny_run_info
+from opencoderunner.languages.run_sql import run_sql_run_info
 
 
 from opencoderunner.run_info import RunInfo

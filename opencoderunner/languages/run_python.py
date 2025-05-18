@@ -130,7 +130,6 @@ def run_python_run_info(
         command = python_bash_command
             
         run_info.command = command
-        # run_info.print_command()
         result_info.command = command
         # If do not run, just fill run_info
         if not is_run:
