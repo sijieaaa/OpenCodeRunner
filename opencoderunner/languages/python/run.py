@@ -120,7 +120,7 @@ def run_python_run_info(
 
 
         python_bash_command = ""
-        python_bash_command += f"cd {project_root_dir}\n"
+        # python_bash_command += f"cd {project_root_dir}\n"
         if run_info.input_content is not None:
             python_bash_command += f"printf {repr(run_info.input_content)} | "
         python_bash_command += f"{python_path} {entry_file_abspath}"
@@ -137,15 +137,17 @@ def run_python_run_info(
             return run_info
 
         try:
-            process_sub = subprocess.run(
-                command = command.split(),
-                capture_output=True,
+            process_sub = subprocess.Popen(
+                command.split(),
                 cwd=project_root_dir,
-                timeout=run_info.timeout,
                 preexec_fn=os.setsid,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
             )
+            stdout, stderr = process_sub.communicate(timeout=run_info.timeout)
+            process_sub.stdout = stdout
+            process_sub.stderr = stderr
         except Exception as e:
-            # os.killpg(process_sub.pid, signal.SIGTERM)
             process_sub = subprocess.CompletedProcess(
                 args=command,
                 returncode=1,

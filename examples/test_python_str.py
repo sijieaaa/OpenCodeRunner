@@ -1,13 +1,14 @@
 
-from opencoderunner.run_info import RunInfo
+from opencoderunner import RunInfo
 from opencoderunner import run 
 
 if __name__ == "__main__":
     run_info = RunInfo(
-        code_str="import sys; print(sys.stdin.read())",
+        # code_str="import sys; print(sys.stdin.read())",
+        code_str="print('Hello World123'); import time; time.sleep(0.5); print('Hello World')",
         language="python",
         project_root_name="project_root_name",  
-        input_content="INPUT1\nINPUT2\n",
+        # input_content="INPUT1\nINPUT2\n",
         timeout=1, # Test timeout
     )                    
 
