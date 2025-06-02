@@ -130,11 +130,13 @@ def run(
     
     # Clean up the temporary directory
     if run_info.delete_after_run:
-        if os.path.exists(run_info.session_dir):
-            try:
-                shutil.rmtree(run_info.session_dir)
-            except Exception as e:
-                print(f"[Warning] Failed to delete {run_info.session_dir}: {e}")
+        max_attempts = 3
+        for i in range(max_attempts):
+            if os.path.exists(run_info.session_dir):
+                try:
+                    shutil.rmtree(run_info.session_dir)
+                except Exception as e:
+                    print(f"[Warning] Failed to delete {run_info.session_dir}: {e}")
 
 
 
