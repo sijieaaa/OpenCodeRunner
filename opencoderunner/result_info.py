@@ -22,6 +22,7 @@ class ResultInfo(BaseModel):
     stderr: Optional[Any] = ""
     stdout_str: Optional[str] = ""  # String version of stdout
     stderr_str: Optional[str] = ""  # String version of stderr
+    stdout_stderr: Optional[str] = ""  
 
     # Function return value
     # Currently only for Python

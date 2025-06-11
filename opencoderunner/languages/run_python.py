@@ -160,7 +160,7 @@ def run_python_run_info(
             stderr_str = result_info.stderr.decode()
         result_info.stdout_str = stdout_str
         result_info.stderr_str = stderr_str
-
+        result_info.stdout_stderr = "\n".join([result_info.stdout_str, result_info.stderr_str])
 
         # # Change cwd back
         # sys.path[0] = cwd_bak
