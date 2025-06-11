@@ -4,7 +4,7 @@ from typing import Optional, Literal, Any
 import warnings
 from collections import defaultdict
 from opencoderunner.file_info import FileInfo
-
+import os
 
 class RunInfo(BaseModel):
     # model_config = ConfigDict(extra="allow") # Allow adding extra fields after initialization.
@@ -20,7 +20,8 @@ class RunInfo(BaseModel):
         "typescript", "ts",
         "sql", "postgres", "postgresql",
     ]
-    tmp_root: Optional[str] = "/tmp" # Can change to your own temporary root.
+    # tmp_root: Optional[str] = "/tmp" # Can change to your own temporary root.
+    tmp_root: Optional[str] = os.path.join(os.environ["HOME"], "tmp")
     session_name: Optional[str] = None # Session name. If not provided, a random name will be generated.
     project_root_name: Optional[str] = None 
 
