@@ -154,6 +154,13 @@ def run_python_run_info(
         result_info.stdout = process_sub.stdout
         result_info.stderr = process_sub.stderr
 
+        if isinstance(result_info.stdout, bytes):
+            stdout_str = result_info.stdout.decode()
+        if isinstance(result_info.stderr, bytes):
+            stderr_str = result_info.stderr.decode()
+        result_info.stdout_str = stdout_str
+        result_info.stderr_str = stderr_str
+
 
         # # Change cwd back
         # sys.path[0] = cwd_bak

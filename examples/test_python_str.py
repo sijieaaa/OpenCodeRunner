@@ -6,8 +6,8 @@ if __name__ == "__main__":
     run_info = RunInfo(
         code_str="""
 print('Hello World123')
-import time2
-time.sleep(2)
+import time
+time.sleep(1)
 print('Hello World')
 """,
         language="python",

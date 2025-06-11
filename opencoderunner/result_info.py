@@ -20,6 +20,8 @@ class ResultInfo(BaseModel):
     returncode: Optional[Any] = None
     stdout: Optional[Any] = ""
     stderr: Optional[Any] = ""
+    stdout_str: Optional[str] = ""  # String version of stdout
+    stderr_str: Optional[str] = ""  # String version of stderr
 
     # Function return value
     # Currently only for Python
