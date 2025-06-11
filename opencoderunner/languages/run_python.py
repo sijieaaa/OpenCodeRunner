@@ -155,11 +155,17 @@ def run_python_run_info(
         result_info.stderr = process_sub.stderr
 
         if isinstance(result_info.stdout, bytes):
-            stdout_str = result_info.stdout.decode()
+            result_info.stdout_str = result_info.stdout.decode()
+        elif isinstance(result_info.stdout, str):
+            result_info.stdout_str = result_info.stdout
+        else:
+            raise NotImplementedError
         if isinstance(result_info.stderr, bytes):
-            stderr_str = result_info.stderr.decode()
-        result_info.stdout_str = stdout_str
-        result_info.stderr_str = stderr_str
+            result_info.stderr_str = result_info.stderr.decode()
+        elif isinstance(result_info.stderr, str):
+            result_info.stderr_str = result_info.stderr
+        else:
+            raise NotImplementedError
         result_info.stdout_stderr = "\n".join([result_info.stdout_str, result_info.stderr_str])
 
         # # Change cwd back
