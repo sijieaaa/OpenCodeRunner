@@ -22,6 +22,7 @@ class RunInfo(BaseModel):
     ]
     # tmp_root: Optional[str] = "/tmp" # Can change to your own temporary root.
     tmp_root: Optional[str] = os.path.join(os.environ["HOME"], "tmp")
+    os.makedirs(tmp_root, exist_ok=True) # Ensure the temporary root directory exists.
     session_name: Optional[str] = None # Session name. If not provided, a random name will be generated.
     project_root_name: Optional[str] = None 
 
