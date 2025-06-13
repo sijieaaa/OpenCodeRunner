@@ -14,6 +14,7 @@ from opencoderunner.run_info import RunInfo
 from opencoderunner.result_info import ResultInfo
 from opencoderunner.file_info import FileInfo
 import signal
+import time
 
 dotenv.load_dotenv()
 TMP_ROOT = os.getenv("TMP_ROOT")
@@ -111,6 +112,25 @@ def run_python_run_info(
     # If `entry_func_name` is None, run the file directly
     elif entry_func_name is None:
         # cwd_bak = os.getcwd()
+        if not os.path.exists(project_root_dir):
+            try:
+                max_tries = 3
+                for _ in range(max_tries):
+                    print(f"[Warning] The project root directory `{project_root_dir}` does not exist. Creating all files...")
+                    for i in range(len(run_info.file_infos)):
+                        # If it is None
+                        if run_info.file_infos[i].file_abspath is None:
+                            run_info.file_infos[i].file_abspath = os.path.join(run_info.project_root_dir, run_info.file_infos[i].file_relpath)
+                        if not os.path.exists(os.path.dirname(run_info.file_infos[i].file_abspath)):
+                            os.makedirs(os.path.dirname(run_info.file_infos[i].file_abspath), exist_ok=True)
+                        with open(run_info.file_infos[i].file_abspath, 'w') as f:
+                            f.write(run_info.file_infos[i].file_content)
+                    if os.path.exists(project_root_dir):
+                        break
+                    time.sleep(1)
+            except Exception as e:
+                print(e)
+
         os.chdir(project_root_dir)
 
         # print(sys.path)
@@ -160,6 +180,7 @@ def run_python_run_info(
             result_info.stdout_str = result_info.stdout
         else:
             raise NotImplementedError
+        
         if isinstance(result_info.stderr, bytes):
             result_info.stderr_str = result_info.stderr.decode()
         elif isinstance(result_info.stderr, str):
