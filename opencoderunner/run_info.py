@@ -36,6 +36,7 @@ class RunInfo(BaseModel):
 
     user: Optional[str] = None # Testing
     use_firejail: Optional[bool] = False
+    use_shell: Optional[bool] = False
 
     # tmp_root: Optional[str] = "/home/runner/Tools/OpenCodeRunner/tmp"
     delete_after_run: Optional[bool] = True # Delelte the created temporary files after run.

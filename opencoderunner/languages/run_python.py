@@ -156,13 +156,23 @@ def run_python_run_info(
             return run_info
 
         try:
-            process_sub = subprocess.run(
-                command.split(),
-                cwd=project_root_dir,
-                capture_output=True,
-                shell=False,
-                timeout=run_info.timeout,
-            )
+            # use_shell = True
+            if run_info.use_shell == True:
+                process_sub = subprocess.run(
+                    command,
+                    cwd=project_root_dir,
+                    capture_output=True,
+                    shell=True,
+                    timeout=run_info.timeout,
+                )
+            else:
+                process_sub = subprocess.run(
+                    command.split(),
+                    cwd=project_root_dir,
+                    capture_output=True,
+                    shell=False,
+                    timeout=run_info.timeout,
+                )
         except Exception as e:
             process_sub = subprocess.CompletedProcess(
                 args=command,
