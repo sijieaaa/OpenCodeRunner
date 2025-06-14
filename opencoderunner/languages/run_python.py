@@ -29,15 +29,25 @@ def find_python_path(python_version, torch_version):
 
 
 
-def import_function_from_file(file_path, func_name):
+# def import_function_from_file(file_path, func_name):
+#     module_name = os.path.splitext(os.path.basename(file_path))[0]
+#     spec = importlib.util.spec_from_file_location(module_name, file_path)
+#     module = importlib.util.module_from_spec(spec)
+#     spec.loader.exec_module(module)
+#     func = getattr(module, func_name)
+#     return func
+
+
+def import_function_from_file(file_path, func_path):
     module_name = os.path.splitext(os.path.basename(file_path))[0]
-    
     spec = importlib.util.spec_from_file_location(module_name, file_path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-
-    func = getattr(module, func_name)
-    return func
+    # -- Support hierachical: e.g. 'Solution.my_func'
+    obj = module
+    for attr in func_path.split("."):
+        obj = getattr(obj, attr)
+    return obj
 
 
 
@@ -73,40 +83,38 @@ def run_python_run_info(
 
 
     # Call the function
-    process_result = ResultInfo()
     if entry_func_name is not None:
-        # TODO
-        raise NotImplementedError
-        # Change cwd + add `root_absdir` to sys.path. Otherwise, the import will fail
-        cwd_bak = os.getcwd()
-        os.chdir(project_root_dir)
-        print(sys.path)
-        sys.path[0] = project_root_dir
-        print(sys.path)
+        result_info = ResultInfo()
         try:
             func = import_function_from_file(entry_file_abspath, entry_func_name)
-            sys.path[0] = cwd_bak
-            os.chdir(cwd_bak)
         except Exception as e:
-            process_result.returncode = 1
-            process_result.stdout = ""
-            process_result.stderr = str(e)
-            sys.path[0] = cwd_bak
-            os.chdir(cwd_bak)
-            return process_result
+            raise NotImplementedError
 
-        buffer = io.StringIO()
-        with redirect_stdout(buffer):
-            try:
-                entry_func_return = func(*entry_func_args, **entry_func_kwargs)
-            except Exception as e:
-                process_result.returncode = 1
-                process_result.stdout = ""
-                process_result.stderr = str(e)
-                return process_result
-        stdout = buffer.getvalue()
-        process_result.entry_func_return = entry_func_return
-        process_result.stdout = stdout
+        buffer_stdout = io.StringIO()
+        buffer_stdin = io.StringIO(run_info.input_content or "")
+        old_stdin = sys.stdin
+        sys.stdin = buffer_stdin
+
+        try:
+            with redirect_stdout(buffer_stdout):
+                try:
+                    entry_func_return = func(*entry_func_args, **entry_func_kwargs)
+                    result_info.returncode = 0
+                    result_info.stdout = buffer_stdout.getvalue()
+                    result_info.stderr = ""
+                    result_info.stdout_stderr = "\n".join([result_info.stdout, result_info.stderr])
+                    result_info.entry_func_name = entry_func_name
+                    result_info.entry_func_return = entry_func_return
+                except Exception as e:
+                    result_info.returncode = 1
+                    result_info.stdout = buffer_stdout.getvalue()
+                    result_info.stderr = str(e)
+                    result_info.stdout_stderr = "\n".join([result_info.stdout, result_info.stderr])
+                    result_info.entry_func_name = entry_func_name
+                    result_info.entry_func_return = None
+        finally:
+            sys.stdin = old_stdin  # ← 确保恢复 stdin
+
 
 
     # If `entry_func_name` is None, run the file directly
