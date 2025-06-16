@@ -163,34 +163,64 @@ def run_python_run_info(
         if not is_run:
             return run_info
 
+
+        # # -- subprocess.run
+        # try:
+        #     # use_shell = True
+        #     process_sub = subprocess.run(
+        #         command if run_info.use_shell else command.split(),
+        #         cwd=project_root_dir,
+        #         capture_output=True,
+        #         shell=run_info.use_shell,
+        #         timeout=run_info.timeout,
+        #     )
+        #     process_sub.kill()
+        # except Exception as e:
+        #     process_sub.kill()
+        #     process_sub = subprocess.CompletedProcess(
+        #         args=command,
+        #         returncode=1,
+        #         stdout="",
+        #         stderr=str(e),
+        #     )
+        # result_info.returncode = process_sub.returncode
+        # result_info.stdout = process_sub.stdout
+        # result_info.stderr = process_sub.stderr
+
+
+
+        # -- subprocess.Popen
         try:
-            # use_shell = True
-            if run_info.use_shell == True:
-                process_sub = subprocess.run(
-                    command,
-                    cwd=project_root_dir,
-                    capture_output=True,
-                    shell=True,
-                    timeout=run_info.timeout,
-                )
-            else:
-                process_sub = subprocess.run(
-                    command.split(),
-                    cwd=project_root_dir,
-                    capture_output=True,
-                    shell=False,
-                    timeout=run_info.timeout,
-                )
+            process_sub = subprocess.Popen(
+                command if run_info.use_shell else command.split(),
+                cwd=project_root_dir,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                shell=run_info.use_shell,
+            )
+            stdout, stderr = process_sub.communicate(timeout=run_info.timeout)
+            result_info.returncode = process_sub.returncode
+            result_info.stdout = stdout
+            result_info.stderr = stderr
+            if process_sub:
+                process_sub.kill()
+                process_sub.wait()
         except Exception as e:
+            if process_sub:
+                process_sub.kill()
+                process_sub.wait()
             process_sub = subprocess.CompletedProcess(
                 args=command,
                 returncode=1,
                 stdout="",
                 stderr=str(e),
             )
-        result_info.returncode = process_sub.returncode
-        result_info.stdout = process_sub.stdout
-        result_info.stderr = process_sub.stderr
+            result_info.returncode = process_sub.returncode
+            result_info.stdout = process_sub.stdout
+            result_info.stderr = process_sub.stderr
+
+
+
 
         if isinstance(result_info.stdout, bytes):
             result_info.stdout_str = result_info.stdout.decode()

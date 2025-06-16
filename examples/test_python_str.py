@@ -7,12 +7,12 @@ if __name__ == "__main__":
         code_str="""
 print('Hello World123')
 import time
-time.sleep(1)
+time.sleep(10)
 print('Hello World')
 """,
         language="python",
         project_root_name="project_root_name",  
-        timeout=3, # Test timeout
+        timeout=1, # Test timeout
     )                    
 
     # # -- Run locally
