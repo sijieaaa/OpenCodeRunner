@@ -15,27 +15,22 @@ from opencoderunner.result_info import ResultInfo
 from opencoderunner.file_info import FileInfo
 import signal
 import time
-
-# dotenv.load_dotenv()
-# TMP_ROOT = os.getenv("TMP_ROOT")
-
+import signal
+from contextlib import contextmanager
 
 
-def find_python_path(python_version, torch_version):
-    conda_env_name = f"python{python_version}-torch{torch_version}"
-    python_path = f"/home/runner/miniconda3/envs/{conda_env_name}" 
-    return python_path
+@contextmanager
+def timeout(seconds):
+    def _handle_timeout(signum, frame):
+        raise TimeoutError(f"timed out after {seconds} seconds")
+    old_handler = signal.signal(signal.SIGALRM, _handle_timeout)
+    signal.alarm(seconds)  
+    try:
+        yield
+    finally:
+        signal.alarm(0)  
+        signal.signal(signal.SIGALRM, old_handler)  
 
-
-
-
-# def import_function_from_file(file_path, func_name):
-#     module_name = os.path.splitext(os.path.basename(file_path))[0]
-#     spec = importlib.util.spec_from_file_location(module_name, file_path)
-#     module = importlib.util.module_from_spec(spec)
-#     spec.loader.exec_module(module)
-#     func = getattr(module, func_name)
-#     return func
 
 
 def import_function_from_file(file_path, func_path):
@@ -192,21 +187,28 @@ def run_python_run_info(
         # -- subprocess.Popen
         try:
             process_sub = None
-            process_sub = subprocess.Popen(
+            with subprocess.Popen(
                 command if run_info.use_shell else command.split(),
                 cwd=project_root_dir,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 shell=run_info.use_shell,
-            )
-            stdout, stderr = process_sub.communicate(timeout=run_info.timeout)
-            result_info.returncode = process_sub.returncode
-            result_info.stdout = stdout
-            result_info.stderr = stderr
+            ) as process_sub:
+                pid = process_sub.pid
+                with timeout(int(run_info.timeout)):
+                    stdout, stderr = process_sub.communicate()
+                result_info.returncode = process_sub.returncode
+                result_info.stdout = stdout
+                result_info.stderr = stderr
+            os.kill(pid, signal.SIGKILL)  # Ensure the process is killed
             if process_sub:
                 process_sub.kill()
                 process_sub.wait()
         except Exception as e:
+            try:
+                os.kill(pid, signal.SIGKILL)  # Ensure the process is killed
+            except:
+                None
             if process_sub:
                 process_sub.kill()
                 process_sub.wait()

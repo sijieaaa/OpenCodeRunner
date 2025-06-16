@@ -7,7 +7,7 @@ if __name__ == "__main__":
         code_str="""
 print('Hello World123')
 import time
-time.sleep(10)
+time.sleep(2)
 print('Hello World')
 """,
         language="python",
