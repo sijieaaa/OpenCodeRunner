@@ -191,6 +191,7 @@ def run_python_run_info(
 
         # -- subprocess.Popen
         try:
+            process_sub = None
             process_sub = subprocess.Popen(
                 command if run_info.use_shell else command.split(),
                 cwd=project_root_dir,
