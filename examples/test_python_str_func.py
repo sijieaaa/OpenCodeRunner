@@ -5,9 +5,12 @@ from opencoderunner import run as opencr_run
 if __name__ == "__main__":
     run_info = RunInfo(
         code_str="""
+def fn():
+    print("called fn()")
 import sys
 class A:
     def main(input_str: str):
+        fn()
         print("entered main()")
         kb_input = input()
         print(f"kb_input: {kb_input}")

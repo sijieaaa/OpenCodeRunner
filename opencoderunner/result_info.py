@@ -32,6 +32,7 @@ class ResultInfo(BaseModel):
     def __str__(self):
         return (
             "====== ResultInfo ======\n"
+            f"command: {self.command}\n"
             f"compile_returncode: {self.compile_returncode}\n"
             f"compile_stdout: {self.compile_stdout}\n"
             f"compile_stderr: {self.compile_stderr}\n"

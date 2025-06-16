@@ -16,8 +16,8 @@ from opencoderunner.file_info import FileInfo
 import signal
 import time
 
-dotenv.load_dotenv()
-TMP_ROOT = os.getenv("TMP_ROOT")
+# dotenv.load_dotenv()
+# TMP_ROOT = os.getenv("TMP_ROOT")
 
 
 
