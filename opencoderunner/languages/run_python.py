@@ -186,6 +186,7 @@ def run_python_run_info(
 
         # -- subprocess.Popen
         process_sub = None
+
         try:
             process_sub = subprocess.Popen(
                 command if run_info.use_shell else command.split(),
@@ -200,16 +201,20 @@ def run_python_run_info(
             result_info.stdout = stdout
             result_info.stderr = stderr
         except subprocess.TimeoutExpired:
+            stdout = ""
             if process_sub and process_sub.poll() is None:
                 try:
                     os.killpg(os.getpgid(process_sub.pid), signal.SIGKILL)
                 except Exception as e:
                     print(f"[OpenCodeRunner] timed out to kill process group: {e}")
-            stdout, _ = process_sub.communicate()
+            if process_sub:
+                stdout, _ = process_sub.communicate()
             result_info.stdout = stdout
             result_info.stderr = f"[OpenCodeRunner] timed out after {run_info.timeout} seconds"
         except Exception as e:
-            stdout, _ = process_sub.communicate()
+            stdout = ""
+            if process_sub:
+                stdout, _ = process_sub.communicate()
             result_info.returncode = 1
             result_info.stdout = stdout
             result_info.stderr = str(e)
