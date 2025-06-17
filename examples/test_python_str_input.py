@@ -6,7 +6,7 @@ if __name__ == "__main__":
     run_info = RunInfo(
         code_str="""
 import torch
-import sys
+import sys1
 # kb_input = input()
 # print(f"kb_input: {kb_input}")
 kb_sysstdin = sys.stdin.read()

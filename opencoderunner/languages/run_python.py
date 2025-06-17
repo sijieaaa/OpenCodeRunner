@@ -185,42 +185,40 @@ def run_python_run_info(
 
 
         # -- subprocess.Popen
+        process_sub = None
         try:
-            process_sub = None
-            with subprocess.Popen(
+            process_sub = subprocess.Popen(
                 command if run_info.use_shell else command.split(),
                 cwd=project_root_dir,
+                preexec_fn=os.setsid,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                shell=run_info.use_shell,
-            ) as process_sub:
-                pid = process_sub.pid
-                with timeout(int(run_info.timeout)):
-                    stdout, stderr = process_sub.communicate()
-                result_info.returncode = process_sub.returncode
-                result_info.stdout = stdout
-                result_info.stderr = stderr
-            os.kill(pid, signal.SIGKILL)  # Ensure the process is killed
-            if process_sub:
-                process_sub.kill()
-                process_sub.wait()
-        except Exception as e:
-            try:
-                os.kill(pid, signal.SIGKILL)  # Ensure the process is killed
-            except:
-                None
-            if process_sub:
-                process_sub.kill()
-                process_sub.wait()
-            process_sub = subprocess.CompletedProcess(
-                args=command,
-                returncode=1,
-                stdout="",
-                stderr=str(e),
+                shell=run_info.use_shell
             )
+            stdout, stderr = process_sub.communicate(timeout=run_info.timeout)
             result_info.returncode = process_sub.returncode
-            result_info.stdout = process_sub.stdout
-            result_info.stderr = process_sub.stderr
+            result_info.stdout = stdout
+            result_info.stderr = stderr
+        except subprocess.TimeoutExpired:
+            if process_sub and process_sub.poll() is None:
+                try:
+                    os.killpg(os.getpgid(process_sub.pid), signal.SIGKILL)
+                except Exception as e:
+                    print(f"[OpenCodeRunner] timed out to kill process group: {e}")
+            result_info.returncode = 1
+            result_info.stdout = ""
+            result_info.stderr = f"[OpenCodeRunner] timed out after {run_info.timeout} seconds"
+        except Exception as e:
+            result_info.returncode = 1
+            result_info.stdout = ""
+            result_info.stderr = str(e)
+        finally:
+            # double-check: kill anything left
+            if isinstance(process_sub, subprocess.Popen) and process_sub.poll() is None:
+                try:
+                    os.killpg(os.getpgid(process_sub.pid), signal.SIGTERM)
+                except Exception as e:
+                    print(f"[OpenCodeRunner] timed out or failed to kill process group: {e}")
 
 
 
