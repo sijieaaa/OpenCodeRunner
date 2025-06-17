@@ -205,12 +205,13 @@ def run_python_run_info(
                     os.killpg(os.getpgid(process_sub.pid), signal.SIGKILL)
                 except Exception as e:
                     print(f"[OpenCodeRunner] timed out to kill process group: {e}")
-            result_info.returncode = 1
-            result_info.stdout = ""
+            stdout, _ = process_sub.communicate()
+            result_info.stdout = stdout
             result_info.stderr = f"[OpenCodeRunner] timed out after {run_info.timeout} seconds"
         except Exception as e:
+            stdout, _ = process_sub.communicate()
             result_info.returncode = 1
-            result_info.stdout = ""
+            result_info.stdout = stdout
             result_info.stderr = str(e)
         finally:
             # double-check: kill anything left

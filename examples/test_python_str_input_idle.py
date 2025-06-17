@@ -7,8 +7,9 @@ if __name__ == "__main__":
         code_str="""
 import sys
 from heapq import heappush, heappop
+print("Code started running...")
 
-opposite = [1, 0, 3, 2, 5, 4]
+opposite = [1, 0, 3, 2, 5, 4]1
 
 def rotate(state, direction):
     b, n, e = state
