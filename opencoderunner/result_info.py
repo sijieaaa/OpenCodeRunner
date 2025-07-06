@@ -9,6 +9,7 @@ class ResultInfo(BaseModel):
     # model_config = ConfigDict(extra="allow")  # Allow adding extra fields after initialization.
     
     command: Optional[str] = None  # Command to run the code. Optional for bash. Required for all other languages.
+    tree_str: Optional[str] = None  # Tree structure of the files and directories created during the run. Useful for debugging and understanding the file structure.
 
     # Compilation result
     compile_returncode: Optional[Any] = None

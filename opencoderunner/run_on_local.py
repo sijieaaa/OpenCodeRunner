@@ -46,6 +46,35 @@ def rm_makedirs(dir_path: str):
 
 
 
+def build_tree_str(root_path, indent="", is_last=True, is_root=True):
+    lines = []
+    # root dir show as absolute path
+    if is_root:
+        display_name = os.path.abspath(root_path).rstrip("/") + "/"
+        lines.append(display_name)
+    else:
+        basename = os.path.basename(root_path.rstrip("/")) or root_path
+        if os.path.isdir(root_path):
+            basename += "/"
+        connector = "└── " if is_last else "├── "
+        lines.append(indent + connector + basename)
+        indent += "    " if is_last else "│   "
+
+    if os.path.isdir(root_path):
+        try:
+            entries = sorted(os.listdir(root_path))
+        except PermissionError:
+            entries = []
+        for i, entry in enumerate(entries):
+            full_path = os.path.join(root_path, entry)
+            is_last_entry = (i == len(entries) - 1)
+            lines.append(build_tree_str(full_path, indent, is_last_entry, is_root=False))
+    
+    return "\n".join(lines)
+
+
+
+
 def run(
         run_info: RunInfo,
         is_run: bool = True,
@@ -127,6 +156,10 @@ def run(
         result_info = run_sql_run_info(run_info=run_info, is_run=is_run)
     else:
         raise NotImplementedError
+    
+    # Add tree structure to the result_info
+    tree_str = build_tree_str(run_info.project_root_dir)
+    result_info.tree_str = tree_str
     
     # Clean up the temporary directory
     if run_info.delete_after_run:

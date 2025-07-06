@@ -116,6 +116,7 @@ if __name__ == "__main__":
     for i in range(3):
         result_info = opencr_run(run_info=run_info)
         print(run_info.command)
+        print(result_info.tree_str)
         print(result_info)
         print(result_info.stderr)
 
