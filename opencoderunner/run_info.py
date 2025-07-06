@@ -43,6 +43,7 @@ class RunInfo(BaseModel):
     timeout: Optional[float] = 60 # Timeout for the run. Default is 60 seconds.
 
     command: Optional[str] = None 
+    pre_command: Optional[str] = "" # Pre command to run before the main command. Useful for setting environment variables or other preparations.
 
     # -- bash
     bash_path: Optional[str] = "bash"

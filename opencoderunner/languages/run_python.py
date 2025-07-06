@@ -143,14 +143,14 @@ def run_python_run_info(
 
 
         python_bash_command = ""
-        # python_bash_command += f"cd {project_root_dir}\n"
+        # python_bash_command += f"cd {project_root_dir}\n" # non-shell not support cd
         if run_info.input_content is not None:
             python_bash_command += f"printf {repr(run_info.input_content)} | "
         python_bash_command += f"{python_path} {entry_file_abspath}"
 
 
-
-        command = python_bash_command
+        command = run_info.pre_command
+        command += python_bash_command
             
         run_info.command = command
         result_info.command = command
@@ -194,7 +194,7 @@ def run_python_run_info(
                 preexec_fn=os.setsid,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                shell=run_info.use_shell
+                shell=run_info.use_shell,
             )
             stdout, stderr = process_sub.communicate(timeout=run_info.timeout)
             result_info.returncode = process_sub.returncode

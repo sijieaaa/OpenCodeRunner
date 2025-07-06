@@ -108,7 +108,8 @@ if __name__ == "__main__":
         timeout=3, # Test timeout
         input_content="123\n",
         use_shell=True,
-        delete_after_run=False
+        delete_after_run=False,
+        pre_command="unset DISPLAY; ",  
     )                    
 
     # # -- Run locally
