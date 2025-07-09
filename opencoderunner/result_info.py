@@ -35,6 +35,8 @@ class ResultInfo(BaseModel):
     def __str__(self):
         return (
             "====== ResultInfo ======\n"
+            f"datetime_start: {self.datetime_start}\n"
+            f"datetime_end: {self.datetime_end}\n"
             f"command: {self.command}\n"
             f"compile_returncode: {self.compile_returncode}\n"
             f"compile_stdout: {self.compile_stdout}\n"

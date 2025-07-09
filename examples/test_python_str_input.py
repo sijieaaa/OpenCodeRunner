@@ -19,7 +19,7 @@ print(f"kb_sysstdin: {kb_sysstdin}")
         timeout=1, # Test timeout
         input_content="INPUT1\nINPUT2\nINPUT3\n",
         use_shell=True,
-        delete_after_run=False
+        delete_after_run=True
     )                    
 
     # # -- Run locally
