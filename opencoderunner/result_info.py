@@ -10,6 +10,8 @@ class ResultInfo(BaseModel):
     
     command: Optional[str] = None  # Command to run the code. Optional for bash. Required for all other languages.
     tree_str: Optional[str] = None  # Tree structure of the files and directories created during the run. Useful for debugging and understanding the file structure.
+    datetime_start: Optional[str] = None  # Start time
+    datetime_end: Optional[str] = None  # End time
 
     # Compilation result
     compile_returncode: Optional[Any] = None

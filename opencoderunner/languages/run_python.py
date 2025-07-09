@@ -17,7 +17,7 @@ import signal
 import time
 import signal
 from contextlib import contextmanager
-
+from datetime import datetime, timezone
 
 @contextmanager
 def timeout(seconds):
@@ -186,7 +186,8 @@ def run_python_run_info(
 
         # -- subprocess.Popen
         process_sub = None
-
+        datetime_start = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC%z")
+        result_info.datetime_start = datetime_start
         try:
             process_sub = subprocess.Popen(
                 command if run_info.use_shell else command.split(),
@@ -219,14 +220,14 @@ def run_python_run_info(
             result_info.stdout = stdout
             result_info.stderr = str(e)
         finally:
+            datetime_end = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC%z")
+            result_info.datetime_end = datetime_end
             # double-check: kill anything left
             if isinstance(process_sub, subprocess.Popen) and process_sub.poll() is None:
                 try:
                     os.killpg(os.getpgid(process_sub.pid), signal.SIGTERM)
                 except Exception as e:
                     print(f"[OpenCodeRunner] timed out or failed to kill process group: {e}")
-
-
 
 
         if isinstance(result_info.stdout, bytes):
