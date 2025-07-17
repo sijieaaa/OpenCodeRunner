@@ -31,7 +31,7 @@ def preexec_fn(ram_limit_gb, timeout):
             resource.setrlimit(resource.RLIMIT_CPU, (int(timeout), int(timeout)))  # ! only raise "Killed\n" 
         except Exception:
             import sys, traceback
-            print("[OpenCodeRunner] timed out or OOM preexec_fn exception:", file=sys.stderr)
+            print("[OpenCodeRunner] timed out or OOM preexec_fn setting exception:", file=sys.stderr)
             traceback.print_exc(file=sys.stderr)
             sys.stderr.flush()
             os._exit(1)
