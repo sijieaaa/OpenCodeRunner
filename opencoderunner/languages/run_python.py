@@ -18,18 +18,27 @@ import time
 import signal
 from contextlib import contextmanager
 from datetime import datetime, timezone
+import resource
+import traceback
 
-@contextmanager
-def timeout(seconds):
-    def _handle_timeout(signum, frame):
-        raise TimeoutError(f"timed out after {seconds} seconds")
-    old_handler = signal.signal(signal.SIGALRM, _handle_timeout)
-    signal.alarm(seconds)  
-    try:
-        yield
-    finally:
-        signal.alarm(0)  
-        signal.signal(signal.SIGALRM, old_handler)  
+
+def preexec_fn(ram_limit_gb):
+    def _fn():
+        os.setsid()
+        ram_limit_bytes = int(ram_limit_gb * 1024**3)
+        resource.setrlimit(resource.RLIMIT_AS, (ram_limit_bytes, ram_limit_bytes))
+        # try:
+        #     os.setsid()
+        #     ram_limit_bytes = int(ram_limit_gb * 1024**3)
+        #     resource.setrlimit(resource.RLIMIT_AS, (ram_limit_bytes, ram_limit_bytes))
+        #     resource.setrlimit(resource.RLIMIT_CPU, (timeout, timeout))  # 不要再次赋值
+        # except Exception:
+        #     import sys, traceback
+        #     traceback.print_exc(file=sys.stderr)
+        #     sys.stderr.flush()
+        #     os._exit(1)
+    return _fn
+
 
 
 
@@ -147,12 +156,12 @@ def run_python_run_info(
         # python_bash_command += f"cd {project_root_dir}\n" # non-shell not support cd
         if run_info.input_content is not None:
             python_bash_command += f"printf {repr(run_info.input_content)} | "
-        python_bash_command += f"prlimit --as={int(run_info.ram_limit_gb * 1024**3)} -- "  
-        if run_info.timeout > 0:
-            python_bash_command += f"timeout {run_info.timeout}s "
+        # python_bash_command += f"prlimit --as={int(run_info.ram_limit_gb * 1024**3)} -- "  
+        # if run_info.timeout > 0:
+        #     python_bash_command += f"timeout {run_info.timeout}s "
         python_bash_command += f"{python_path} {entry_file_abspath}"
-        if run_info.timeout > 0:
-            python_bash_command += f" || (>&2 echo '[OpenCodeRunner] timed out after {run_info.timeout} seconds or oom {run_info.ram_limit_gb} GB')"
+        # if run_info.timeout > 0:
+        #     python_bash_command += f" || (>&2 echo '[OpenCodeRunner] timed out after {run_info.timeout} seconds or oom {run_info.ram_limit_gb} GB')"
 
 
         command = python_bash_command
@@ -197,7 +206,11 @@ def run_python_run_info(
             process_sub = subprocess.Popen(
                 command if run_info.use_shell else command.split(),
                 cwd=project_root_dir,
-                preexec_fn=os.setsid,
+                # preexec_fn=os.setsid,
+                preexec_fn=preexec_fn(
+                    ram_limit_gb=run_info.ram_limit_gb, 
+                    # timeout=run_info.timeout
+                ),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 shell=run_info.use_shell,
