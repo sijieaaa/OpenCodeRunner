@@ -22,21 +22,19 @@ import resource
 import traceback
 
 
-def preexec_fn(ram_limit_gb):
+def preexec_fn(ram_limit_gb, timeout):
     def _fn():
-        os.setsid()
-        ram_limit_bytes = int(ram_limit_gb * 1024**3)
-        resource.setrlimit(resource.RLIMIT_AS, (ram_limit_bytes, ram_limit_bytes))
-        # try:
-        #     os.setsid()
-        #     ram_limit_bytes = int(ram_limit_gb * 1024**3)
-        #     resource.setrlimit(resource.RLIMIT_AS, (ram_limit_bytes, ram_limit_bytes))
-        #     resource.setrlimit(resource.RLIMIT_CPU, (timeout, timeout))  # 不要再次赋值
-        # except Exception:
-        #     import sys, traceback
-        #     traceback.print_exc(file=sys.stderr)
-        #     sys.stderr.flush()
-        #     os._exit(1)
+        try:
+            os.setsid()
+            ram_limit_bytes = int(ram_limit_gb * 1024**3)
+            resource.setrlimit(resource.RLIMIT_AS, (ram_limit_bytes, ram_limit_bytes))
+            resource.setrlimit(resource.RLIMIT_CPU, (int(timeout), int(timeout)))  # ! only raise "Killed\n" 
+        except Exception:
+            import sys, traceback
+            print("[OpenCodeRunner] preexec_fn exception:", file=sys.stderr)
+            traceback.print_exc(file=sys.stderr)
+            sys.stderr.flush()
+            os._exit(1)
     return _fn
 
 
@@ -161,7 +159,7 @@ def run_python_run_info(
         #     python_bash_command += f"timeout {run_info.timeout}s "
         python_bash_command += f"{python_path} {entry_file_abspath}"
         # if run_info.timeout > 0:
-        #     python_bash_command += f" || (>&2 echo '[OpenCodeRunner] timed out after {run_info.timeout} seconds or oom {run_info.ram_limit_gb} GB')"
+        #     python_bash_command += f" || (>&2 echo '[OpenCodeRunner] timed out after {run_info.timeout} seconds or OOM {run_info.ram_limit_gb} GB')"
 
 
         command = python_bash_command
@@ -206,10 +204,9 @@ def run_python_run_info(
             process_sub = subprocess.Popen(
                 command if run_info.use_shell else command.split(),
                 cwd=project_root_dir,
-                # preexec_fn=os.setsid,
                 preexec_fn=preexec_fn(
                     ram_limit_gb=run_info.ram_limit_gb, 
-                    # timeout=run_info.timeout
+                    timeout=run_info.timeout
                 ),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -217,8 +214,12 @@ def run_python_run_info(
             )
             stdout, stderr = process_sub.communicate(timeout=run_info.timeout)
             result_info.returncode = process_sub.returncode
-            result_info.stdout = stdout
-            result_info.stderr = stderr
+            if result_info.returncode == 137: # 137 means Killed
+                result_info.stdout = stdout
+                result_info.stderr = f"[OpenCodeRunner] Killed timed out {run_info.timeout} seconds or OOM {run_info.ram_limit_gb} GB"
+            else:
+                result_info.stdout = stdout
+                result_info.stderr = stderr
         except subprocess.TimeoutExpired:
             stdout = ""
             if process_sub and process_sub.poll() is None:
