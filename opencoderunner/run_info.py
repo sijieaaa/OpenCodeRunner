@@ -41,6 +41,7 @@ class RunInfo(BaseModel):
     # tmp_root: Optional[str] = "/home/runner/Tools/OpenCodeRunner/tmp"
     delete_after_run: Optional[bool] = True # Delelte the created temporary files after run.
     timeout: Optional[float] = 60 # Timeout for the run. Default is 60 seconds.
+    ram_limit_gb: Optional[float] = 8.0 # RAM limit in GB. Default is 4GB.
 
     command: Optional[str] = None 
     pre_command: Optional[str] = "" # Pre command to run before the main command. Useful for setting environment variables or other preparations.

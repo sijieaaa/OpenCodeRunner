@@ -143,14 +143,19 @@ def run_python_run_info(
 
 
         python_bash_command = ""
+        python_bash_command += run_info.pre_command
         # python_bash_command += f"cd {project_root_dir}\n" # non-shell not support cd
         if run_info.input_content is not None:
             python_bash_command += f"printf {repr(run_info.input_content)} | "
+        python_bash_command += f"prlimit --as={int(run_info.ram_limit_gb * 1024**3)} -- "  
+        if run_info.timeout > 0:
+            python_bash_command += f"timeout {run_info.timeout}s "
         python_bash_command += f"{python_path} {entry_file_abspath}"
+        if run_info.timeout > 0:
+            python_bash_command += f" || (>&2 echo '[OpenCodeRunner] timed out after {run_info.timeout} seconds or oom {run_info.ram_limit_gb} GB')"
 
 
-        command = run_info.pre_command
-        command += python_bash_command
+        command = python_bash_command
             
         run_info.command = command
         result_info.command = command

@@ -9,6 +9,13 @@ import sys
 from heapq import heappush, heappop
 print("Code started running...")
 
+import numpy as np
+data = []
+for i in range(4):
+    print(f"Allocating {i+1}00MB of memory...")
+    data.append("x" * 100_000_000)  # 每次100MB，总共约10GB
+    print(f"{(i+1)*100}MB allocated")
+
 opposite = [1, 0, 3, 2, 5, 4]
 
 def rotate(state, direction):
@@ -105,7 +112,7 @@ if __name__ == "__main__":
         language="python",
         project_root_name="project_root_name",  
         session_name="session_name",  
-        timeout=3, # Test timeout
+        timeout=5, # Test timeout
         input_content="123\n",
         use_shell=True,
         delete_after_run=False,
@@ -116,7 +123,6 @@ if __name__ == "__main__":
     for i in range(3):
         result_info = opencr_run(run_info=run_info)
         print(run_info.command)
-        print(result_info.tree_str)
         print(result_info)
-        print(result_info.stderr)
+        None
 
