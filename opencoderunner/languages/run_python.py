@@ -212,11 +212,11 @@ def run_python_run_info(
                 stderr=subprocess.PIPE,
                 shell=run_info.use_shell,
             )
-            stdout, stderr = process_sub.communicate(timeout=run_info.timeout)
+            stdout, stderr = process_sub.communicate(timeout=run_info.timeout+10)
             result_info.returncode = process_sub.returncode
-            if result_info.returncode == 137: # 137 means Killed
+            if result_info.returncode > 128: # Killed by signal
                 result_info.stdout = stdout
-                result_info.stderr = f"[OpenCodeRunner] Killed timed out {run_info.timeout} seconds or OOM {run_info.ram_limit_gb} GB"
+                result_info.stderr = f"[OpenCodeRunner] returncode {result_info.returncode} Killed timed out {run_info.timeout} seconds or OOM {run_info.ram_limit_gb} GB"
             else:
                 result_info.stdout = stdout
                 result_info.stderr = stderr
