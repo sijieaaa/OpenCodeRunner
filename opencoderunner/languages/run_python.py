@@ -212,7 +212,7 @@ def run_python_run_info(
                 stderr=subprocess.PIPE,
                 shell=run_info.use_shell,
             )
-            stdout, stderr = process_sub.communicate(timeout=run_info.timeout+10)
+            stdout, stderr = process_sub.communicate(timeout=run_info.timeout)
             result_info.returncode = process_sub.returncode
             if result_info.returncode > 128: # Killed by signal
                 result_info.stdout = stdout
