@@ -144,14 +144,6 @@ for line in sys.stdin:
         result_info = run(run_info=run_info)
         print(result_info)
 
-    # -- is_run=False
-    for i in range(3):
-        run_info = run(
-            run_info=run_info,
-            is_run=False
-        )
-        print(run_info)
-
 
     # -- Or Run on server
     for i in range(3):

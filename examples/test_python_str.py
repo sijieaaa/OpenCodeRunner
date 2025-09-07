@@ -12,7 +12,7 @@ print('Hello World')
 """,
         language="python",
         project_root_name="project_root_name",  
-        timeout=1, # Test timeout
+        timeout=3, # Test timeout
     )                    
 
     # # -- Run locally

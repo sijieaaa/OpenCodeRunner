@@ -34,21 +34,12 @@ for line in sys.stdin:
         project_root_name="project_root_name",                   
         entry_file_relpath="file2.py",
         input_content="INPUT1\nINPUT2\n",
-    )                               
-    run_info.print_tree()
+    )                            
 
     # -- Run locally
     for i in range(3):
         result_info = run(run_info=run_info)
         print(result_info)
-
-    # -- is_run=False
-    for i in range(3):
-        run_info = run(
-            run_info=run_info,
-            is_run=False
-        )
-        print(run_info)
 
 
     # -- Or Run on server
