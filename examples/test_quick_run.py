@@ -10,7 +10,7 @@ if __name__ == "__main__":
         is_quick_run=True, # Test quick run
     )                    
 
-    # # -- Run locally
+    # -- Run locally
     for i in range(3):
         result_info = opencr_run(run_info=run_info)
         print(run_info.command)
