@@ -43,6 +43,7 @@ def quick_run_bash_run_info(
     result_info = ResultInfo()
     result_info.command = run_info.code_str
     command = run_info.code_str
+    project_root_dir = run_info.project_root_dir
 
 
 
@@ -55,8 +56,7 @@ def quick_run_bash_run_info(
     try:
         process_sub = subprocess.Popen(
             command,
-            # cwd=project_root_dir,
-            # cwd=
+            cwd=project_root_dir,
             preexec_fn=preexec_fn(
                 ram_limit_gb=run_info.ram_limit_gb, 
                 timeout=run_info.timeout

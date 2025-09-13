@@ -4,7 +4,7 @@ from opencoderunner import run as opencr_run
 
 if __name__ == "__main__":
     run_info = RunInfo(
-        code_str="sleep 3",
+        code_str="ls\npwd",
         language="bash",
         timeout=2, # Test timeout
         is_quick_run=True, # Test quick run

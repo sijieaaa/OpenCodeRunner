@@ -85,13 +85,7 @@ def run(
     language = language.lower().strip()
 
  
-    # Quick run
-    if run_info.is_quick_run:
-        if language in ['bash']:
-            result_info = quick_run_bash_run_info(run_info=run_info, is_run=is_run) 
-        
-        return result_info
-            
+
 
 
 
@@ -114,67 +108,77 @@ def run(
     rm_makedirs(run_info.project_root_dir)
 
 
+    # Option - Quick run
+    if run_info.is_quick_run:
+        if language in ['bash']:
+            result_info = quick_run_bash_run_info(run_info=run_info, is_run=is_run) 
+        
+        return result_info
+            
 
-    # Include `entry_file_abspath`
-    if run_info.entry_file_relpath is not None:
-        run_info.entry_file_abspath = os.path.join(run_info.project_root_dir, run_info.entry_file_relpath)
-    else:
-        run_info.entry_file_abspath = None
+    # Option - Not quick run
+    if not run_info.is_quick_run:
 
-
-
-    if run_info.code_str is not None:
+        # Include `entry_file_abspath`
         if run_info.entry_file_relpath is not None:
-            run_info.entry_file_relpath = run_info.entry_file_relpath
+            run_info.entry_file_abspath = os.path.join(run_info.project_root_dir, run_info.entry_file_relpath)
         else:
-            run_info.entry_file_relpath = f"__code_str__.{ext_map[language]}"
-        run_info.file_infos = [
-            FileInfo(
-                file_relpath=run_info.entry_file_relpath,
-                file_content=run_info.code_str,
-            )
-        ]
-        run_info.entry_file_relpath = run_info.file_infos[0].file_relpath
-        run_info.entry_file_abspath = os.path.join(run_info.project_root_dir, run_info.entry_file_relpath)
-        # Remve the code_str
-        run_info.code_str = None
+            run_info.entry_file_abspath = None
 
 
-    # Include `file_abspath`
-    # Write all files in the run_info to temporary files
-    for i in range(len(run_info.file_infos)):
-        # If it is None
-        if run_info.file_infos[i].file_abspath is None:
-            run_info.file_infos[i].file_abspath = os.path.join(run_info.project_root_dir, run_info.file_infos[i].file_relpath)
-        if not os.path.exists(os.path.dirname(run_info.file_infos[i].file_abspath)):
-            os.makedirs(os.path.dirname(run_info.file_infos[i].file_abspath), exist_ok=True)
-        with open(run_info.file_infos[i].file_abspath, 'w') as f:
-            f.write(run_info.file_infos[i].file_content)
+        if run_info.code_str is not None:
+            if run_info.entry_file_relpath is not None:
+                run_info.entry_file_relpath = run_info.entry_file_relpath
+            else:
+                run_info.entry_file_relpath = f"__code_str__.{ext_map[language]}"
+            run_info.file_infos = [
+                FileInfo(
+                    file_relpath=run_info.entry_file_relpath,
+                    file_content=run_info.code_str,
+                )
+            ]
+            run_info.entry_file_relpath = run_info.file_infos[0].file_relpath
+            run_info.entry_file_abspath = os.path.join(run_info.project_root_dir, run_info.entry_file_relpath)
+            # Remve the code_str
+            run_info.code_str = None
 
 
-    if language in ["python", "py"]:
-        result_info = run_python_run_info(run_info=run_info, is_run=is_run)
-    elif language in ["bash"]:
-        result_info = run_bash_run_info(run_info=run_info, is_run=is_run)
-    elif language in ["java", "javac"]:
-        result_info = run_java_run_info(run_info=run_info, is_run=is_run)
-    elif language in ["typescript", "ts"]:
-        result_info = run_typescript_run_info(run_info=run_info, is_run=is_run)
-    elif language in ["javascript", "js"]:
-        result_info = run_javascript_run_info(run_info=run_info, is_run=is_run)
-    elif language in ["dafny", "dfy"]:
-        result_info = run_dafny_run_info(run_info=run_info, is_run=is_run)
-    elif language in ["sql"]:
-        result_info = run_sql_run_info(run_info=run_info, is_run=is_run)
-    else:
-        raise NotImplementedError
+        # Include `file_abspath`
+        # Write all files in the run_info to temporary files
+        for i in range(len(run_info.file_infos)):
+            # If it is None
+            if run_info.file_infos[i].file_abspath is None:
+                run_info.file_infos[i].file_abspath = os.path.join(run_info.project_root_dir, run_info.file_infos[i].file_relpath)
+            if not os.path.exists(os.path.dirname(run_info.file_infos[i].file_abspath)):
+                os.makedirs(os.path.dirname(run_info.file_infos[i].file_abspath), exist_ok=True)
+            with open(run_info.file_infos[i].file_abspath, 'w') as f:
+                f.write(run_info.file_infos[i].file_content)
+
+
+        if language in ["python", "py"]:
+            result_info = run_python_run_info(run_info=run_info, is_run=is_run)
+        elif language in ["bash"]:
+            result_info = run_bash_run_info(run_info=run_info, is_run=is_run)
+        elif language in ["java", "javac"]:
+            result_info = run_java_run_info(run_info=run_info, is_run=is_run)
+        elif language in ["typescript", "ts"]:
+            result_info = run_typescript_run_info(run_info=run_info, is_run=is_run)
+        elif language in ["javascript", "js"]:
+            result_info = run_javascript_run_info(run_info=run_info, is_run=is_run)
+        elif language in ["dafny", "dfy"]:
+            result_info = run_dafny_run_info(run_info=run_info, is_run=is_run)
+        elif language in ["sql"]:
+            result_info = run_sql_run_info(run_info=run_info, is_run=is_run)
+        else:
+            raise NotImplementedError
+        
+
+        # Add tree structure to the result_info
+        tree_str = build_tree_str(run_info.project_root_dir)
+        result_info.tree_str = tree_str
     
 
-    
-    # Add tree structure to the result_info
-    tree_str = build_tree_str(run_info.project_root_dir)
-    result_info.tree_str = tree_str
-    
+
     # Clean up the temporary directory
     if run_info.delete_after_run:
         max_attempts = 2
