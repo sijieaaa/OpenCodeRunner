@@ -211,6 +211,7 @@ def run_python_run_info(
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 shell=run_info.use_shell,
+                executable="/bin/bash"
             )
             stdout, stderr = process_sub.communicate(timeout=run_info.timeout)
             result_info.returncode = process_sub.returncode

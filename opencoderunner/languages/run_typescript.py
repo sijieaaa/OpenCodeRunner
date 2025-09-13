@@ -80,6 +80,7 @@ def run_typescript_run_info(
             capture_output=True,
             cwd=project_root_dir,
             timeout=run_info.timeout,
+            executable="/bin/bash"
         )
     except Exception as e:
         process_subrun = subprocess.CompletedProcess(
