@@ -18,6 +18,8 @@ from opencoderunner.languages.run_javascript import run_javascript_run_info
 from opencoderunner.languages.run_dafny import run_dafny_run_info
 from opencoderunner.languages.run_sql import run_sql_run_info
 
+from opencoderunner.languages.quick_run_bash import quick_run_bash_run_info
+
 
 from opencoderunner.run_info import RunInfo
 from opencoderunner.result_info import ResultInfo
@@ -82,6 +84,17 @@ def run(
     language = run_info.language
     language = language.lower().strip()
 
+ 
+    # Quick run
+    if run_info.is_quick_run:
+        if language in ['bash']:
+            result_info = quick_run_bash_run_info(run_info=run_info, is_run=is_run) 
+        
+        return result_info
+            
+
+
+
     # Create session_dir
     if run_info.session_name is None:
         run_info.session_name = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
@@ -137,7 +150,6 @@ def run(
             os.makedirs(os.path.dirname(run_info.file_infos[i].file_abspath), exist_ok=True)
         with open(run_info.file_infos[i].file_abspath, 'w') as f:
             f.write(run_info.file_infos[i].file_content)
- 
 
 
     if language in ["python", "py"]:
@@ -156,6 +168,8 @@ def run(
         result_info = run_sql_run_info(run_info=run_info, is_run=is_run)
     else:
         raise NotImplementedError
+    
+
     
     # Add tree structure to the result_info
     tree_str = build_tree_str(run_info.project_root_dir)
